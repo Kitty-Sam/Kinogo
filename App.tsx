@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react';
 import { ActivityIndicator, SafeAreaView, Text } from 'react-native';
-import { useAppDispatch, useAppSelector } from './src/store/hooks';
-import { fetchFilms } from './src/store/reducers/ActionsCreators';
+import { useAppDispatch, useAppSelector } from '~store/hooks';
+import { fetchFilms } from '~store/reducers/ActionsCreators';
 
 export const App = () => {
     const { films, isLoading } = useAppSelector((state) => state.films);
     const dispatch = useAppDispatch();
-
-    console.log('films', films);
 
     useEffect(() => {
         dispatch(fetchFilms());
