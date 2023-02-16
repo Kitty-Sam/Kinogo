@@ -1,12 +1,30 @@
-import React from 'react';
-import { SafeAreaView, Text } from 'react-native';
+import React, { useEffect } from 'react';
+import { ActivityIndicator, SafeAreaView, Text } from 'react-native';
+import { useAppDispatch, useAppSelector } from './src/store/hooks';
+import { fetchFilms } from './src/store/reducers/ActionsCreators';
 
-const App = () => {
+export const App = () => {
+    const { films, isLoading } = useAppSelector((state) => state.films);
+    const dispatch = useAppDispatch();
+
+    console.log('films', films);
+
+    useEffect(() => {
+        dispatch(fetchFilms());
+    }, []);
+
     return (
         <SafeAreaView>
-            <Text>hey kinogo</Text>
+            {isLoading ? (
+                <ActivityIndicator />
+            ) : (
+                <>
+                    <Text>Redux toolkit</Text>
+                    {films.map((film) => (
+                        <Text key={film.id}>{film.title}</Text>
+                    ))}
+                </>
+            )}
         </SafeAreaView>
     );
 };
-
-export default App;
