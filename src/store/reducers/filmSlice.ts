@@ -17,20 +17,20 @@ export const filmSlice = createSlice({
     name: 'films',
     initialState,
     reducers: {
-        fetchUsers(state) {
+        fetchFilms(state) {
             state.isLoading = true;
         },
-        fetchUsersSuccess(state, action: PayloadAction<IFilm[]>) {
+        fetchFilmsSuccess(state, { payload }: PayloadAction<IFilm[]>) {
             state.isLoading = false;
             state.error = '';
-            state.films = action.payload;
+            state.films = payload;
         },
-        fetchUsersError(state, action: PayloadAction<string>) {
+        fetchFilmsError(state, { payload }: PayloadAction<string>) {
             state.isLoading = false;
-            state.error = action.payload;
+            state.error = payload;
         },
     },
 });
 
 export default filmSlice.reducer;
-export const { fetchUsers, fetchUsersSuccess, fetchUsersError } = filmSlice.actions;
+export const { fetchFilms, fetchFilmsSuccess, fetchFilmsError } = filmSlice.actions;
