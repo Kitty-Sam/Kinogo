@@ -43,6 +43,9 @@
 		5DCACB8F33CDC322A6C60F78 /* libPods-Kinogo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Kinogo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Kinogo/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-Kinogo-KinogoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kinogo-KinogoTests.release.xcconfig"; path = "Target Support Files/Pods-Kinogo-KinogoTests/Pods-Kinogo-KinogoTests.release.xcconfig"; sourceTree = "<group>"; };
+		DB5A69B7299F969600F40541 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
+		DB5A69BD299F96AE00F40541 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
+		DB5A69C3299F96C600F40541 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -86,6 +89,7 @@
 		13B07FAE1A68108700A75B9A /* Kinogo */ = {
 			isa = PBXGroup;
 			children = (
+				DB5A69B2299F964800F40541 /* Fonts */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -146,6 +150,16 @@
 				89C6BE57DB24E9ADA2F236DE /* Pods-Kinogo-KinogoTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		DB5A69B2299F964800F40541 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				DB5A69C3299F96C600F40541 /* MaterialIcons.ttf */,
+				DB5A69BD299F96AE00F40541 /* Ionicons.ttf */,
+				DB5A69B7299F969600F40541 /* FontAwesome.ttf */,
+			);
+			name = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
