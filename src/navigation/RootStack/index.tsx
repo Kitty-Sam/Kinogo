@@ -1,35 +1,41 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { HomeScreen } from '~screens/HomeScreen';
-import { FilmsScreen } from '~screens/FilmsScreen';
 import { RootStackNavigationName, RootStackParamList } from '~navigation/RootStack/type';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { TopScreen } from '~screens/TopScreen';
+import { TicketsScreen } from '~screens/TicketsScreen';
+import { ProfileScreen } from '~screens/ProfileScreen';
 
 const Tab = createBottomTabNavigator<RootStackParamList>();
 
 export const RootStack = () => {
     return (
-        <NavigationContainer>
-            <Tab.Navigator
-                screenOptions={({ route }) => ({
-                    tabBarIcon: ({ focused, color, size }) => {
-                        let iconName = 'star';
+        <Tab.Navigator
+            screenOptions={({ route }) => ({
+                tabBarIcon: ({ focused, color, size }) => {
+                    let iconName = 'star';
 
-                        if (route.name === RootStackNavigationName.HOME) {
-                            iconName = focused ? 'ios-information-circle' : 'ios-information-circle-outline';
-                        } else if (route.name === RootStackNavigationName.FILMS) {
-                            iconName = focused ? 'ios-list' : 'ios-list-outline';
-                        }
-                        return <Icon name={iconName} size={size} color={color} />;
-                    },
-                    tabBarActiveTintColor: 'tomato',
-                    tabBarInactiveTintColor: 'gray',
-                })}
-            >
-                <Tab.Screen name={RootStackNavigationName.HOME} component={HomeScreen} />
-                <Tab.Screen name={RootStackNavigationName.FILMS} component={FilmsScreen} />
-            </Tab.Navigator>
-        </NavigationContainer>
+                    if (route.name === RootStackNavigationName.HOME) {
+                        iconName = focused ? 'home' : 'home-outline';
+                    } else if (route.name === RootStackNavigationName.TOP) {
+                        iconName = focused ? 'ribbon' : 'ribbon-outline';
+                    } else if (route.name === RootStackNavigationName.TICKETS) {
+                        iconName = focused ? 'rocket' : 'rocket-outline';
+                    } else if (route.name === RootStackNavigationName.PROFILE) {
+                        iconName = focused ? 'person-circle' : 'person-circle-outline';
+                    }
+                    return <Icon name={iconName} size={size} color={color} />;
+                },
+                tabBarActiveTintColor: 'tomato',
+                tabBarInactiveTintColor: 'gray',
+                headerShown: false,
+            })}
+        >
+            <Tab.Screen name={RootStackNavigationName.HOME} component={HomeScreen} />
+            <Tab.Screen name={RootStackNavigationName.TOP} component={TopScreen} />
+            <Tab.Screen name={RootStackNavigationName.TICKETS} component={TicketsScreen} />
+            <Tab.Screen name={RootStackNavigationName.PROFILE} component={ProfileScreen} />
+        </Tab.Navigator>
     );
 };

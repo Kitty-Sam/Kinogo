@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import { Text } from 'react-native';
-import { HomeTabScreenProps } from '~screens/HomeScreen/type';
+import { TopTabScreenProps } from '~screens/TopScreen/type';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export const HomeScreen: FC<HomeTabScreenProps> = () => {
+export const TopScreen: FC<TopTabScreenProps> = () => {
     return (
         <SafeAreaView>
-            <Text>Home</Text>
+            <Text>Top</Text>
         </SafeAreaView>
     );
 };
