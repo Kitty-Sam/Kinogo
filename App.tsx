@@ -4,6 +4,6 @@ import { AuthStack } from '~navigation/AuthStack';
 import { NavigationContainer } from '@react-navigation/native';
 
 export const App = () => {
-    const [isLogged, setIsLogged] = useState(false);
+    const [isLogged, setIsLogged] = useState(true);
     return <NavigationContainer>{isLogged ? <RootStack /> : <AuthStack />}</NavigationContainer>;
 };
