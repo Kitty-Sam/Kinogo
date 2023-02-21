@@ -27,8 +27,11 @@ export const RootStack = () => {
                     }
                     return <Icon name={iconName} size={size} color={color} />;
                 },
-                tabBarActiveTintColor: 'tomato',
+                tabBarActiveTintColor: '#fff',
                 tabBarInactiveTintColor: 'gray',
+                tabBarStyle: {
+                    backgroundColor: '#16171F',
+                },
                 headerShown: false,
             })}
         >
