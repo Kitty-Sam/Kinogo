@@ -1,9 +1,13 @@
 export type RootStackParamList = {
     [RootStackNavigationName.HOME]: undefined;
-    [RootStackNavigationName.FILMS]: undefined;
+    [RootStackNavigationName.TOP]: undefined;
+    [RootStackNavigationName.TICKETS]: undefined;
+    [RootStackNavigationName.PROFILE]: undefined;
 };
 
 export enum RootStackNavigationName {
     HOME = 'Home',
-    FILMS = 'Films',
+    TOP = 'Top',
+    TICKETS = 'Tickets',
+    PROFILE = 'Profile',
 }
