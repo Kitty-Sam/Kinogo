@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { ProfileTabScreenProps } from '~screens/ProfileScreen/type';
 import {
     Avatar,
@@ -16,35 +16,39 @@ import {
 import { EditProfileModal } from '~components/EditProfileModal';
 import { SettingsModal } from '~components/SettingsModal';
 import { StatusBar } from 'react-native';
+import { useOpen } from '~hooks/useOpen';
 
 export const ProfileScreen: FC<ProfileTabScreenProps> = () => {
-    const [editModalOpen, setIsEditModalOpen] = useState(false);
-    const [settingsModalOpen, setSettingsModalOpen] = useState(false);
+    const editModal = useOpen(false);
+    const settingsModal = useOpen(false);
 
     const buttons = [
         {
             title: 'Edit profile info',
             onPress: () => {
-                setIsEditModalOpen(true);
+                editModal.onOpen();
             },
         },
         {
             title: 'Settings',
             onPress: () => {
-                setSettingsModalOpen(true);
+                settingsModal.onOpen();
             },
         },
         { title: 'Private policy', onPress: () => {} },
         { title: 'Log out', onPress: () => {} },
     ];
+
     return (
         <ScreenContainer bgColor={'#1e1f27'}>
             <StatusBar barStyle={'light-content'} />
             <Avatar source={require('~assets/icons/avatar.png')} />
 
-            {editModalOpen && <EditProfileModal editModalOpen={editModalOpen} setEditModalOpen={setIsEditModalOpen} />}
-            {settingsModalOpen && (
-                <SettingsModal setSettingsModalOpen={setSettingsModalOpen} settingsModalOpen={settingsModalOpen} />
+            {editModal.isOpen && (
+                <EditProfileModal editModalOpen={editModal.isOpen} setEditModalOpen={editModal.onClose} />
+            )}
+            {settingsModal.isOpen && (
+                <SettingsModal setSettingsModalOpen={settingsModal.onClose} settingsModalOpen={settingsModal.isOpen} />
             )}
 
             <ProfileNameText textColor={'#fff'}>Name Surname</ProfileNameText>

@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { width } from '~constants/dimensions';
 
 export const CentredView = styled.View`
     flex: 1;
@@ -13,7 +14,7 @@ export const ModalView = styled.View<{ bgColor: string }>`
     background-color: ${(props) => props.bgColor};
     border-radius: 10px;
     width: 80%;
-    height: 35%;
+    height: ${width * 0.7}px;
 `;
 
 export const ModalTitle = styled.Text`

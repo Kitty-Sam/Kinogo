@@ -14,19 +14,12 @@ import { SignUpModalPropsType } from '~components/SignUpModal/type';
 
 export const SignUpModal: FC<SignUpModalPropsType> = ({ signUpModalOpen, setSignUpModalOpen }) => {
     return (
-        <Modal
-            animationType="slide"
-            transparent={true}
-            visible={signUpModalOpen}
-            onRequestClose={() => {
-                setSignUpModalOpen(!setSignUpModalOpen);
-            }}
-        >
+        <Modal animationType="slide" transparent={true} visible={signUpModalOpen}>
             <CentredView>
                 <ModalView bgColor={'#2E2E2E'}>
                     <ModalTitleContainer>
                         <ModalTitle>Create an account</ModalTitle>
-                        <ModalTitle onPress={() => setSignUpModalOpen(false)}>x</ModalTitle>
+                        <ModalTitle onPress={() => setSignUpModalOpen()}>x</ModalTitle>
                     </ModalTitleContainer>
                     <FormContainer>
                         <ModalInput icon={require('~assets/icons/name.png')} placeholder="Enter your name" />

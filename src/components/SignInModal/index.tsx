@@ -15,19 +15,12 @@ import {
 
 export const SignInModal: FC<SignInModalPropsType> = ({ signInModalOpen, setSignInModalOpen }) => {
     return (
-        <Modal
-            animationType="slide"
-            transparent={true}
-            visible={signInModalOpen}
-            onRequestClose={() => {
-                setSignInModalOpen(!setSignInModalOpen);
-            }}
-        >
+        <Modal animationType="slide" transparent={true} visible={signInModalOpen}>
             <CentredView>
                 <ModalView bgColor={'#2E2E2E'}>
                     <ModalTitleContainer>
                         <ModalTitle>Sign in to an account</ModalTitle>
-                        <ModalTitle onPress={() => setSignInModalOpen(false)}>x</ModalTitle>
+                        <ModalTitle onPress={() => setSignInModalOpen()}>x</ModalTitle>
                     </ModalTitleContainer>
                     <FormContainer>
                         <ModalInput icon={require('~assets/icons/email.png')} placeholder="example@gmail" />

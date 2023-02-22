@@ -5,6 +5,7 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
+    "iPad": "react-native run-ios --simulator='iPad Pro (12.9-inch) (4th generation)'",
     "start": "react-native start --reset-cache",
     "test": "jest",
     "lint": "tsc --noEmit && eslint --ext .js,.jsx,.ts,.tsx ./",
