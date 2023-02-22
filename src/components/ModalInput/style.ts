@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { width } from '~constants/dimensions';
 
 export const InputIcon = styled.Image`
     width: 14px;
@@ -13,7 +14,7 @@ export const Input = styled.TextInput`
     border-color: #ccc;
     border-style: solid;
     padding: 4px;
-    margin: 3%;
+    margin: ${width * 0.03}px;
     color: #fff;
 `;
 

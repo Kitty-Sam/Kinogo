@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { width } from '~constants/dimensions';
 
 export const ScreenContainer = styled.SafeAreaView<{ bgColor: string }>`
     flex: 1;
@@ -10,18 +11,25 @@ export const Title = styled.Text<{ textColor: string }>`
     font-size: 32px;
     font-style: italic;
     color: ${(props) => props.textColor};
-    padding: 10% 10%;
+    padding: ${width * 0.05}px;
 `;
 
 export const Logo = styled.Image`
-    margin-top: 10%;
+    margin-top: ${width * 0.05}px;
 `;
 
 export const Text = styled.Text<{ textColor: string }>`
     font-size: 14px;
     font-style: italic;
-
     color: ${(props) => props.textColor};
+`;
+
+export const VersionText = styled.Text<{ textColor: string }>`
+    font-size: 14px;
+    font-style: italic;
+    color: ${(props) => props.textColor};
+    position: absolute;
+    bottom: ${width * 0.05}px;
 `;
 
 export const LinkText = styled.Text<{ textColor: string }>`
@@ -37,8 +45,8 @@ export const TextContainer = styled.View`
 `;
 
 export const StudiosContainer = styled.View`
-    padding-top: 10%;
-    padding-bottom: 15%;
+    padding-top: ${width * 0.06}px;
+    padding-bottom: ${width * 0.05}px;
     flex-direction: row;
     width: 85%;
     align-items: center;

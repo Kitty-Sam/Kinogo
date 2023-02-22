@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { width } from '~constants/dimensions';
 
 export const ScreenContainer = styled.SafeAreaView<{ bgColor: string }>`
     flex: 1;
@@ -7,7 +8,7 @@ export const ScreenContainer = styled.SafeAreaView<{ bgColor: string }>`
 `;
 
 export const ProfileButtonContainer = styled.TouchableOpacity`
-    margin-top: 5%;
+    margin-top: ${width * 0.05}px;
     width: 50%;
     padding: 2% 0;
     border-radius: 10px;
@@ -35,14 +36,14 @@ export const ThemeButtonText = styled.Text<{ textColor: string }>`
 `;
 
 export const ButtonsContainer = styled.View`
-    padding-top: 15%;
+    padding-top: ${width * 0.1}px;
     flex-direction: row;
 `;
 
 export const Avatar = styled.Image`
     width: 150px;
     height: 150px;
-    margin-top: 25%;
+    margin-top: ${width * 0.07}px;
 `;
 
 export const ProfileNameText = styled.Text<{ textColor: string }>`
@@ -68,5 +69,6 @@ export const ProfileSexText = styled.Text<{ textColor: string }>`
 `;
 
 export const SmallLogo = styled.Image`
-    margin-top: 5%;
+    position: absolute;
+    bottom: ${width * 0.05}px;
 `;

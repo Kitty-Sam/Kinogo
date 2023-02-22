@@ -16,19 +16,12 @@ export const SettingsModal: FC<SettingsModalPropsType> = ({ settingsModalOpen, s
     const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
     return (
-        <Modal
-            animationType="slide"
-            transparent={true}
-            visible={settingsModalOpen}
-            onRequestClose={() => {
-                setSettingsModalOpen(!settingsModalOpen);
-            }}
-        >
+        <Modal animationType="slide" transparent={true} visible={settingsModalOpen}>
             <CentredView>
                 <ModalView bgColor={'#2E2E2E'}>
                     <ModalTitleContainer>
                         <ModalTitle>Settings</ModalTitle>
-                        <ModalTitle onPress={() => setSettingsModalOpen(false)}>x</ModalTitle>
+                        <ModalTitle onPress={() => setSettingsModalOpen()}>x</ModalTitle>
                     </ModalTitleContainer>
                     <AdditionalText textColor={'#fff'}>Notifications</AdditionalText>
                     <SwitchContainer>

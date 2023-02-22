@@ -16,19 +16,12 @@ import {
 
 export const EditProfileModal: FC<EditProfilePropsType> = ({ editModalOpen, setEditModalOpen }) => {
     return (
-        <Modal
-            animationType="slide"
-            transparent={true}
-            visible={editModalOpen}
-            onRequestClose={() => {
-                setEditModalOpen(!editModalOpen);
-            }}
-        >
+        <Modal animationType="slide" transparent={true} visible={editModalOpen}>
             <CentredView>
                 <ModalView bgColor={'#2E2E2E'}>
                     <ModalTitleContainer>
                         <ModalTitle>Edit your profile</ModalTitle>
-                        <ModalTitle onPress={() => setEditModalOpen(false)}>x</ModalTitle>
+                        <ModalTitle onPress={() => setEditModalOpen()}>x</ModalTitle>
                     </ModalTitleContainer>
                     <FormContainer>
                         <AdditionalText textColor={'#fff'}>Change your personal data</AdditionalText>

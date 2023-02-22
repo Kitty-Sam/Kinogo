@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { WelcomeTabScreenProps } from '~screens/WelcomeScreen/type';
 import {
     LinkText,
@@ -8,11 +8,13 @@ import {
     Text,
     TextContainer,
     Title,
+    VersionText,
 } from '~screens/WelcomeScreen/style';
 import { Button } from '~components/Button';
 import { Image, TouchableOpacity } from 'react-native';
 import { SignUpModal } from '~components/SignUpModal';
 import { SignInModal } from '~components/SignInModal';
+import { useOpen } from '~hooks/useOpen';
 
 const studios = [
     { icon: require('~assets/icons/marvel.png') },
@@ -22,15 +24,15 @@ const studios = [
 ];
 
 export const WelcomeScreen: FC<WelcomeTabScreenProps> = () => {
-    const [signInModalOpen, setSignInModalOpen] = useState(false);
-    const [signUpModalOpen, setSignUpModalOpen] = useState(false);
+    const signInModal = useOpen(false);
+    const signUpModal = useOpen(false);
 
     const buttons = [
         {
             icon: require('~assets/icons/person.png'),
             title: 'Create an Account',
             onPress: () => {
-                setSignUpModalOpen(true);
+                signUpModal.onOpen();
             },
             bgColor: '#404040',
             color: '#FFFFFF',
@@ -61,28 +63,34 @@ export const WelcomeScreen: FC<WelcomeTabScreenProps> = () => {
     return (
         <ScreenContainer bgColor={'#1e1f27'}>
             <Logo source={require('~assets/icons/logo.png')} />
-            {signUpModalOpen && (
-                <SignUpModal setSignUpModalOpen={setSignUpModalOpen} signUpModalOpen={signUpModalOpen} />
+
+            {signUpModal.isOpen && (
+                <SignUpModal setSignUpModalOpen={signUpModal.onClose} signUpModalOpen={signUpModal.isOpen} />
             )}
-            {signInModalOpen && (
-                <SignInModal setSignInModalOpen={setSignInModalOpen} signInModalOpen={signInModalOpen} />
+            {signInModal.isOpen && (
+                <SignInModal setSignInModalOpen={signInModal.onClose} signInModalOpen={signInModal.isOpen} />
             )}
+
             <Title textColor={'#fff'}>Great Movies in the best cinema! We care about your comfort.</Title>
+
             {buttons.map(({ title, onPress, icon, bgColor, color }) => (
                 <Button title={title} onPress={onPress} icon={icon} key={title} bgColor={bgColor} textColor={color} />
             ))}
+
             <TextContainer>
                 <Text textColor={'#fff'}>Already has an account?</Text>
-                <TouchableOpacity onPress={() => setSignInModalOpen(true)}>
+                <TouchableOpacity onPress={() => signInModal.onOpen()}>
                     <LinkText textColor={'#fff'}> Login please.</LinkText>
                 </TouchableOpacity>
             </TextContainer>
+
             <StudiosContainer>
                 {studios.map((studio) => (
                     <Image key={studio.icon} source={studio.icon} />
                 ))}
             </StudiosContainer>
-            <Text textColor={'#fff'}>2023 Version 0.0.1</Text>
+
+            <VersionText textColor={'#fff'}>2023 Version 0.0.1</VersionText>
         </ScreenContainer>
     );
 };
