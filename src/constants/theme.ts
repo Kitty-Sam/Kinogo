@@ -1,4 +1,4 @@
-export const theme = {
+export const THEME_COLORS = {
     button: '#D98639',
     itemWrapper: '#767678',
     scheduleWrapper: '#D9D9D9',

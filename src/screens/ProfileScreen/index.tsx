@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
 import { ProfileTabScreenProps } from '~screens/ProfileScreen/type';
 import {
     Avatar,
@@ -17,10 +17,21 @@ import { EditProfileModal } from '~components/EditProfileModal';
 import { SettingsModal } from '~components/SettingsModal';
 import { StatusBar } from 'react-native';
 import { useOpen } from '~hooks/useOpen';
+import { ThemeContext } from '~context/ThemeContext';
+import { THEME_COLORS } from '~constants/theme';
+import { useTheme } from '~hooks/useTheme';
 
 export const ProfileScreen: FC<ProfileTabScreenProps> = () => {
     const editModal = useOpen(false);
     const settingsModal = useOpen(false);
+
+    const { theme, setTheme } = useContext(ThemeContext);
+    const { storeTheme } = useTheme(theme);
+
+    const toggleAndStore = (value: string) => {
+        setTheme(value);
+        storeTheme(theme === 'light' ? 'dark' : 'light');
+    };
 
     const buttons = [
         {
@@ -40,7 +51,7 @@ export const ProfileScreen: FC<ProfileTabScreenProps> = () => {
     ];
 
     return (
-        <ScreenContainer bgColor={'#1e1f27'}>
+        <ScreenContainer bgColor={theme === 'light' ? THEME_COLORS.light.background : THEME_COLORS.dark.background}>
             <StatusBar barStyle={'light-content'} />
             <Avatar source={require('~assets/icons/avatar.png')} />
 
@@ -62,10 +73,10 @@ export const ProfileScreen: FC<ProfileTabScreenProps> = () => {
             ))}
 
             <ButtonsContainer>
-                <ThemeButtonContainer bgColor={'#fff'}>
+                <ThemeButtonContainer bgColor={'#fff'} onPress={() => toggleAndStore('light')}>
                     <ThemeButtonText textColor={'#000'}>White</ThemeButtonText>
                 </ThemeButtonContainer>
-                <ThemeButtonContainer bgColor={'#383838'}>
+                <ThemeButtonContainer bgColor={'#383838'} onPress={() => toggleAndStore('dark')}>
                     <ThemeButtonText textColor={'#fff'}>Black</ThemeButtonText>
                 </ThemeButtonContainer>
             </ButtonsContainer>
