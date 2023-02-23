@@ -16,11 +16,11 @@ export const ModalView = styled.View<{ bgColor: string }>`
     height: ${width * 1.2}px;
 `;
 
-export const ModalTitle = styled.Text`
+export const ModalTitle = styled.Text<{ textColor: string }>`
     font-size: 20px;
     font-weight: 500;
     padding-top: 10%;
-    color: #dbdbdb;
+    color: ${(props) => props.textColor};
 `;
 
 export const ModalTitleContainer = styled.View`

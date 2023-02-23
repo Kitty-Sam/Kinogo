@@ -1,9 +1,10 @@
 import styled from 'styled-components/native';
 import { width } from '~constants/dimensions';
 
-export const InputIcon = styled.Image`
+export const InputIcon = styled.Image<{ color: string }>`
     width: 14px;
     height: 15px;
+    color: ${(props) => props.color};
 `;
 
 export const Input = styled.TextInput`

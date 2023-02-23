@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
 import { WelcomeTabScreenProps } from '~screens/WelcomeScreen/type';
 import {
     LinkText,
@@ -15,13 +15,9 @@ import { Image, TouchableOpacity } from 'react-native';
 import { SignUpModal } from '~components/SignUpModal';
 import { SignInModal } from '~components/SignInModal';
 import { useOpen } from '~hooks/useOpen';
-
-const studios = [
-    { icon: require('~assets/icons/marvel.png') },
-    { icon: require('~assets/icons/DC.png') },
-    { icon: require('~assets/icons/warner.png') },
-    { icon: require('~assets/icons/netflix.png') },
-];
+import { ThemeContext } from '~context/ThemeContext';
+import { THEME_COLORS } from '~constants/theme';
+import { studios } from '~constants/studios';
 
 export const WelcomeScreen: FC<WelcomeTabScreenProps> = () => {
     const signInModal = useOpen(false);
@@ -34,34 +30,37 @@ export const WelcomeScreen: FC<WelcomeTabScreenProps> = () => {
             onPress: () => {
                 signUpModal.onOpen();
             },
-            bgColor: '#404040',
-            color: '#FFFFFF',
+            bgColor: THEME_COLORS.welcomeButtons.bgCrAcc,
+            color: THEME_COLORS.welcomeButtons.textCrAcc,
         },
         {
             icon: require('~assets/icons/google.png'),
             title: 'Continue with google',
             onPress: () => {},
-            bgColor: '#FFFFFF',
-            color: '#808080',
+            bgColor: THEME_COLORS.welcomeButtons.bgGoogle,
+            color: THEME_COLORS.welcomeButtons.textGoogle,
         },
         {
             icon: require('~assets/icons/fb.png'),
             title: 'Sign up with Facebook',
             onPress: () => {},
-            bgColor: '#1877F2',
-            color: '#FFFFFF',
+            bgColor: THEME_COLORS.welcomeButtons.bgFb,
+            color: THEME_COLORS.welcomeButtons.textFb,
         },
         {
             icon: require('~assets/icons/github.png'),
             title: 'Sign up with Github',
             onPress: () => {},
-            bgColor: '#000000',
-            color: '#FFFFFF',
+            bgColor: THEME_COLORS.welcomeButtons.bgGitHub,
+            color: THEME_COLORS.welcomeButtons.textGitHub,
         },
     ];
+    const { theme } = useContext(ThemeContext);
+    const textColor = theme === 'light' ? THEME_COLORS.light.text : THEME_COLORS.dark.text;
+    const bgColor = theme === 'light' ? THEME_COLORS.light.background : THEME_COLORS.dark.background;
 
     return (
-        <ScreenContainer bgColor={'#1e1f27'}>
+        <ScreenContainer bgColor={bgColor}>
             <Logo source={require('~assets/icons/logo.png')} />
 
             {signUpModal.isOpen && (
@@ -71,16 +70,16 @@ export const WelcomeScreen: FC<WelcomeTabScreenProps> = () => {
                 <SignInModal setSignInModalOpen={signInModal.onClose} signInModalOpen={signInModal.isOpen} />
             )}
 
-            <Title textColor={'#fff'}>Great Movies in the best cinema! We care about your comfort.</Title>
+            <Title textColor={textColor}>Great Movies in the best cinema! We care about your comfort.</Title>
 
             {buttons.map(({ title, onPress, icon, bgColor, color }) => (
                 <Button title={title} onPress={onPress} icon={icon} key={title} bgColor={bgColor} textColor={color} />
             ))}
 
             <TextContainer>
-                <Text textColor={'#fff'}>Already has an account?</Text>
+                <Text textColor={textColor}>Already has an account?</Text>
                 <TouchableOpacity onPress={() => signInModal.onOpen()}>
-                    <LinkText textColor={'#fff'}> Login please.</LinkText>
+                    <LinkText textColor={textColor}> Login please.</LinkText>
                 </TouchableOpacity>
             </TextContainer>
 
@@ -90,7 +89,7 @@ export const WelcomeScreen: FC<WelcomeTabScreenProps> = () => {
                 ))}
             </StudiosContainer>
 
-            <VersionText textColor={'#fff'}>2023 Version 0.0.1</VersionText>
+            <VersionText textColor={textColor}>2023 Version 0.0.1</VersionText>
         </ScreenContainer>
     );
 };

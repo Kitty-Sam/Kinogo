@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useContext, useState } from 'react';
 import { FlatList } from 'react-native';
 import { HomeTabScreenProps } from '~screens/HomeScreen/type';
 import {
@@ -13,6 +13,8 @@ import {
     PlayerImage,
     ScreenContainer,
 } from '~screens/HomeScreen/style';
+import { ThemeContext } from '~context/ThemeContext';
+import { THEME_COLORS } from '~constants/theme';
 
 const categories = ['Action', 'Comedy', 'Romance', 'Thriller', 'Fantasy'];
 
@@ -25,19 +27,23 @@ const slideList = Array.from({ length: 5 }).map((_, i) => {
 
 export const HomeScreen: FC<HomeTabScreenProps> = () => {
     const [category, setCategory] = useState('');
+    const { theme } = useContext(ThemeContext);
+
+    const bgColor = theme === 'light' ? THEME_COLORS.light.background : THEME_COLORS.dark.background;
+    const textColor = theme === 'light' ? THEME_COLORS.light.text : THEME_COLORS.dark.text;
 
     const renderItem = ({ item }: { item: { id: string; image: string } }) => {
         return (
             <FilmContainer>
                 <FilmImage source={{ uri: item.image }} />
-                <FilmTitleText textColor={'#fff'}>Film title</FilmTitleText>
+                <FilmTitleText textColor={textColor}>Film title</FilmTitleText>
             </FilmContainer>
         );
     };
 
     return (
-        <ScreenContainer bgColor={'#1e1f27'}>
-            <ChapterTitleText textColor={'#fff'}>Coming Soon</ChapterTitleText>
+        <ScreenContainer bgColor={bgColor}>
+            <ChapterTitleText textColor={textColor}>Coming Soon</ChapterTitleText>
 
             <PlayerContainer>
                 <PlayerImage source={{ uri: 'https://picsum.photos/1440/2842?random=7' }} />
@@ -50,16 +56,16 @@ export const HomeScreen: FC<HomeTabScreenProps> = () => {
                     data={categories}
                     renderItem={({ item }) => (
                         <CategoryFilmTextContainer
-                            bgColor={category === item ? '#D98639' : '#1e1f27'}
+                            bgColor={category === item ? THEME_COLORS.button : bgColor}
                             onPress={() => setCategory(item)}
                         >
-                            <CategoryFilmText textColor={'#fff'}>{item}</CategoryFilmText>
+                            <CategoryFilmText textColor={textColor}>{item}</CategoryFilmText>
                         </CategoryFilmTextContainer>
                     )}
                 />
             </CategoriesListContainer>
 
-            <ChapterTitleText textColor={'#fff'}>Now Showing</ChapterTitleText>
+            <ChapterTitleText textColor={textColor}>Now Showing</ChapterTitleText>
 
             <FlatList
                 data={slideList}
