@@ -54,7 +54,7 @@ export const CategoriesListContainer = styled.View`
 
 export const FilmContainer = styled.View`
     width: ${width}px;
-    height: ${width * 0.6}px;
+    height: ${width * 0.7}px;
     align-items: center;
 `;
 

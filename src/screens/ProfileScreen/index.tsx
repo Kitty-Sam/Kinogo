@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
 import { ProfileTabScreenProps } from '~screens/ProfileScreen/type';
 import {
     Avatar,
@@ -17,10 +17,21 @@ import { EditProfileModal } from '~components/EditProfileModal';
 import { SettingsModal } from '~components/SettingsModal';
 import { StatusBar } from 'react-native';
 import { useOpen } from '~hooks/useOpen';
+import { ThemeContext } from '~context/ThemeContext';
+import { THEME_COLORS } from '~constants/theme';
+import { useTheme } from '~hooks/useTheme';
 
 export const ProfileScreen: FC<ProfileTabScreenProps> = () => {
     const editModal = useOpen(false);
     const settingsModal = useOpen(false);
+
+    const { theme, setTheme } = useContext(ThemeContext);
+    const { storeTheme } = useTheme(theme);
+
+    const toggleAndStore = (value: string) => {
+        setTheme(value);
+        storeTheme(theme === 'light' ? 'dark' : 'light');
+    };
 
     const buttons = [
         {
@@ -39,9 +50,17 @@ export const ProfileScreen: FC<ProfileTabScreenProps> = () => {
         { title: 'Log out', onPress: () => {} },
     ];
 
+    const bgColor = theme === 'light' ? THEME_COLORS.light.background : THEME_COLORS.dark.background;
+    const textColor = theme === 'light' ? THEME_COLORS.light.text : THEME_COLORS.dark.text;
+    const themeButtonWhite = theme === 'light' ? THEME_COLORS.dark.themeButton : THEME_COLORS.light.themeButton;
+    const themeButtonBlack = theme === 'light' ? THEME_COLORS.light.themeButton : THEME_COLORS.dark.themeButton;
+    const textColorBlack = theme === 'light' ? THEME_COLORS.dark.themeButton : THEME_COLORS.light.themeButton;
+    const textColorWhite = theme === 'light' ? THEME_COLORS.light.themeButton : THEME_COLORS.dark.themeButton;
+    const statusBar = theme === 'light' ? 'dark-content' : 'light-content';
+
     return (
-        <ScreenContainer bgColor={'#1e1f27'}>
-            <StatusBar barStyle={'light-content'} />
+        <ScreenContainer bgColor={bgColor}>
+            <StatusBar barStyle={statusBar} />
             <Avatar source={require('~assets/icons/avatar.png')} />
 
             {editModal.isOpen && (
@@ -51,9 +70,9 @@ export const ProfileScreen: FC<ProfileTabScreenProps> = () => {
                 <SettingsModal setSettingsModalOpen={settingsModal.onClose} settingsModalOpen={settingsModal.isOpen} />
             )}
 
-            <ProfileNameText textColor={'#fff'}>Name Surname</ProfileNameText>
-            <ProfileIDText textColor={'#fff'}>User ID: 123</ProfileIDText>
-            <ProfileSexText textColor={'#fff'}>Female</ProfileSexText>
+            <ProfileNameText textColor={textColor}>Name Surname</ProfileNameText>
+            <ProfileIDText textColor={textColor}>User ID: 123</ProfileIDText>
+            <ProfileSexText textColor={textColor}>Female</ProfileSexText>
 
             {buttons.map(({ onPress, title }) => (
                 <ProfileButtonContainer onPress={onPress} key={title}>
@@ -62,11 +81,11 @@ export const ProfileScreen: FC<ProfileTabScreenProps> = () => {
             ))}
 
             <ButtonsContainer>
-                <ThemeButtonContainer bgColor={'#fff'}>
-                    <ThemeButtonText textColor={'#000'}>White</ThemeButtonText>
+                <ThemeButtonContainer bgColor={themeButtonWhite} onPress={() => toggleAndStore('light')}>
+                    <ThemeButtonText textColor={textColorWhite}>White</ThemeButtonText>
                 </ThemeButtonContainer>
-                <ThemeButtonContainer bgColor={'#383838'}>
-                    <ThemeButtonText textColor={'#fff'}>Black</ThemeButtonText>
+                <ThemeButtonContainer bgColor={themeButtonBlack} onPress={() => toggleAndStore('dark')}>
+                    <ThemeButtonText textColor={textColorBlack}>Black</ThemeButtonText>
                 </ThemeButtonContainer>
             </ButtonsContainer>
 
