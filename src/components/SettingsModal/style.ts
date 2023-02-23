@@ -50,3 +50,7 @@ export const Text = styled.Text<{ textColor: string }>`
     text-transform: uppercase;
     color: ${(props) => props.textColor};
 `;
+
+export const BackDrop = styled.TouchableWithoutFeedback`
+    flex: 1;
+`;
