@@ -3,7 +3,7 @@ import { width } from '~constants/dimensions';
 
 export const ScreenContainer = styled.SafeAreaView<{ bgColor: string }>`
     flex: 1;
-    align-items: center;
+    //align-items: center;
     background-color: ${(props) => props.bgColor};
 `;
 

@@ -8,6 +8,7 @@ import { TicketsScreen } from '~screens/TicketsScreen';
 import { ProfileScreen } from '~screens/ProfileScreen';
 import { ThemeContext } from '~context/ThemeContext';
 import { THEME_COLORS } from '~constants/theme';
+import { TicketsStack } from '~navigation/TicketsStack';
 
 const Tab = createBottomTabNavigator<RootStackParamList>();
 
@@ -43,7 +44,7 @@ export const RootStack = () => {
         >
             <Tab.Screen name={RootStackNavigationName.HOME} component={HomeScreen} />
             <Tab.Screen name={RootStackNavigationName.TOP} component={TopScreen} />
-            <Tab.Screen name={RootStackNavigationName.TICKETS} component={TicketsScreen} />
+            <Tab.Screen name={RootStackNavigationName.TICKETS} component={TicketsStack} />
             <Tab.Screen name={RootStackNavigationName.PROFILE} component={ProfileScreen} />
         </Tab.Navigator>
     );
