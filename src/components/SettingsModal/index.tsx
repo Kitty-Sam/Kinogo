@@ -13,6 +13,8 @@ import {
 import { SettingsModalPropsType } from '~components/SettingsModal/type';
 import { ThemeContext } from '~context/ThemeContext';
 import { THEME_COLORS } from '~constants/theme';
+import { LanguagePicker } from '~components/LanguagePicker';
+import { languages } from '~constants/languages';
 
 export const SettingsModal: FC<SettingsModalPropsType> = ({ settingsModalOpen, setSettingsModalOpen }) => {
     const [isEnabled, setIsEnabled] = useState(false);
@@ -34,6 +36,7 @@ export const SettingsModal: FC<SettingsModalPropsType> = ({ settingsModalOpen, s
                                 x
                             </ModalTitle>
                         </ModalTitleContainer>
+                        <LanguagePicker label={'Select language'} data={languages} />
                         <AdditionalText textColor={textColor}>Notifications</AdditionalText>
                         <SwitchContainer>
                             <Text textColor={textColor}>off</Text>

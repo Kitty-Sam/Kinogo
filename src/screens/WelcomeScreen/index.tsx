@@ -18,10 +18,13 @@ import { useOpen } from '~hooks/useOpen';
 import { ThemeContext } from '~context/ThemeContext';
 import { THEME_COLORS } from '~constants/theme';
 import { studios } from '~constants/studios';
+import { useTranslation } from 'react-i18next';
 
 export const WelcomeScreen: FC<WelcomeTabScreenProps> = () => {
     const signInModal = useOpen(false);
     const signUpModal = useOpen(false);
+
+    const { t: translate } = useTranslation();
 
     const buttons = [
         {
@@ -70,16 +73,16 @@ export const WelcomeScreen: FC<WelcomeTabScreenProps> = () => {
                 <SignInModal setSignInModalOpen={signInModal.onClose} signInModalOpen={signInModal.isOpen} />
             )}
 
-            <Title textColor={textColor}>Great Movies in the best cinema! We care about your comfort.</Title>
+            <Title textColor={textColor}>{translate('welcomeScreen.title')}</Title>
 
             {buttons.map(({ title, onPress, icon, bgColor, color }) => (
                 <Button title={title} onPress={onPress} icon={icon} key={title} bgColor={bgColor} textColor={color} />
             ))}
 
             <TextContainer>
-                <Text textColor={textColor}>Already has an account?</Text>
+                <Text textColor={textColor}>{translate('welcomeScreen.hasAccount')}</Text>
                 <TouchableOpacity onPress={() => signInModal.onOpen()}>
-                    <LinkText textColor={textColor}> Login please.</LinkText>
+                    <LinkText textColor={textColor}>{translate('welcomeScreen.login')}</LinkText>
                 </TouchableOpacity>
             </TextContainer>
 
@@ -89,7 +92,7 @@ export const WelcomeScreen: FC<WelcomeTabScreenProps> = () => {
                 ))}
             </StudiosContainer>
 
-            <VersionText textColor={textColor}>2023 Version 0.0.1</VersionText>
+            <VersionText textColor={textColor}>{translate('welcomeScreen.version')}</VersionText>
         </ScreenContainer>
     );
 };

@@ -4,7 +4,6 @@ import { HomeScreen } from '~screens/HomeScreen';
 import { RootStackNavigationName, RootStackParamList } from '~navigation/RootStack/type';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { TopScreen } from '~screens/TopScreen';
-import { TicketsScreen } from '~screens/TicketsScreen';
 import { ProfileScreen } from '~screens/ProfileScreen';
 import { ThemeContext } from '~context/ThemeContext';
 import { THEME_COLORS } from '~constants/theme';
