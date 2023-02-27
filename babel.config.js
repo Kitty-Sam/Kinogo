@@ -15,6 +15,7 @@ module.exports = {
                     '~hooks': './src/hooks',
                     '~constants': './src/constants',
                     '~assets': './src/assets',
+                    '~translations': './src/translations',
                 },
             },
         ],

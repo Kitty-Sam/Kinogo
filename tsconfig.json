@@ -16,7 +16,8 @@
     "~context/*": ["src/context/*"],
     "~hooks/*": ["src/hooks/*"],
     "~store/*": ["src/store/*"],
-    "~assets/*": ["src/assets/*"]
+    "~assets/*": ["src/assets/*"],
+    "~translations/*": ["src/translations/*"]
     }
   },
   "exclude": [
