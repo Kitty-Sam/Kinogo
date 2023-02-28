@@ -1,8 +1,10 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import filmReducer from './reducers/filmSlice';
+import topFilmReducer from './reducers/topFilmSlice';
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
     films: filmReducer,
+    topFilms: topFilmReducer,
 });
 export const setupStore = () =>
     configureStore({

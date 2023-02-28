@@ -1,5 +1,10 @@
 export interface IFilm {
-    id: string;
+    genre: string[];
+    imageurl: string[];
+    imdbid: string;
+    imdbrating: number;
+    released: number;
+    synopsis: string;
     title: string;
-    isFavorite: boolean;
+    type: string;
 }

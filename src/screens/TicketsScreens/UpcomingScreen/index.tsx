@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StatusBar, Text } from 'react-native';
+import { StatusBar } from 'react-native';
 import { ThemeContext } from '~context/ThemeContext';
 import { THEME_COLORS } from '~constants/theme';
 import { ScreenContainer, Title } from '~screens/TicketsScreens/style';

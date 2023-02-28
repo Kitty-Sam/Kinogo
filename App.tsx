@@ -4,9 +4,18 @@ import { AuthStack } from '~navigation/AuthStack';
 import { NavigationContainer } from '@react-navigation/native';
 import { ThemeContext, THEMES } from '~context/ThemeContext';
 import { useTheme } from '~hooks/useTheme';
+import { useAppDispatch } from '~store/hooks';
+import { fetchFilms, fetchTopFilms } from '~store/sagas/sagasActions';
 
 export const App = () => {
     const [isLogged, setIsLogged] = useState(true);
+
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        // dispatch(fetchFilms());
+        // dispatch(fetchTopFilms());
+    }, []);
 
     const { theme, setTheme, getTheme } = useTheme(THEMES.light);
 

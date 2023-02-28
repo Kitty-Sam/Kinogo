@@ -2,15 +2,17 @@ import { AppRegistry } from 'react-native';
 import { App } from './App';
 import { name as appName } from './app.json';
 import { Provider } from 'react-redux';
-import { setupStore } from '~store/store';
-import i18n from './i18n.config';
+import { persistor, store } from '~store/configureStore';
+import { PersistGate } from 'redux-persist/integration/react';
 
-const store = setupStore();
+import i18n from './i18n.config';
 
 export const ReduxApp = () => {
     return (
         <Provider store={store}>
-            <App />
+            <PersistGate persistor={persistor}>
+                <App />
+            </PersistGate>
         </Provider>
     );
 };
