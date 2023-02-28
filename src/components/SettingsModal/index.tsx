@@ -38,7 +38,7 @@ export const SettingsModal: FC<SettingsModalPropsType> = ({ settingsModalOpen, s
                         </ModalTitleContainer>
                         <LanguagePicker label={'Select language'} data={languages} />
                         <AdditionalText textColor={textColor}>Notifications</AdditionalText>
-                        <SwitchContainer>
+                        <SwitchContainer style={{ zIndex: 200, position: 'absolute', marginTop: 200 }}>
                             <Text textColor={textColor}>off</Text>
                             <Switch
                                 trackColor={{ false: THEME_COLORS.switch.false, true: THEME_COLORS.switch.true }}

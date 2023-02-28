@@ -65,7 +65,7 @@ export const LanguagePicker: FC<LanguagePickerProps> = ({ label, data }) => {
                     <Icon name="chevron-up" onPress={onClose} size={24} color={textColor} />
                 )}
             </ContainerView>
-            <View>{renderDropdown()}</View>
+            <View style={{ position: 'absolute', zIndex: 1000, marginTop: 100 }}>{renderDropdown()}</View>
         </CentredView>
     );
 };

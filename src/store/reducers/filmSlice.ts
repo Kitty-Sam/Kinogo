@@ -21,9 +21,9 @@ export const filmSlice = createSlice({
             state.isLoading = true;
         },
         fetchFilmsSuccess(state, { payload }: PayloadAction<IFilm[]>) {
-            state.isLoading = false;
             state.error = '';
             state.films = payload;
+            state.isLoading = false;
         },
         fetchFilmsError(state, { payload }: PayloadAction<string>) {
             state.isLoading = false;

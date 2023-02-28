@@ -1,6 +1,5 @@
 import styled from 'styled-components/native';
 import { width } from '~constants/dimensions';
-
 export const ScreenContainer = styled.SafeAreaView<{ bgColor: string }>`
     flex: 1;
     background-color: ${(props) => props.bgColor};
@@ -29,9 +28,11 @@ export const CategoryFilmText = styled.Text<{ textColor: string }>`
 
 export const CategoryFilmTextContainer = styled.TouchableOpacity<{ bgColor: string }>`
     border-radius: 5px;
-    margin-top: ${width * 0.05}px;
+    margin: 10px;
+    height: 30px;
     justify-content: center;
     align-items: center;
+    padding: 6px;
     background-color: ${(props) => props.bgColor};
 `;
 
@@ -48,13 +49,11 @@ export const PlayerImage = styled.Image`
     border-radius: 10px;
 `;
 
-export const CategoriesListContainer = styled.View`
-    height: ${width * 0.1}px;
-`;
+export const CategoriesListContainer = styled.View``;
 
 export const FilmContainer = styled.View`
     width: ${width}px;
-    height: ${width * 0.7}px;
+    height: ${width * 0.8}px;
     align-items: center;
 `;
 
@@ -62,4 +61,5 @@ export const FilmImage = styled.Image`
     width: 60%;
     height: 100%;
     border-radius: 10px;
+    object-fit: scale-down;
 `;

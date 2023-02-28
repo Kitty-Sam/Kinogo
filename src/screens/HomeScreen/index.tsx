@@ -1,5 +1,5 @@
 import React, { FC, useContext, useState } from 'react';
-import { FlatList } from 'react-native';
+import { ActivityIndicator, FlatList } from 'react-native';
 import { HomeTabScreenProps } from '~screens/HomeScreen/type';
 import {
     CategoriesListContainer,
@@ -15,44 +15,63 @@ import {
 } from '~screens/HomeScreen/style';
 import { ThemeContext } from '~context/ThemeContext';
 import { THEME_COLORS } from '~constants/theme';
+import { useAppSelector } from '~store/hooks';
+import { IFilm } from '~store/models/IFilm';
 
-const categories = ['Action', 'Comedy', 'Romance', 'Thriller', 'Fantasy'];
-
-const slideList = Array.from({ length: 5 }).map((_, i) => {
-    return {
-        id: i.toString(),
-        image: `https://picsum.photos/1440/2842?random=${i}`,
-    };
-});
+const categories = ['Action', 'Comedy', 'Romance', 'Thriller', 'Fantasy', 'Drama', 'Documentary'];
 
 export const HomeScreen: FC<HomeTabScreenProps> = () => {
-    const [category, setCategory] = useState('');
+    const [category, setCategory] = useState('Action');
     const { theme } = useContext(ThemeContext);
+
+    const { films, isLoading } = useAppSelector((state) => state.films);
+    // console.log('films', films);
 
     const bgColor = theme === 'light' ? THEME_COLORS.light.background : THEME_COLORS.dark.background;
     const textColor = theme === 'light' ? THEME_COLORS.light.text : THEME_COLORS.dark.text;
 
-    const renderItem = ({ item }: { item: { id: string; image: string } }) => {
+    const renderItem = ({ item }: { item: IFilm }) => {
         return (
             <FilmContainer>
-                <FilmImage source={{ uri: item.image }} />
-                <FilmTitleText textColor={textColor}>Film title</FilmTitleText>
+                {isLoading ? (
+                    <ActivityIndicator />
+                ) : (
+                    <FilmImage
+                        source={{
+                            uri: item.imageurl.length ? item.imageurl[0] : 'https://picsum.photos/1440/2842?random=7',
+                        }}
+                    />
+                )}
+                <FilmTitleText textColor={textColor}>{item.title}</FilmTitleText>
             </FilmContainer>
         );
     };
+    // console.log('films', films);
+    // console.log('isLoading', isLoading);
 
     return (
         <ScreenContainer bgColor={bgColor}>
             <ChapterTitleText textColor={textColor}>Coming Soon</ChapterTitleText>
 
             <PlayerContainer>
-                <PlayerImage source={{ uri: 'https://picsum.photos/1440/2842?random=7' }} />
+                {isLoading ? (
+                    <ActivityIndicator />
+                ) : (
+                    <PlayerImage
+                        source={{
+                            uri: films.length ? films[0].imageurl[0] : 'https://picsum.photos/1440/2842?random=7',
+                        }}
+                    />
+                )}
             </PlayerContainer>
 
             <CategoriesListContainer>
                 <FlatList
-                    contentContainerStyle={{ flex: 1, justifyContent: 'space-around' }}
+                    pagingEnabled={true}
                     horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                    decelerationRate={0}
+                    snapToAlignment={'center'}
                     data={categories}
                     renderItem={({ item }) => (
                         <CategoryFilmTextContainer
@@ -68,8 +87,8 @@ export const HomeScreen: FC<HomeTabScreenProps> = () => {
             <ChapterTitleText textColor={textColor}>Now Showing</ChapterTitleText>
 
             <FlatList
-                data={slideList}
-                keyExtractor={(item) => item.id}
+                data={films.filter((el) => el.genre.includes(category))}
+                keyExtractor={(item) => item.imdbid}
                 renderItem={renderItem}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
