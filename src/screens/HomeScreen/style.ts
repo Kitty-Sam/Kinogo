@@ -62,4 +62,6 @@ export const FilmImage = styled.Image`
     height: 100%;
     border-radius: 10px;
     object-fit: scale-down;
+    border-width: 1px;
+    border-color: grey;
 `;

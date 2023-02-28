@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { ThemeContext, THEMES } from '~context/ThemeContext';
 import { useTheme } from '~hooks/useTheme';
 import { useAppDispatch } from '~store/hooks';
-import { fetchingFilms } from '~store/reducers/ActionsCreators';
+import { fetchFilms, fetchTopFilms } from '~store/sagas/sagasActions';
 
 export const App = () => {
     const [isLogged, setIsLogged] = useState(true);
@@ -13,7 +13,8 @@ export const App = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        // dispatch(fetchingFilms());
+        // dispatch(fetchFilms());
+        // dispatch(fetchTopFilms());
     }, []);
 
     const { theme, setTheme, getTheme } = useTheme(THEMES.light);

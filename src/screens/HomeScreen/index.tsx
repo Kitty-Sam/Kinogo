@@ -17,20 +17,31 @@ import { ThemeContext } from '~context/ThemeContext';
 import { THEME_COLORS } from '~constants/theme';
 import { useAppSelector } from '~store/hooks';
 import { IFilm } from '~store/models/IFilm';
-
-const categories = ['Action', 'Comedy', 'Romance', 'Thriller', 'Fantasy', 'Drama', 'Documentary'];
+import { categories } from '~constants/categories';
+import { shallowEqual } from 'react-redux';
 
 export const HomeScreen: FC<HomeTabScreenProps> = () => {
     const [category, setCategory] = useState('Action');
-    const { theme } = useContext(ThemeContext);
 
-    const { films, isLoading } = useAppSelector((state) => state.films);
-    // console.log('films', films);
+    const { films, isLoading } = useAppSelector((state) => state.films, shallowEqual);
+    const { theme } = useContext(ThemeContext);
+    console.log('films', films.length);
 
     const bgColor = theme === 'light' ? THEME_COLORS.light.background : THEME_COLORS.dark.background;
     const textColor = theme === 'light' ? THEME_COLORS.light.text : THEME_COLORS.dark.text;
 
-    const renderItem = ({ item }: { item: IFilm }) => {
+    const onCategoryPress = (item: string) => () => setCategory(item);
+
+    const renderCategoryItem = ({ item }: { item: string }) => (
+        <CategoryFilmTextContainer
+            bgColor={category === item ? THEME_COLORS.button : bgColor}
+            onPress={onCategoryPress(item)}
+        >
+            <CategoryFilmText textColor={textColor}>{item}</CategoryFilmText>
+        </CategoryFilmTextContainer>
+    );
+
+    const renderFilmItem = ({ item }: { item: IFilm }) => {
         return (
             <FilmContainer>
                 {isLoading ? (
@@ -46,8 +57,6 @@ export const HomeScreen: FC<HomeTabScreenProps> = () => {
             </FilmContainer>
         );
     };
-    // console.log('films', films);
-    // console.log('isLoading', isLoading);
 
     return (
         <ScreenContainer bgColor={bgColor}>
@@ -67,29 +76,23 @@ export const HomeScreen: FC<HomeTabScreenProps> = () => {
 
             <CategoriesListContainer>
                 <FlatList
+                    initialNumToRender={10}
                     pagingEnabled={true}
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
-                    decelerationRate={0}
                     snapToAlignment={'center'}
                     data={categories}
-                    renderItem={({ item }) => (
-                        <CategoryFilmTextContainer
-                            bgColor={category === item ? THEME_COLORS.button : bgColor}
-                            onPress={() => setCategory(item)}
-                        >
-                            <CategoryFilmText textColor={textColor}>{item}</CategoryFilmText>
-                        </CategoryFilmTextContainer>
-                    )}
+                    renderItem={renderCategoryItem}
                 />
             </CategoriesListContainer>
 
             <ChapterTitleText textColor={textColor}>Now Showing</ChapterTitleText>
 
             <FlatList
+                initialNumToRender={10}
                 data={films.filter((el) => el.genre.includes(category))}
                 keyExtractor={(item) => item.imdbid}
-                renderItem={renderItem}
+                renderItem={renderFilmItem}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 pagingEnabled={true}
