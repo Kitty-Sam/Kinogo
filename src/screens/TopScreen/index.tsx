@@ -58,8 +58,8 @@ export const TopScreen: FC<TopTabScreenProps> = () => {
                     <Icon name="star" color={THEME_COLORS.button} style={{ marginLeft: 4 }} />
                 </RowContainer>
                 <ButtonContainer>
-                    <AdditionalText textColor={textColor}>more</AdditionalText>
-                    <Icon name="arrow-forward" color={textColor} />
+                    <AdditionalText textColor={'#fff'}>More</AdditionalText>
+                    <Icon name="arrow-forward" color={'#fff'} />
                 </ButtonContainer>
             </RightBlockContainer>
         </TopFilmContainer>

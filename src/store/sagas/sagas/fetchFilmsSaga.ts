@@ -2,6 +2,7 @@ import { call, put } from 'redux-saga/effects';
 import { callAPI } from '~src/api/api';
 import { fetchFilms, fetchFilmsError, fetchFilmsSuccess } from '~store/reducers/filmSlice';
 import { IFilm } from '~store/models/IFilm';
+import Config from 'react-native-config';
 
 export function* fetchFilmsWorker() {
     yield put(fetchFilms());
@@ -21,7 +22,7 @@ export function* fetchFilmsWorker() {
                         sort: 'latest',
                     },
                     headers: {
-                        'X-RapidAPI-Key': 'd5752dff17msh6c77d8672258d0fp155180jsn28f162bf846b',
+                        'X-RapidAPI-Key': Config.API_KEY,
                         'X-RapidAPI-Host': 'ott-details.p.rapidapi.com',
                     },
                 },
