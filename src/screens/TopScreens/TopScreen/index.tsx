@@ -1,6 +1,6 @@
 import React, { FC, useContext } from 'react';
 import { ActivityIndicator, FlatList } from 'react-native';
-import { TopTabScreenProps } from '~screens/TopScreen/type';
+
 import {
     AdditionalText,
     ButtonContainer,
@@ -11,7 +11,7 @@ import {
     TextInputSearch,
     TitleText,
     TopFilmContainer,
-} from '~screens/TopScreen/style';
+} from '~screens/TopScreens/TopScreen/style';
 import { ThemeContext } from '~context/ThemeContext';
 import { THEME_COLORS } from '~constants/theme';
 import { useAppSelector } from '~store/hooks';
@@ -19,8 +19,9 @@ import { ITopFilm } from '~store/models/ITopFilm';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useOpen } from '~hooks/useOpen';
 import { FiltersModal } from '~components/FiltersModal';
+import { RatingStackNavigationName, TopScreenProps } from '~navigation/RatingsStack/type';
 
-export const TopScreen: FC<TopTabScreenProps> = () => {
+export const TopScreen: FC<TopScreenProps> = ({ navigation }) => {
     const { theme } = useContext(ThemeContext);
 
     const filters = useOpen(false);
@@ -57,7 +58,9 @@ export const TopScreen: FC<TopTabScreenProps> = () => {
                     <TitleText textColor={textColor}>{item.rating}</TitleText>
                     <Icon name="star" color={THEME_COLORS.button} style={{ marginLeft: 4 }} />
                 </RowContainer>
-                <ButtonContainer>
+                <ButtonContainer
+                    onPress={() => navigation.navigate(RatingStackNavigationName.FILM_RATING, { film: item })}
+                >
                     <AdditionalText textColor={'#fff'}>More</AdditionalText>
                     <Icon name="arrow-forward" color={'#fff'} />
                 </ButtonContainer>

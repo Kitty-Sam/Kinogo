@@ -3,11 +3,12 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { HomeScreen } from '~screens/HomeScreen';
 import { RootStackNavigationName, RootStackParamList } from '~navigation/RootStack/type';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { TopScreen } from '~screens/TopScreen';
+import { TopScreen } from '~screens/TopScreens/TopScreen';
 import { ProfileScreen } from '~screens/ProfileScreen';
 import { ThemeContext } from '~context/ThemeContext';
 import { THEME_COLORS } from '~constants/theme';
 import { TicketsStack } from '~navigation/TicketsStack';
+import { RatingStack } from '~navigation/RatingsStack';
 
 const Tab = createBottomTabNavigator<RootStackParamList>();
 
@@ -42,7 +43,7 @@ export const RootStack = () => {
             })}
         >
             <Tab.Screen name={RootStackNavigationName.HOME} component={HomeScreen} />
-            <Tab.Screen name={RootStackNavigationName.TOP} component={TopScreen} />
+            <Tab.Screen name={RootStackNavigationName.TOP} component={RatingStack} />
             <Tab.Screen name={RootStackNavigationName.TICKETS} component={TicketsStack} />
             <Tab.Screen name={RootStackNavigationName.PROFILE} component={ProfileScreen} />
         </Tab.Navigator>
