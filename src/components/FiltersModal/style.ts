@@ -14,7 +14,7 @@ export const ModalView = styled.View<{ bgColor: string }>`
     background-color: ${(props) => props.bgColor};
     border-radius: 10px;
     width: 75%;
-    height: ${width * 0.5}px;
+    height: ${width * 0.7}px;
 `;
 
 export const ModalTitle = styled.Text<{ textColor: string }>`
