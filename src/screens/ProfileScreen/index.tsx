@@ -1,4 +1,4 @@
-import React, { FC, useContext } from 'react';
+import React, { FC, useCallback, useContext } from 'react';
 import { ProfileTabScreenProps } from '~screens/ProfileScreen/type';
 import {
     Avatar,
@@ -15,12 +15,13 @@ import {
 } from '~screens/ProfileScreen/style';
 import { EditProfileModal } from '~components/EditProfileModal';
 import { SettingsModal } from '~components/SettingsModal';
-import { StatusBar } from 'react-native';
+import { Alert, Linking, StatusBar } from 'react-native';
 import { useOpen } from '~hooks/useOpen';
 import { ThemeContext } from '~context/ThemeContext';
 import { THEME_COLORS } from '~constants/theme';
 import { useTheme } from '~hooks/useTheme';
 
+const url = 'https://www.modsen-software.com/';
 export const ProfileScreen: FC<ProfileTabScreenProps> = () => {
     const editModal = useOpen(false);
     const settingsModal = useOpen(false);
@@ -46,7 +47,17 @@ export const ProfileScreen: FC<ProfileTabScreenProps> = () => {
                 settingsModal.onOpen();
             },
         },
-        { title: 'Private policy', onPress: () => {} },
+        {
+            title: 'Private policy',
+            onPress: useCallback(async () => {
+                const supported = await Linking.canOpenURL(url);
+                if (supported) {
+                    await Linking.openURL(url);
+                } else {
+                    Alert.alert(`Don't know how to open this URL: ${url}`);
+                }
+            }, [url]),
+        },
         { title: 'Log out', onPress: () => {} },
     ];
 
