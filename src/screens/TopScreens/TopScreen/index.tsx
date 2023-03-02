@@ -1,5 +1,5 @@
-import React, { FC, useContext } from 'react';
-import { ActivityIndicator, FlatList } from 'react-native';
+import React, { FC, memo, useCallback, useContext } from 'react';
+import { ActivityIndicator, FlatList, View } from 'react-native';
 
 import {
     AdditionalText,
@@ -31,41 +31,44 @@ export const TopScreen: FC<TopScreenProps> = ({ navigation }) => {
     const textColor = theme === 'light' ? THEME_COLORS.light.text : THEME_COLORS.dark.text;
     const bgColor = theme === 'light' ? THEME_COLORS.light.background : THEME_COLORS.dark.background;
 
-    const renderTopFilmItem = ({ item, index }: { item: ITopFilm; index: number }) => (
-        <TopFilmContainer key={item.imdbid}>
-            <FilmImage source={{ uri: item.image }} />
-            <RightBlockContainer>
-                <TitleText textColor={textColor}>{`${index + 1}. ${item.title} (${item.year})`}</TitleText>
-                <RowContainer>
-                    <AdditionalText textColor={textColor}>Genre:</AdditionalText>
-                    {item.genre.map((el, index) => (
-                        <AdditionalText key={index} textColor={textColor}>
-                            {el}
-                        </AdditionalText>
-                    ))}
-                </RowContainer>
+    const renderTopFilmItem = useCallback(
+        ({ item, index }: { item: ITopFilm; index: number }) => (
+            <TopFilmContainer key={item.imdbid}>
+                <FilmImage source={{ uri: item.image }} />
+                <RightBlockContainer>
+                    <TitleText textColor={textColor}>{`${index + 1}. ${item.title} (${item.year})`}</TitleText>
+                    <RowContainer>
+                        <AdditionalText textColor={textColor}>Genre:</AdditionalText>
+                        {item.genre.map((el, index) => (
+                            <AdditionalText key={index} textColor={textColor}>
+                                {el}
+                            </AdditionalText>
+                        ))}
+                    </RowContainer>
 
-                <RowContainer>
-                    <AdditionalText textColor={textColor}>Authors:</AdditionalText>
-                    {item.director.map((el, index) => (
-                        <AdditionalText key={index} textColor={textColor}>
-                            {el}
-                        </AdditionalText>
-                    ))}
-                </RowContainer>
+                    <RowContainer>
+                        <AdditionalText textColor={textColor}>Authors:</AdditionalText>
+                        {item.director.map((el, index) => (
+                            <AdditionalText key={index} textColor={textColor}>
+                                {el}
+                            </AdditionalText>
+                        ))}
+                    </RowContainer>
 
-                <RowContainer>
-                    <TitleText textColor={textColor}>{item.rating}</TitleText>
-                    <Icon name="star" color={THEME_COLORS.button} style={{ marginLeft: 4 }} />
-                </RowContainer>
-                <ButtonContainer
-                    onPress={() => navigation.navigate(RatingStackNavigationName.FILM_RATING, { film: item })}
-                >
-                    <AdditionalText textColor={'#fff'}>More</AdditionalText>
-                    <Icon name="arrow-forward" color={'#fff'} />
-                </ButtonContainer>
-            </RightBlockContainer>
-        </TopFilmContainer>
+                    <RowContainer>
+                        <TitleText textColor={textColor}>{item.rating}</TitleText>
+                        <Icon name="star" color={THEME_COLORS.button} style={{ marginLeft: 4 }} />
+                    </RowContainer>
+                    <ButtonContainer
+                        onPress={() => navigation.navigate(RatingStackNavigationName.FILM_RATING, { film: item })}
+                    >
+                        <AdditionalText textColor={'#fff'}>More</AdditionalText>
+                        <Icon name="arrow-forward" color={'#fff'} />
+                    </ButtonContainer>
+                </RightBlockContainer>
+            </TopFilmContainer>
+        ),
+        [],
     );
 
     return (
@@ -92,6 +95,7 @@ export const TopScreen: FC<TopScreenProps> = ({ navigation }) => {
                     keyExtractor={(item) => item.imdbid}
                     renderItem={renderTopFilmItem}
                     pagingEnabled={true}
+                    ItemSeparatorComponent={() => <View />}
                 />
             )}
 
