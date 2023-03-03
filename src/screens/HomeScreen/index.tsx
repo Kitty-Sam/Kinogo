@@ -1,4 +1,4 @@
-import React, { FC, useContext, useState } from 'react';
+import React, { FC, useCallback, useContext, useState } from 'react';
 import { ActivityIndicator, FlatList } from 'react-native';
 import { HomeTabScreenProps } from '~screens/HomeScreen/type';
 import {
@@ -6,9 +6,6 @@ import {
     CategoryFilmText,
     CategoryFilmTextContainer,
     ChapterTitleText,
-    FilmContainer,
-    FilmImage,
-    FilmTitleText,
     PlayerContainer,
     PlayerImage,
     ScreenContainer,
@@ -16,16 +13,19 @@ import {
 import { ThemeContext } from '~context/ThemeContext';
 import { THEME_COLORS } from '~constants/theme';
 import { useAppSelector } from '~store/hooks';
-import { IFilm } from '~store/models/IFilm';
+
 import { categories } from '~constants/categories';
 import { shallowEqual } from 'react-redux';
 
+import Animated from 'react-native-reanimated';
+import { CARD_LEN, FilmCarouselItem, SPACING } from '~components/FilmCarouselItem';
+
 export const HomeScreen: FC<HomeTabScreenProps> = () => {
     const [category, setCategory] = useState('Action');
+    const [scrollX, setScrollX] = useState(0);
 
     const { films, isLoading } = useAppSelector((state) => state.films, shallowEqual);
     const { theme } = useContext(ThemeContext);
-    console.log('films', films.length);
 
     const bgColor = theme === 'light' ? THEME_COLORS.light.background : THEME_COLORS.dark.background;
     const textColor = theme === 'light' ? THEME_COLORS.light.text : THEME_COLORS.dark.text;
@@ -40,23 +40,6 @@ export const HomeScreen: FC<HomeTabScreenProps> = () => {
             <CategoryFilmText textColor={textColor}>{item}</CategoryFilmText>
         </CategoryFilmTextContainer>
     );
-
-    const renderFilmItem = ({ item }: { item: IFilm }) => {
-        return (
-            <FilmContainer>
-                {isLoading ? (
-                    <ActivityIndicator />
-                ) : (
-                    <FilmImage
-                        source={{
-                            uri: item.imageurl.length ? item.imageurl[0] : 'https://picsum.photos/1440/2842?random=7',
-                        }}
-                    />
-                )}
-                <FilmTitleText textColor={textColor}>{item.title}</FilmTitleText>
-            </FilmContainer>
-        );
-    };
 
     return (
         <ScreenContainer bgColor={bgColor}>
@@ -88,15 +71,25 @@ export const HomeScreen: FC<HomeTabScreenProps> = () => {
 
             <ChapterTitleText textColor={textColor}>Now Showing</ChapterTitleText>
 
-            <FlatList
-                initialNumToRender={10}
-                data={films.filter((el) => el.genre.includes(category))}
-                keyExtractor={(item) => item.imdbid}
-                renderItem={renderFilmItem}
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                pagingEnabled={true}
-            />
+            <Animated.View>
+                <FlatList
+                    initialNumToRender={10}
+                    snapToAlignment="center"
+                    disableScrollViewPanResponder={true}
+                    disableIntervalMomentum={true}
+                    scrollEventThrottle={16}
+                    showsHorizontalScrollIndicator={false}
+                    decelerationRate={0.8}
+                    snapToInterval={CARD_LEN + SPACING * 1.5}
+                    data={films.filter((el) => el.genre.includes(category))}
+                    renderItem={({ item, index }) => <FilmCarouselItem index={index} item={item} scrollX={scrollX} />}
+                    horizontal={true}
+                    keyExtractor={(item) => item.imdbid}
+                    onScroll={(event) => {
+                        setScrollX(event.nativeEvent.contentOffset.x);
+                    }}
+                />
+            </Animated.View>
         </ScreenContainer>
     );
 };

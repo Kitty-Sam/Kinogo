@@ -5,12 +5,12 @@ import { THEME_COLORS } from '~constants/theme';
 import { FiltersModalPropsType } from '~components/FiltersModal/type';
 import {
     AdditionalText,
-    BackDrop,
     CentredView,
     ModalTitle,
     ModalTitleContainer,
     ModalView,
 } from '~components/FiltersModal/style';
+import { RangeSlider } from '~components/RangeSlider';
 
 export const FiltersModal: FC<FiltersModalPropsType> = ({ filtersModalOpen, setFiltersModalOpen }) => {
     const { theme } = useContext(ThemeContext);
@@ -21,21 +21,24 @@ export const FiltersModal: FC<FiltersModalPropsType> = ({ filtersModalOpen, setF
 
     return (
         <Modal animationType="slide" transparent={true} visible={filtersModalOpen}>
-            <BackDrop onPress={closeModal}>
-                <CentredView>
-                    <ModalView bgColor={bgColor}>
-                        <ModalTitleContainer>
-                            <ModalTitle textColor={textColor}>Filters</ModalTitle>
-                            <ModalTitle textColor={textColor} onPress={closeModal}>
-                                x
-                            </ModalTitle>
-                        </ModalTitleContainer>
+            <CentredView>
+                <ModalView bgColor={bgColor}>
+                    <ModalTitleContainer>
+                        <ModalTitle textColor={textColor}>Filters</ModalTitle>
+                        <ModalTitle textColor={textColor} onPress={closeModal}>
+                            x
+                        </ModalTitle>
+                    </ModalTitleContainer>
 
-                        <AdditionalText textColor={textColor}>Year</AdditionalText>
-                        <AdditionalText textColor={textColor}>Rating</AdditionalText>
-                    </ModalView>
-                </CentredView>
-            </BackDrop>
+                    <AdditionalText textColor={textColor}>Year</AdditionalText>
+
+                    <RangeSlider from={1996} to={2023} />
+
+                    <AdditionalText textColor={textColor}>Rating</AdditionalText>
+
+                    <RangeSlider from={6} to={9} />
+                </ModalView>
+            </CentredView>
         </Modal>
     );
 };
