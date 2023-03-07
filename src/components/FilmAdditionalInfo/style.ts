@@ -12,6 +12,7 @@ export const RatingContainer = styled.View`
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    margin-top: 10px;
 `;
 
 export const Container = styled.View`
@@ -23,7 +24,7 @@ export const FilmTextContainer = styled.View`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 0 16px;
+    margin: 15px 16px;
 `;
 
 export const RowContainer = styled.View`

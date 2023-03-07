@@ -2,7 +2,7 @@ import React, { FC, useCallback, useState } from 'react';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { THEME_COLORS } from '~constants/theme';
-import { Alert } from 'react-native';
+import { Alert, Text } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import { getYoutubeIdFromURL } from '~src/helpers/getYoutubeIdFromURL';
 import { width } from '~constants/dimensions';
