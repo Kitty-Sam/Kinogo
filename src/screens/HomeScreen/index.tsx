@@ -13,18 +13,18 @@ import { THEME_COLORS } from '~constants/theme';
 import { useAppSelector } from '~store/hooks';
 
 import { categories } from '~constants/categories';
-import { shallowEqual } from 'react-redux';
 
 import Animated from 'react-native-reanimated';
 import { CARD_LEN, FilmCarouselItem, SPACING } from '~components/FilmCarouselItem';
 import { poster } from '~constants/posters';
 import { useColor } from '~hooks/useColor';
+import { getFilms } from '~store/selectors/getFilms';
 
 export const HomeScreen: FC<HomeTabScreenProps> = () => {
     const [category, setCategory] = useState('Action');
     const [scrollX, setScrollX] = useState(0);
 
-    const { films, isLoading } = useAppSelector((state) => state.films, shallowEqual);
+    const { films, isLoading } = useAppSelector(getFilms);
     const { bgColor, textColor } = useColor();
 
     const onCategoryPress = (item: string) => () => setCategory(item);

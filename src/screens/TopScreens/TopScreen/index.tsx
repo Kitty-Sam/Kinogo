@@ -21,13 +21,14 @@ import { useOpen } from '~hooks/useOpen';
 import { FiltersModal } from '~components/FiltersModal';
 import { RatingStackNavigationName, TopScreenProps } from '~navigation/RatingsStack/type';
 import { useColor } from '~hooks/useColor';
+import { getTopFilms } from '~store/selectors/getTopFilms';
 
 export const TopScreen: FC<TopScreenProps> = ({ navigation }) => {
     const { bgColor, textColor } = useColor();
 
     const filters = useOpen(false);
 
-    const { topFilms, isLoading } = useAppSelector((state) => state.topFilms);
+    const { topFilms, isLoading, filteredTopFilms } = useAppSelector(getTopFilms);
 
     const renderTopFilmItem = ({ item, index }: { item: ITopFilm; index: number }) => (
         <TopFilmContainer key={item.imdbid}>
@@ -87,7 +88,7 @@ export const TopScreen: FC<TopScreenProps> = ({ navigation }) => {
             ) : (
                 <FlatList
                     style={{ flex: 1 }}
-                    data={topFilms}
+                    data={filteredTopFilms.length ? filteredTopFilms : topFilms}
                     keyExtractor={(item) => item.imdbid}
                     renderItem={renderTopFilmItem}
                     pagingEnabled={true}

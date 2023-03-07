@@ -3,7 +3,6 @@ import { callAPI } from '~src/api/api';
 import { fetchFilms, fetchFilmsError, fetchFilmsSuccess } from '~store/reducers/filmSlice';
 import { IFilm } from '~store/models/IFilm';
 import { API_URL, config } from '~src/api/defaultRequest';
-import Config from 'react-native-config';
 
 export function* fetchFilmsWorker() {
     yield put(fetchFilms());

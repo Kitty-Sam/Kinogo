@@ -7,6 +7,9 @@ import { Rail } from '~components/RangeSlider/AdditionalComponents/Rail';
 import { LabelsContainer, RangeText, RootContainer } from '~components/RangeSlider/style';
 import { RangeSliderProps } from '~components/RangeSlider/type';
 import { useColor } from '~hooks/useColor';
+import { width } from '~constants/dimensions';
+
+export const sliderWidth = width * 0.5;
 
 export const RangeSlider: FC<RangeSliderProps> = ({ from, to, step }) => {
     const [low, setLow] = useState(from);
@@ -34,7 +37,7 @@ export const RangeSlider: FC<RangeSliderProps> = ({ from, to, step }) => {
             </LabelsContainer>
             <RangeSliderRN
                 step={step}
-                style={{ width: '80%' }}
+                style={{ width: sliderWidth }}
                 min={from}
                 max={to}
                 floatingLabel
