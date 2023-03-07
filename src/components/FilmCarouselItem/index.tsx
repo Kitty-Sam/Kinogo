@@ -1,12 +1,10 @@
 import { width } from '~constants/dimensions';
 import { View } from 'react-native';
-import React, { memo, useContext } from 'react';
+import React, { memo } from 'react';
 import Animated, { Extrapolation, interpolate, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
-
-import { THEME_COLORS } from '~constants/theme';
-import { ThemeContext } from '~context/ThemeContext';
 import { FilmCarouselItemProps } from '~components/FilmCarouselItem/type';
 import { FilmTitleText, ImageContainer, styles } from '~components/FilmCarouselItem/style';
+import { useColor } from '~hooks/useColor';
 
 const WIDTH = width;
 export const CARD_LEN = WIDTH * 0.6;
@@ -15,9 +13,7 @@ const SIDE_CARD_LEN = (WIDTH * 0.04) / 2;
 
 export const FilmCarouselItem = memo(({ index, scrollX, item }: FilmCarouselItemProps) => {
     const size = useSharedValue(0.8);
-
-    const { theme } = useContext(ThemeContext);
-    const textColor = theme === 'light' ? THEME_COLORS.light.text : THEME_COLORS.dark.text;
+    const { textColor } = useColor();
 
     const inputRange = [(index - 1) * CARD_LEN, index * CARD_LEN, (index + 1) * CARD_LEN];
     size.value = interpolate(scrollX, inputRange, [0.8, 1, 0.8], Extrapolation.CLAMP);

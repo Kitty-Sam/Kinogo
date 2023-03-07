@@ -1,8 +1,7 @@
-import React, { FC, useCallback, useContext, useState } from 'react';
-import { ActivityIndicator, FlatList } from 'react-native';
+import React, { FC, useState } from 'react';
+import { ActivityIndicator, FlatList, View } from 'react-native';
 import { HomeTabScreenProps } from '~screens/HomeScreen/type';
 import {
-    CategoriesListContainer,
     CategoryFilmText,
     CategoryFilmTextContainer,
     ChapterTitleText,
@@ -10,7 +9,6 @@ import {
     PlayerImage,
     ScreenContainer,
 } from '~screens/HomeScreen/style';
-import { ThemeContext } from '~context/ThemeContext';
 import { THEME_COLORS } from '~constants/theme';
 import { useAppSelector } from '~store/hooks';
 
@@ -19,16 +17,15 @@ import { shallowEqual } from 'react-redux';
 
 import Animated from 'react-native-reanimated';
 import { CARD_LEN, FilmCarouselItem, SPACING } from '~components/FilmCarouselItem';
+import { poster } from '~constants/posters';
+import { useColor } from '~hooks/useColor';
 
 export const HomeScreen: FC<HomeTabScreenProps> = () => {
     const [category, setCategory] = useState('Action');
     const [scrollX, setScrollX] = useState(0);
 
     const { films, isLoading } = useAppSelector((state) => state.films, shallowEqual);
-    const { theme } = useContext(ThemeContext);
-
-    const bgColor = theme === 'light' ? THEME_COLORS.light.background : THEME_COLORS.dark.background;
-    const textColor = theme === 'light' ? THEME_COLORS.light.text : THEME_COLORS.dark.text;
+    const { bgColor, textColor } = useColor();
 
     const onCategoryPress = (item: string) => () => setCategory(item);
 
@@ -51,13 +48,13 @@ export const HomeScreen: FC<HomeTabScreenProps> = () => {
                 ) : (
                     <PlayerImage
                         source={{
-                            uri: films.length ? films[0].imageurl[0] : 'https://picsum.photos/1440/2842?random=7',
+                            uri: films.length ? films[0].imageurl[0] : poster,
                         }}
                     />
                 )}
             </PlayerContainer>
 
-            <CategoriesListContainer>
+            <View>
                 <FlatList
                     initialNumToRender={10}
                     pagingEnabled={true}
@@ -67,7 +64,7 @@ export const HomeScreen: FC<HomeTabScreenProps> = () => {
                     data={categories}
                     renderItem={renderCategoryItem}
                 />
-            </CategoriesListContainer>
+            </View>
 
             <ChapterTitleText textColor={textColor}>Now Showing</ChapterTitleText>
 

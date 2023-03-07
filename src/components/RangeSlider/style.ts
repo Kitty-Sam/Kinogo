@@ -12,7 +12,7 @@ export const LabelsContainer = styled.View`
     margin-bottom: 10px;
 `;
 
-export const RangeText = styled.Text`
+export const RangeText = styled.Text<{ textColor: string }>`
     font-size: 14px;
-    color: #fff;
+    color: ${(props) => props.textColor};
 `;

@@ -1,4 +1,4 @@
-import React, { FC, useContext, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Modal, Switch } from 'react-native';
 import {
     AdditionalText,
@@ -11,17 +11,17 @@ import {
     Text,
 } from '~components/SettingsModal/style';
 import { SettingsModalPropsType } from '~components/SettingsModal/type';
-import { ThemeContext } from '~context/ThemeContext';
 import { THEME_COLORS } from '~constants/theme';
 import { LanguagePicker } from '~components/LanguagePicker';
 import { languages } from '~constants/languages';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { useColor } from '~hooks/useColor';
 
 export const SettingsModal: FC<SettingsModalPropsType> = ({ settingsModalOpen, setSettingsModalOpen }) => {
     const [isEnabled, setIsEnabled] = useState(false);
 
-    const { theme } = useContext(ThemeContext);
-    const textColor = theme === 'light' ? THEME_COLORS.light.text : THEME_COLORS.dark.text;
-    const bgColor = theme === 'light' ? THEME_COLORS.light.themeButton : THEME_COLORS.dark.themeButton;
+    const { textColor, bgColorModal } = useColor();
+
     const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
     const closeModal = () => setSettingsModalOpen();
 
@@ -29,12 +29,10 @@ export const SettingsModal: FC<SettingsModalPropsType> = ({ settingsModalOpen, s
         <Modal animationType="slide" transparent={true} visible={settingsModalOpen}>
             <BackDrop onPress={closeModal}>
                 <CentredView>
-                    <ModalView bgColor={bgColor}>
+                    <ModalView bgColor={bgColorModal}>
                         <ModalTitleContainer>
                             <ModalTitle textColor={textColor}>Settings</ModalTitle>
-                            <ModalTitle textColor={textColor} onPress={closeModal}>
-                                x
-                            </ModalTitle>
+                            <Icon name={'close-circle-sharp'} onPress={closeModal} color={textColor} size={24} />
                         </ModalTitleContainer>
                         <LanguagePicker label={'Select language'} data={languages} />
                         <AdditionalText textColor={textColor}>Notifications</AdditionalText>

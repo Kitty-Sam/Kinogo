@@ -55,11 +55,12 @@ export const ButtonContainer = styled.TouchableOpacity`
     border-radius: 5px;
 `;
 
-export const TextInputSearch = styled.TextInput`
+export const TextInputSearch = styled.TextInput<{ textColor: string }>`
     border-color: grey;
     border-width: 1px;
-    width: 80%;
-    padding: 10px;
+    flex: 2;
+    margin: 4px 18px 20px 18px;
+    padding: 12px;
     border-radius: 20px;
-    margin-bottom: 16px;
+    color: ${(props) => props.textColor};
 `;

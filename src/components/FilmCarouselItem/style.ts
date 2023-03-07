@@ -4,9 +4,11 @@ import { StyleSheet } from 'react-native';
 import { CARD_LEN } from '~components/FilmCarouselItem/index';
 
 export const FilmTitleText = styled.Text<{ textColor: string }>`
-    padding: ${width * 0.05}px ${width * 0.05}px;
+    padding: 10px 10px;
     font-size: 16px;
     font-weight: 500;
+    width: ${CARD_LEN}px;
+    text-align: center;
     color: ${(props) => props.textColor};
 `;
 

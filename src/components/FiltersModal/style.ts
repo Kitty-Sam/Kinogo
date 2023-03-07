@@ -1,36 +1,33 @@
 import styled from 'styled-components/native';
-import { width } from '~constants/dimensions';
 
 export const CentredView = styled.View`
     flex: 1;
     justify-content: center;
     align-items: center;
-    margin-top: 10%;
     background-color: rgba(#0, 0.5);
 `;
 
 export const ModalView = styled.View<{ bgColor: string }>`
-    margin: 20%;
     background-color: ${(props) => props.bgColor};
     border-radius: 10px;
     width: 75%;
-    height: ${width * 0.7}px;
+    height: 40%;
 `;
 
 export const ModalTitle = styled.Text<{ textColor: string }>`
     font-size: 20px;
     font-weight: 500;
-    padding-top: 10%;
     color: ${(props) => props.textColor};
 `;
 
 export const ModalTitleContainer = styled.View`
     flex-direction: row;
     justify-content: space-around;
+    margin: 24px 0;
 `;
 
 export const AdditionalText = styled.Text<{ textColor: string }>`
-    padding: 7% 0 0 10%;
+    padding: 8px 0 0 16px;
     font-size: 16px;
     font-weight: 500;
     text-transform: uppercase;
@@ -38,7 +35,7 @@ export const AdditionalText = styled.Text<{ textColor: string }>`
 `;
 
 export const Text = styled.Text<{ textColor: string }>`
-    padding: 0 3%;
+    padding: 0 10px;
     font-size: 11px;
     font-weight: 500;
     text-transform: uppercase;

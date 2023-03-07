@@ -8,7 +8,7 @@ import { useAppDispatch } from '~store/hooks';
 import { fetchFilms, fetchTopFilms } from '~store/sagas/sagasActions';
 
 export const App = () => {
-    const [isLogged, setIsLogged] = useState(true);
+    const [isLogged, setIsLogged] = useState(false);
 
     const dispatch = useAppDispatch();
 
@@ -17,7 +17,7 @@ export const App = () => {
         // dispatch(fetchTopFilms());
     }, []);
 
-    const { theme, setTheme, getTheme } = useTheme(THEMES.light);
+    const { theme, setTheme, getTheme } = useTheme(THEMES.LIGHT);
 
     useEffect(() => {
         getTheme();

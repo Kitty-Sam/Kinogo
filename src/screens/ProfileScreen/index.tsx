@@ -15,23 +15,33 @@ import {
 } from '~screens/ProfileScreen/style';
 import { EditProfileModal } from '~components/EditProfileModal';
 import { SettingsModal } from '~components/SettingsModal';
-import { Alert, Linking, StatusBar } from 'react-native';
+import { Alert, Linking } from 'react-native';
 import { useOpen } from '~hooks/useOpen';
-import { ThemeContext } from '~context/ThemeContext';
-import { THEME_COLORS } from '~constants/theme';
+import { ThemeContext, THEMES } from '~context/ThemeContext';
 import { useTheme } from '~hooks/useTheme';
+import { useColor } from '~hooks/useColor';
 
 const url = 'https://www.modsen-software.com/';
 export const ProfileScreen: FC<ProfileTabScreenProps> = () => {
     const editModal = useOpen(false);
     const settingsModal = useOpen(false);
 
-    const { theme, setTheme } = useContext(ThemeContext);
+    const { setTheme } = useContext(ThemeContext);
+    const { theme, themeButtonWhite, themeButtonBlack, textColorWhite, bgColor, textColorBlack, textColor, statusBar } =
+        useColor();
     const { storeTheme } = useTheme(theme);
 
     const toggleAndStore = (value: string) => {
         setTheme(value);
-        storeTheme(theme === 'light' ? 'dark' : 'light');
+        storeTheme(theme === THEMES.LIGHT ? THEMES.DARK : THEMES.LIGHT);
+    };
+
+    const turnOnLightTheme = () => {
+        toggleAndStore(THEMES.LIGHT);
+    };
+
+    const turnOnDarkTheme = () => {
+        toggleAndStore(THEMES.DARK);
     };
 
     const buttons = [
@@ -61,17 +71,9 @@ export const ProfileScreen: FC<ProfileTabScreenProps> = () => {
         { title: 'Log out', onPress: () => {} },
     ];
 
-    const bgColor = theme === 'light' ? THEME_COLORS.light.background : THEME_COLORS.dark.background;
-    const textColor = theme === 'light' ? THEME_COLORS.light.text : THEME_COLORS.dark.text;
-    const themeButtonWhite = theme === 'light' ? THEME_COLORS.dark.themeButton : THEME_COLORS.light.themeButton;
-    const themeButtonBlack = theme === 'light' ? THEME_COLORS.light.themeButton : THEME_COLORS.dark.themeButton;
-    const textColorBlack = theme === 'light' ? THEME_COLORS.dark.themeButton : THEME_COLORS.light.themeButton;
-    const textColorWhite = theme === 'light' ? THEME_COLORS.light.themeButton : THEME_COLORS.dark.themeButton;
-    const statusBar = theme === 'light' ? 'dark-content' : 'light-content';
-
     return (
         <ScreenContainer bgColor={bgColor}>
-            <StatusBar barStyle={statusBar} />
+            {/*<StatusBar barStyle={statusBar} />*/}
             <Avatar source={require('~assets/icons/avatar.png')} />
 
             {editModal.isOpen && (
@@ -92,10 +94,10 @@ export const ProfileScreen: FC<ProfileTabScreenProps> = () => {
             ))}
 
             <ButtonsContainer>
-                <ThemeButtonContainer bgColor={themeButtonWhite} onPress={() => toggleAndStore('light')}>
+                <ThemeButtonContainer bgColor={themeButtonWhite} onPress={turnOnLightTheme}>
                     <ThemeButtonText textColor={textColorWhite}>White</ThemeButtonText>
                 </ThemeButtonContainer>
-                <ThemeButtonContainer bgColor={themeButtonBlack} onPress={() => toggleAndStore('dark')}>
+                <ThemeButtonContainer bgColor={themeButtonBlack} onPress={turnOnDarkTheme}>
                     <ThemeButtonText textColor={textColorBlack}>Black</ThemeButtonText>
                 </ThemeButtonContainer>
             </ButtonsContainer>

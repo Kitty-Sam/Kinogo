@@ -8,6 +8,7 @@ export const THEME_COLORS = {
     seatSelected: '#D98639',
     seatReserved: '#C4C4C4',
     placeholder: '#767678',
+    lightColor: '#fff',
     switch: {
         false: '#fff',
         true: '#767577',
@@ -34,7 +35,7 @@ export const THEME_COLORS = {
     welcomeButtons: {
         bgCrAcc: '#404040',
         textCrAcc: '#FFFFFF',
-        bgGoogle: '#FFFFFF',
+        bgGoogle: '#D9D9D9',
         textGoogle: '#808080',
         bgFb: '#1877F2',
         textFb: '#FFFFFF',

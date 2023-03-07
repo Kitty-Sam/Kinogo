@@ -1,4 +1,4 @@
-import React, { FC, useContext } from 'react';
+import React, { FC } from 'react';
 import { Modal } from 'react-native';
 
 import { ModalInput } from '~components/ModalInput';
@@ -13,33 +13,47 @@ import {
     ModalTitleContainer,
     ModalView,
 } from '~components/EditProfileModal/style';
-import { ThemeContext } from '~context/ThemeContext';
-import { THEME_COLORS } from '~constants/theme';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { useColor } from '~hooks/useColor';
+
+const inputDataEnd = [
+    { icon: require('~assets/icons/password.png'), placeholder: 'Enter strong password' },
+    { icon: require('~assets/icons/password.png'), placeholder: 'Enter current password' },
+];
+
+const inputDataStart = [
+    { icon: require('~assets/icons/name.png'), placeholder: 'Enter your new name' },
+    { icon: require('~assets/icons/surname.png'), placeholder: 'Enter your new surname' },
+];
 
 export const EditProfileModal: FC<EditProfilePropsType> = ({ editModalOpen, setEditModalOpen }) => {
-    const { theme } = useContext(ThemeContext);
-    const textColor = theme === 'light' ? THEME_COLORS.light.text : THEME_COLORS.dark.text;
-    const bgColor = theme === 'light' ? THEME_COLORS.light.themeButton : THEME_COLORS.dark.themeButton;
+    const { bgColorModal, textColor } = useColor();
+
+    const onCloseIconPress = () => {
+        setEditModalOpen();
+    };
+
+    const editPress = () => {};
 
     return (
         <Modal animationType="slide" transparent={true} visible={editModalOpen}>
             <CentredView>
-                <ModalView bgColor={bgColor}>
+                <ModalView bgColor={bgColorModal}>
                     <ModalTitleContainer>
                         <ModalTitle textColor={textColor}>Edit your profile</ModalTitle>
-                        <ModalTitle textColor={textColor} onPress={() => setEditModalOpen()}>
-                            x
-                        </ModalTitle>
+                        <Icon name={'close-circle-sharp'} onPress={onCloseIconPress} color={textColor} size={24} />
                     </ModalTitleContainer>
                     <FormContainer>
                         <AdditionalText textColor={textColor}>Change your personal data</AdditionalText>
-                        <ModalInput icon={require('~assets/icons/name.png')} placeholder="Enter your new name" />
-                        <ModalInput icon={require('~assets/icons/surname.png')} placeholder="Enter your new surname" />
+                        {inputDataStart.map((input) => (
+                            <ModalInput icon={input.icon} placeholder={input.placeholder} key={input.placeholder} />
+                        ))}
                         <AdditionalText textColor={textColor}>Change your password</AdditionalText>
-                        <ModalInput icon={require('~assets/icons/password.png')} placeholder="Enter strong password" />
-                        <ModalInput icon={require('~assets/icons/password.png')} placeholder="Enter current password" />
+                        {inputDataEnd.map((input) => (
+                            <ModalInput icon={input.icon} placeholder={input.placeholder} key={input.placeholder} />
+                        ))}
 
-                        <ButtonContainer onPress={() => {}}>
+                        <ButtonContainer onPress={editPress}>
                             <ButtonText>Edit</ButtonText>
                         </ButtonContainer>
                     </FormContainer>

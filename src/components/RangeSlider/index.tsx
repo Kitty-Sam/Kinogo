@@ -6,10 +6,13 @@ import { Thumb } from '~components/RangeSlider/AdditionalComponents/Thumb';
 import { Rail } from '~components/RangeSlider/AdditionalComponents/Rail';
 import { LabelsContainer, RangeText, RootContainer } from '~components/RangeSlider/style';
 import { RangeSliderProps } from '~components/RangeSlider/type';
+import { useColor } from '~hooks/useColor';
 
-export const RangeSlider: FC<RangeSliderProps> = ({ from, to }) => {
+export const RangeSlider: FC<RangeSliderProps> = ({ from, to, step }) => {
     const [low, setLow] = useState(from);
     const [high, setHigh] = useState(to);
+
+    const { textColor } = useColor();
 
     const renderThumb = useCallback(() => <Thumb />, []);
     const renderRail = useCallback(() => <Rail />, []);
@@ -26,14 +29,14 @@ export const RangeSlider: FC<RangeSliderProps> = ({ from, to }) => {
     return (
         <RootContainer>
             <LabelsContainer>
-                <RangeText>{low}</RangeText>
-                <RangeText>{high}</RangeText>
+                <RangeText textColor={textColor}>{low}</RangeText>
+                <RangeText textColor={textColor}>{high}</RangeText>
             </LabelsContainer>
             <RangeSliderRN
+                step={step}
                 style={{ width: '80%' }}
                 min={from}
                 max={to}
-                step={1}
                 floatingLabel
                 renderThumb={renderThumb}
                 renderRail={renderRail}

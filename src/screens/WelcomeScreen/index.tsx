@@ -15,10 +15,10 @@ import { Image, TouchableOpacity } from 'react-native';
 import { SignUpModal } from '~components/SignUpModal';
 import { SignInModal } from '~components/SignInModal';
 import { useOpen } from '~hooks/useOpen';
-import { ThemeContext } from '~context/ThemeContext';
 import { THEME_COLORS } from '~constants/theme';
 import { studios } from '~constants/studios';
 import { useTranslation } from 'react-i18next';
+import { useColor } from '~hooks/useColor';
 
 export const WelcomeScreen: FC<WelcomeTabScreenProps> = () => {
     const signInModal = useOpen(false);
@@ -58,9 +58,8 @@ export const WelcomeScreen: FC<WelcomeTabScreenProps> = () => {
             color: THEME_COLORS.welcomeButtons.textGitHub,
         },
     ];
-    const { theme } = useContext(ThemeContext);
-    const textColor = theme === 'light' ? THEME_COLORS.light.text : THEME_COLORS.dark.text;
-    const bgColor = theme === 'light' ? THEME_COLORS.light.background : THEME_COLORS.dark.background;
+
+    const { bgColor, textColor } = useColor();
 
     return (
         <ScreenContainer bgColor={bgColor}>

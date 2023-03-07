@@ -1,12 +1,11 @@
-import React, { FC, useContext } from 'react';
+import React, { FC } from 'react';
 import { Input, InputContainer, InputIcon } from '~components/ModalInput/style';
 import { ModalInputPropsType } from '~components/ModalInput/type';
 import { THEME_COLORS } from '~constants/theme';
-import { ThemeContext } from '~context/ThemeContext';
+import { useColor } from '~hooks/useColor';
 
 export const ModalInput: FC<ModalInputPropsType> = ({ icon, placeholder }) => {
-    const { theme } = useContext(ThemeContext);
-    const color = theme === 'light' ? THEME_COLORS.light.text : THEME_COLORS.dark.text;
+    const { color } = useColor();
 
     return (
         <InputContainer>
