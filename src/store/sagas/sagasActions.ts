@@ -1,4 +1,4 @@
-import { FETCH_FILMS, FETCH_TOP_FILMS, FILTER_TOP_FILMS } from '~store/sagas/sagasActionTypes';
+import { FETCH_FILM_DETAILS, FETCH_FILMS, FETCH_TOP_FILMS, FILTER_TOP_FILMS } from '~store/sagas/sagasActionTypes';
 
 export const fetchFilms = () => {
     return { type: FETCH_FILMS };
@@ -19,3 +19,12 @@ export const filterTopFilms = (payload: FilterTopFilmPayloadType) => {
 };
 
 export type FilterTopFilmsType = ReturnType<typeof filterTopFilms>;
+
+export interface FetchFilmDetailsPayloadType {
+    id: string;
+}
+export const fetchFilmDetails = (payload: FetchFilmDetailsPayloadType) => {
+    return { type: FETCH_FILM_DETAILS, payload };
+};
+
+export type fetchFilmDetailsType = ReturnType<typeof fetchFilmDetails>;

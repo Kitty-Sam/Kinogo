@@ -8,7 +8,7 @@ export function* fetchFilmsWorker() {
     yield put(fetchFilms());
     try {
         // @ts-ignore
-        let result: any = yield call(() =>
+        let result = yield call(() =>
             callAPI({
                 url: API_URL,
                 config: config,

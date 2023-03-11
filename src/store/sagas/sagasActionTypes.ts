@@ -1,3 +1,4 @@
 export const FETCH_FILMS = 'FETCH_FILMS';
 export const FETCH_TOP_FILMS = 'FETCH_TOP_FILMS';
 export const FILTER_TOP_FILMS = 'FILTER_TOP_FILMS';
+export const FETCH_FILM_DETAILS = 'FETCH_FILM_DETAILS';

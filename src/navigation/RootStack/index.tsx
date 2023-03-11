@@ -1,21 +1,17 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { HomeScreen } from '~screens/HomeScreen';
 import { RootStackNavigationName, RootStackParamList } from '~navigation/RootStack/type';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { TopScreen } from '~screens/TopScreens/TopScreen';
 import { ProfileScreen } from '~screens/ProfileScreen';
-import { ThemeContext } from '~context/ThemeContext';
-import { THEME_COLORS } from '~constants/theme';
 import { TicketsStack } from '~navigation/TicketsStack';
 import { RatingStack } from '~navigation/RatingsStack';
+import { useColor } from '~hooks/useColor';
+import { HomeStack } from '~navigation/HomeStack';
 
 const Tab = createBottomTabNavigator<RootStackParamList>();
 
 export const RootStack = () => {
-    const { theme } = useContext(ThemeContext);
-    const textColor = theme === 'light' ? THEME_COLORS.light.text : THEME_COLORS.dark.text;
-    const bgColor = theme === 'light' ? THEME_COLORS.light.themeButton : THEME_COLORS.dark.themeButton;
+    const { textColor, bgColorModal } = useColor();
 
     return (
         <Tab.Navigator
@@ -37,12 +33,12 @@ export const RootStack = () => {
                 tabBarActiveTintColor: textColor,
                 tabBarInactiveTintColor: 'gray',
                 tabBarStyle: {
-                    backgroundColor: bgColor,
+                    backgroundColor: bgColorModal,
                 },
                 headerShown: false,
             })}
         >
-            <Tab.Screen name={RootStackNavigationName.HOME} component={HomeScreen} />
+            <Tab.Screen name={RootStackNavigationName.HOME} component={HomeStack} />
             <Tab.Screen name={RootStackNavigationName.TOP} component={RatingStack} />
             <Tab.Screen name={RootStackNavigationName.TICKETS} component={TicketsStack} />
             <Tab.Screen name={RootStackNavigationName.PROFILE} component={ProfileScreen} />

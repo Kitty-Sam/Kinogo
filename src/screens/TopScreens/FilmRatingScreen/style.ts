@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { THEME_COLORS } from '~constants/theme';
+import { StyleSheet } from 'react-native';
 
 export const ScreenContainer = styled.SafeAreaView<{ bgColor: string }>`
     flex: 1;
@@ -25,7 +26,6 @@ export const TextCommonContainer = styled.View`
 
 export const BackContainer = styled.View`
     flex-direction: row;
-    margin-top: 40px;
     margin-left: 18px;
 `;
 
@@ -33,3 +33,13 @@ export const BackText = styled.Text`
     padding-left: 20px;
     color: ${THEME_COLORS.placeholder};
 `;
+
+export const PageContainer = styled.SafeAreaView`
+    flex: 1;
+`;
+
+export const styles = StyleSheet.create({
+    linear: {
+        flex: 1,
+    },
+});

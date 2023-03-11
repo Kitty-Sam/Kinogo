@@ -6,8 +6,8 @@ export type RootStackParamList = {
 };
 
 export enum RootStackNavigationName {
-    HOME = 'Home',
-    TOP = 'Top',
-    TICKETS = 'Tickets',
+    HOME = 'HomeStack',
+    TOP = 'TopStack',
+    TICKETS = 'TicketsStack',
     PROFILE = 'Profile',
 }

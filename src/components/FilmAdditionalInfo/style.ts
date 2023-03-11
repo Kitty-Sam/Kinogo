@@ -34,7 +34,7 @@ export const RowContainer = styled.View`
 `;
 
 export const PlayerContainer = styled.View`
-    margin-top: 40px;
+    margin: 40px 0 20px 0;
 `;
 
 export const AdditionalText = styled.Text<{ textColor: string }>`

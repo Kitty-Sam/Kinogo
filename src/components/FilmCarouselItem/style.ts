@@ -15,6 +15,12 @@ export const FilmTitleText = styled.Text<{ textColor: string }>`
 export const ImageContainer = styled.Image`
     width: 100%;
     height: 100%;
+    object-fit: cover;
+`;
+
+export const FilmContainer = styled.TouchableOpacity`
+    flex-direction: column;
+    align-items: center;
 `;
 
 export const styles = StyleSheet.create({

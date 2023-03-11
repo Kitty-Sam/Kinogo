@@ -2,7 +2,7 @@ import React, { FC, useCallback, useState } from 'react';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { THEME_COLORS } from '~constants/theme';
-import { Alert, Text } from 'react-native';
+import { ActivityIndicator, Alert, Text } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import { getYoutubeIdFromURL } from '~src/helpers/getYoutubeIdFromURL';
 import { width } from '~constants/dimensions';
@@ -45,13 +45,17 @@ export const FilmAdditionalInfo: FC<FilmAdditionalInfoPropsType> = ({ film, open
                 <Icon name={'hand-pointer-o'} onPress={openModal()} color="grey" size={24} style={styles.handIcon} />
             </FilmTextContainer>
             <PlayerContainer>
-                <YoutubePlayer
-                    height={playerHeight}
-                    width={playerWidth}
-                    play={playing}
-                    videoId={youtubeId}
-                    onChangeState={onStateChange}
-                />
+                {youtubeId ? (
+                    <YoutubePlayer
+                        height={playerHeight}
+                        width={playerWidth}
+                        play={playing}
+                        videoId={youtubeId}
+                        onChangeState={onStateChange}
+                    />
+                ) : (
+                    <ActivityIndicator />
+                )}
             </PlayerContainer>
 
             <RowContainer>
