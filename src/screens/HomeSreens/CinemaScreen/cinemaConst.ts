@@ -34,6 +34,34 @@ export const schedule: ISession[] = [
         type: '2D',
         seats: 8,
     },
+    {
+        id: '12',
+        dateStart: '2:30 PM',
+        dateEnd: '4:25 PM',
+        type: '1D',
+        seats: 15,
+    },
+    {
+        id: '22',
+        dateStart: '2:50 PM',
+        dateEnd: '4:55 PM',
+        type: '2D',
+        seats: 15,
+    },
+    {
+        id: '32',
+        dateStart: '6:25 PM',
+        dateEnd: '8:30 PM',
+        type: '3D',
+        seats: 12,
+    },
+    {
+        id: '42',
+        dateStart: '6:40 PM',
+        dateEnd: '8:50 PM',
+        type: '2D',
+        seats: 8,
+    },
 ];
 
 export enum SeatType {

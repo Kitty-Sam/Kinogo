@@ -1,6 +1,5 @@
 import React from 'react';
 import { RootStackNavigationName, RootStackParamList } from '~navigation/RootStack/type';
-import { useColor } from '~hooks/useColor';
 import { HomeStack } from '~navigation/HomeStack';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { FilmDetailsScreen } from '~screens/HomeSreens/FilmDetailsScreen';

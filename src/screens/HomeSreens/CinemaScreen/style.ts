@@ -60,7 +60,7 @@ export const BuyTicketBlock = styled.View`
 `;
 
 export const ScheduleContainer = styled.View`
-    margin: 30px 18px 0 18px;
+    margin: 40px 18px 0 18px;
     flex-direction: row;
     align-items: flex-end;
     justify-content: space-between;

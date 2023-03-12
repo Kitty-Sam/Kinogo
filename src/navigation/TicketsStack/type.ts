@@ -1,7 +1,4 @@
 import { NativeStackScreenProps } from 'react-native-screens/native-stack';
-import { HomeStackNavigationName } from '~navigation/HomeStack/type';
-import { IFilm } from '~store/models/IFilm';
-import { ISession } from '~screens/HomeSreens/CinemaScreen/cinemaConst';
 
 export enum TicketsStackNavigationName {
     UPCOMING = 'upcoming',

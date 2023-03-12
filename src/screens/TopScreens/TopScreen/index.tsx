@@ -92,14 +92,13 @@ export const TopScreen: FC<TopScreenProps> = ({ navigation }) => {
             {isLoading ? (
                 <ActivityIndicator />
             ) : (
-                <FlatList
-                    // style={{ flex: 1 }}
-                    data={filteredTopFilms.length ? filteredTopFilms : topFilms}
-                    keyExtractor={(item) => item.imdbid}
-                    renderItem={renderTopFilmItem}
-                    pagingEnabled={true}
-                    ItemSeparatorComponent={() => <View />}
-                />
+                <View>
+                    <FlatList
+                        data={filteredTopFilms.length ? filteredTopFilms : topFilms}
+                        keyExtractor={(item) => item.imdbid}
+                        renderItem={renderTopFilmItem}
+                    />
+                </View>
             )}
 
             {filters.isOpen && <FiltersModal filtersModalOpen={filters.isOpen} setFiltersModalOpen={filters.onClose} />}

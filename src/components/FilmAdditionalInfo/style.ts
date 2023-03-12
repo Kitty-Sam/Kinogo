@@ -56,7 +56,7 @@ export const ChapterTitleText = styled.Text`
 
 export const styles = StyleSheet.create({
     handIcon: {
-        marginTop: 30,
+        marginTop: 40,
     },
     starIcon: {
         paddingLeft: 10,
