@@ -1,7 +1,8 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { FC, memo, useCallback, useState } from 'react';
 import { ActivityIndicator, FlatList, View } from 'react-native';
 
 import {
+    ActivityIndicatorWrapper,
     CategoryFilmText,
     CategoryFilmTextContainer,
     ChapterTitleText,
@@ -21,7 +22,7 @@ import { useColor } from '~hooks/useColor';
 import { getFilms } from '~store/selectors/getFilms';
 import { HomeScreenProps } from '~navigation/HomeStack/type';
 
-export const HomeScreen: FC<HomeScreenProps> = () => {
+export const HomeScreen: FC<HomeScreenProps> = memo(() => {
     const [category, setCategory] = useState('Action');
     const [scrollX, setScrollX] = useState(0);
 
@@ -30,13 +31,16 @@ export const HomeScreen: FC<HomeScreenProps> = () => {
 
     const onCategoryPress = (item: string) => () => setCategory(item);
 
-    const renderCategoryItem = ({ item }: { item: string }) => (
-        <CategoryFilmTextContainer
-            bgColor={category === item ? THEME_COLORS.button : bgColor}
-            onPress={onCategoryPress(item)}
-        >
-            <CategoryFilmText textColor={textColor}>{item}</CategoryFilmText>
-        </CategoryFilmTextContainer>
+    const renderCategoryItem = useCallback(
+        ({ item }: { item: string }) => (
+            <CategoryFilmTextContainer
+                bgColor={category === item ? THEME_COLORS.button : bgColor}
+                onPress={onCategoryPress(item)}
+            >
+                <CategoryFilmText textColor={textColor}>{item}</CategoryFilmText>
+            </CategoryFilmTextContainer>
+        ),
+        [category],
     );
 
     return (
@@ -90,10 +94,10 @@ export const HomeScreen: FC<HomeScreenProps> = () => {
                     </Animated.View>
                 </>
             ) : (
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                <ActivityIndicatorWrapper>
                     <ActivityIndicator />
-                </View>
+                </ActivityIndicatorWrapper>
             )}
         </ScreenContainer>
     );
-};
+});

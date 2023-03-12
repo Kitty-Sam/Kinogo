@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, View } from 'react-native';
 
 import {
@@ -24,8 +24,9 @@ import { useColor } from '~hooks/useColor';
 import { getTopFilms } from '~store/selectors/getTopFilms';
 import { debounce } from 'lodash';
 import { filterTopFilms } from '~store/sagas/sagasActions';
+import { width } from '~constants/dimensions';
 
-export const TopScreen: FC<TopScreenProps> = ({ navigation }) => {
+export const TopScreen: FC<TopScreenProps> = memo(({ navigation }) => {
     const { bgColor, textColor } = useColor();
 
     const [search, setSearch] = useState('');
@@ -50,54 +51,59 @@ export const TopScreen: FC<TopScreenProps> = ({ navigation }) => {
     }, [search]);
 
     const filterBySearch = () => {
-        dispatch(
-            filterTopFilms({
-                filters: {
-                    lowYear: 1996,
-                    highYear: 2023,
-                    lowRating: 6,
-                    highRating: 9,
-                },
-                search: search,
-            }),
-        );
+        if (search) {
+            dispatch(
+                filterTopFilms({
+                    filters: {
+                        lowYear: 1996,
+                        highYear: 2023,
+                        lowRating: 6,
+                        highRating: 9,
+                    },
+                    search: search,
+                }),
+            );
+        }
     };
 
     const filterHandler = useCallback(debounce(filterBySearch, 1000), [search]);
 
-    const renderTopFilmItem = ({ item, index }: { item: ITopFilm; index: number }) => (
-        <TopFilmContainer key={item.imdbid}>
-            <FilmImage source={{ uri: item.image }} />
-            <RightBlockContainer>
-                <TitleText textColor={textColor}>{`${index + 1}. ${item.title} (${item.year})`}</TitleText>
-                <RowContainer>
-                    <AdditionalText textColor={textColor}>Genre:</AdditionalText>
-                    {item.genre.map((el, index) => (
-                        <AdditionalText key={index} textColor={textColor}>
-                            {el}
-                        </AdditionalText>
-                    ))}
-                </RowContainer>
+    const renderTopFilmItem = useCallback(
+        ({ item, index }: { item: ITopFilm; index: number }) => (
+            <TopFilmContainer key={item.imdbid}>
+                <FilmImage source={{ uri: item.image }} />
+                <RightBlockContainer>
+                    <TitleText textColor={textColor}>{`${index + 1}. ${item.title} (${item.year})`}</TitleText>
+                    <RowContainer>
+                        <AdditionalText textColor={textColor}>Genre:</AdditionalText>
+                        {item.genre.map((el, index) => (
+                            <AdditionalText key={index} textColor={textColor}>
+                                {el}
+                            </AdditionalText>
+                        ))}
+                    </RowContainer>
 
-                <RowContainer>
-                    <AdditionalText textColor={textColor}>Authors:</AdditionalText>
-                    {item.director.map((el, index) => (
-                        <AdditionalText key={index} textColor={textColor}>
-                            {el}
-                        </AdditionalText>
-                    ))}
-                </RowContainer>
+                    <RowContainer>
+                        <AdditionalText textColor={textColor}>Authors:</AdditionalText>
+                        {item.director.map((el, index) => (
+                            <AdditionalText key={index} textColor={textColor}>
+                                {el}
+                            </AdditionalText>
+                        ))}
+                    </RowContainer>
 
-                <RowContainer>
-                    <TitleText textColor={textColor}>{item.rating}</TitleText>
-                    <Icon name="star" color={THEME_COLORS.button} style={{ marginLeft: 4 }} />
-                </RowContainer>
-                <ButtonContainer onPress={onFilmOpenPress(item)}>
-                    <AdditionalText textColor={THEME_COLORS.lightColor}>More</AdditionalText>
-                    <Icon name="arrow-forward" color={THEME_COLORS.lightColor} />
-                </ButtonContainer>
-            </RightBlockContainer>
-        </TopFilmContainer>
+                    <RowContainer>
+                        <TitleText textColor={textColor}>{item.rating}</TitleText>
+                        <Icon name="star" color={THEME_COLORS.button} style={{ marginLeft: 4 }} />
+                    </RowContainer>
+                    <ButtonContainer onPress={onFilmOpenPress(item)}>
+                        <AdditionalText textColor={THEME_COLORS.lightColor}>More</AdditionalText>
+                        <Icon name="arrow-forward" color={THEME_COLORS.lightColor} />
+                    </ButtonContainer>
+                </RightBlockContainer>
+            </TopFilmContainer>
+        ),
+        [],
     );
 
     return (
@@ -123,8 +129,10 @@ export const TopScreen: FC<TopScreenProps> = ({ navigation }) => {
             ) : (
                 <View>
                     <FlatList
+                        maxToRenderPerBatch={10}
                         data={filteredTopFilms.length ? filteredTopFilms : topFilms}
                         renderItem={renderTopFilmItem}
+                        getItemLayout={(data, index) => ({ length: width * 0.5, offset: width * 0.5 * index, index })}
                     />
                 </View>
             )}
@@ -132,4 +140,4 @@ export const TopScreen: FC<TopScreenProps> = ({ navigation }) => {
             {filters.isOpen && <FiltersModal filtersModalOpen={filters.isOpen} setFiltersModalOpen={filters.onClose} />}
         </ScreenContainer>
     );
-};
+});

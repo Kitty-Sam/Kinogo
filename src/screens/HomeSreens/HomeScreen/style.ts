@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import { width } from '~constants/dimensions';
 export const ScreenContainer = styled.SafeAreaView<{ bgColor: string }>`
     flex: 1;
     background-color: ${(props) => props.bgColor};
@@ -39,4 +38,10 @@ export const PlayerImage = styled.Image`
     width: 100%;
     height: 100%;
     border-radius: 10px;
+`;
+
+export const ActivityIndicatorWrapper = styled.View`
+    flex: 1;
+    align-items: center;
+    justify-content: center;
 `;
