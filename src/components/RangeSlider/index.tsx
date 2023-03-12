@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback } from 'react';
 import RangeSliderRN from 'rn-range-slider';
 
 import { RailSelected } from '~components/RangeSlider/AdditionalComponents/RailSelected';
@@ -11,23 +11,12 @@ import { width } from '~constants/dimensions';
 
 export const sliderWidth = width * 0.5;
 
-export const RangeSlider: FC<RangeSliderProps> = ({ from, to, step }) => {
-    const [low, setLow] = useState(from);
-    const [high, setHigh] = useState(to);
-
+export const RangeSlider: FC<RangeSliderProps> = ({ low, high, step, from, to, handleValueChange }) => {
     const { textColor } = useColor();
 
     const renderThumb = useCallback(() => <Thumb />, []);
     const renderRail = useCallback(() => <Rail />, []);
     const renderRailSelected = useCallback(() => <RailSelected />, []);
-
-    const handleValueChange = useCallback(
-        (newLow: number, newHigh: number) => {
-            setLow(newLow);
-            setHigh(newHigh);
-        },
-        [setLow, setHigh],
-    );
 
     return (
         <RootContainer>

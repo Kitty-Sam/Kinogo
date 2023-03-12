@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { THEME_COLORS } from '~constants/theme';
 
 export const CentredView = styled.View`
     flex: 1;
@@ -44,4 +45,18 @@ export const Text = styled.Text<{ textColor: string }>`
 
 export const BackDrop = styled.TouchableWithoutFeedback`
     flex: 1;
+`;
+
+export const ButtonContainer = styled.TouchableOpacity`
+    width: 80px;
+    padding: 8px 8px;
+    border-radius: 10px;
+    background-color: ${THEME_COLORS.button};
+    align-items: center;
+    justify-content: center;
+    margin: 20px 100px;
+`;
+
+export const ButtonText = styled.Text`
+    color: ${THEME_COLORS.lightColor};
 `;
