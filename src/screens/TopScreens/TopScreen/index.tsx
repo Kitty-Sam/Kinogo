@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, View } from 'react-native';
 
 import {
@@ -14,7 +14,7 @@ import {
     TopFilmContainer,
 } from '~screens/TopScreens/TopScreen/style';
 import { THEME_COLORS } from '~constants/theme';
-import { useAppSelector } from '~store/hooks';
+import { useAppDispatch, useAppSelector } from '~store/hooks';
 import { ITopFilm } from '~store/models/ITopFilm';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useOpen } from '~hooks/useOpen';
@@ -22,9 +22,13 @@ import { FiltersModal } from '~components/FiltersModal';
 import { RatingStackNavigationName, TopScreenProps } from '~navigation/RatingsStack/type';
 import { useColor } from '~hooks/useColor';
 import { getTopFilms } from '~store/selectors/getTopFilms';
+import { debounce } from 'lodash';
+import { filterTopFilms } from '~store/sagas/sagasActions';
 
 export const TopScreen: FC<TopScreenProps> = ({ navigation }) => {
     const { bgColor, textColor } = useColor();
+
+    const [search, setSearch] = useState('');
 
     const filters = useOpen(false);
 
@@ -35,8 +39,31 @@ export const TopScreen: FC<TopScreenProps> = ({ navigation }) => {
     };
 
     const onFilterOpenPress = () => {
+        setSearch('');
         filters.onOpen();
     };
+
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        filterHandler();
+    }, [search]);
+
+    const filterBySearch = () => {
+        dispatch(
+            filterTopFilms({
+                filters: {
+                    lowYear: 1996,
+                    highYear: 2023,
+                    lowRating: 6,
+                    highRating: 9,
+                },
+                search: search,
+            }),
+        );
+    };
+
+    const filterHandler = useCallback(debounce(filterBySearch, 1000), [search]);
 
     const renderTopFilmItem = ({ item, index }: { item: ITopFilm; index: number }) => (
         <TopFilmContainer key={item.imdbid}>
@@ -80,6 +107,8 @@ export const TopScreen: FC<TopScreenProps> = ({ navigation }) => {
                     placeholder="search movie in the top"
                     placeholderTextColor={THEME_COLORS.placeholder}
                     textColor={textColor}
+                    onChangeText={setSearch}
+                    value={search}
                 />
                 <Icon
                     name="options-outline"
@@ -95,7 +124,6 @@ export const TopScreen: FC<TopScreenProps> = ({ navigation }) => {
                 <View>
                     <FlatList
                         data={filteredTopFilms.length ? filteredTopFilms : topFilms}
-                        keyExtractor={(item) => item.imdbid}
                         renderItem={renderTopFilmItem}
                     />
                 </View>

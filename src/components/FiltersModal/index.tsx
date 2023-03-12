@@ -30,10 +30,12 @@ export const FiltersModal: FC<FiltersModalPropsType> = ({ filtersModalOpen, setF
     const filterPress = () => {
         dispatch(
             filterTopFilms({
-                lowYear: yearFilter.low,
-                highYear: yearFilter.high,
-                lowRating: ratingFilter.low,
-                highRating: ratingFilter.high,
+                filters: {
+                    lowYear: yearFilter.low,
+                    highYear: yearFilter.high,
+                    lowRating: ratingFilter.low,
+                    highRating: ratingFilter.high,
+                },
             }),
         );
         setFiltersModalOpen();

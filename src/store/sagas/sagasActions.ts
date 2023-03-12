@@ -9,10 +9,13 @@ export const fetchTopFilms = () => {
 };
 
 export interface FilterTopFilmPayloadType {
-    lowYear: number;
-    highYear: number;
-    lowRating: number;
-    highRating: number;
+    filters: {
+        lowYear: number;
+        highYear: number;
+        lowRating: number;
+        highRating: number;
+    };
+    search?: string;
 }
 export const filterTopFilms = (payload: FilterTopFilmPayloadType) => {
     return { type: FILTER_TOP_FILMS, payload };
