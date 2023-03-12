@@ -3,7 +3,6 @@ import { callAPI } from '~src/api/api';
 import { fetchTopFilms, fetchTopFilmsError, fetchTopFilmsSuccess } from '~store/reducers/topFilmSlice';
 import { ITopFilm } from '~store/models/ITopFilm';
 import Config from 'react-native-config';
-import { API_TOP_URL } from '~src/api/defaultRequest';
 
 export function* fetchTopFilmsWorker() {
     yield put(fetchTopFilms());
@@ -11,7 +10,7 @@ export function* fetchTopFilmsWorker() {
         // @ts-ignore
         let result: any = yield call(() =>
             callAPI({
-                url: API_TOP_URL,
+                url: Config.API_TOP_URL!,
                 config: {
                     headers: {
                         'X-RapidAPI-Key': Config.API_KEY,

@@ -40,7 +40,7 @@ export const HomeScreen: FC<HomeScreenProps> = memo(() => {
                 <CategoryFilmText textColor={textColor}>{item}</CategoryFilmText>
             </CategoryFilmTextContainer>
         ),
-        [category],
+        [category, bgColor],
     );
 
     return (

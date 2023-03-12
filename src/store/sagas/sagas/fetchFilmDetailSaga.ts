@@ -1,6 +1,5 @@
 import { call, put } from 'redux-saga/effects';
 import { callAPI } from '~src/api/api';
-import { API_DETAIL_URL } from '~src/api/defaultRequest';
 import Config from 'react-native-config';
 import { fetchFilmDetailsType } from '~store/sagas/sagasActions';
 import { IFilmDetails } from '~store/models/IFilmDetails';
@@ -12,7 +11,7 @@ export function* fetchFilmDetailWorker({ payload }: fetchFilmDetailsType) {
         // @ts-ignore
         let result = yield call(() =>
             callAPI({
-                url: API_DETAIL_URL,
+                url: Config.API_DETAIL_URL!,
                 config: {
                     params: { id: id },
                     headers: {
