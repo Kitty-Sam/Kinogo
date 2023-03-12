@@ -9,6 +9,7 @@ export const THEME_COLORS = {
     seatReserved: '#C4C4C4',
     placeholder: '#767678',
     lightColor: '#fff',
+    error: '#FF0D10',
     switch: {
         false: '#fff',
         true: '#767577',

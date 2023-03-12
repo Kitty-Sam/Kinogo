@@ -28,9 +28,8 @@ export const ModalTitleContainer = styled.View`
 `;
 
 export const FormContainer = styled.View`
-    margin-top: 8px;
     flex: 1;
-    align-items: center;
+    margin: 0 18px;
 `;
 
 export const ButtonSignUpContainer = styled.TouchableOpacity`
@@ -38,8 +37,16 @@ export const ButtonSignUpContainer = styled.TouchableOpacity`
     padding: 8px 8px;
     border-radius: 10px;
     background-color: ${THEME_COLORS.button};
+    width: 100px;
+    align-items: center;
+    justify-content: center;
 `;
 
 export const ButtonSignUpText = styled.Text`
     color: ${THEME_COLORS.lightColor};
+`;
+
+export const ErrorText = styled.Text`
+    font-size: 8px;
+    color: ${THEME_COLORS.error};
 `;

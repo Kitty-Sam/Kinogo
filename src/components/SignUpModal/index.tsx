@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Modal } from 'react-native';
+import { Modal, View } from 'react-native';
 import {
     ButtonSignUpContainer,
     ButtonSignUpText,
@@ -13,12 +13,14 @@ import { ModalInput } from '~components/ModalInput';
 import { SignUpModalPropsType } from '~components/SignUpModal/type';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useColor } from '~hooks/useColor';
+import { Formik } from 'formik';
+import { validationSchema } from '~constants/validationShema';
 
 const inputsData = [
-    { icon: require('~assets/icons/name.png'), placeholder: 'Enter your name' },
-    { icon: require('~assets/icons/surname.png'), placeholder: 'Enter your surname' },
-    { icon: require('~assets/icons/email.png'), placeholder: 'Enter your email' },
-    { icon: require('~assets/icons/password.png'), placeholder: 'Enter your password' },
+    { icon: require('~assets/icons/name.png'), placeholder: 'Enter your name', type: 'name' },
+    { icon: require('~assets/icons/surname.png'), placeholder: 'Enter your surname', type: 'surname' },
+    { icon: require('~assets/icons/email.png'), placeholder: 'Enter your email', type: 'email' },
+    { icon: require('~assets/icons/password.png'), placeholder: 'Enter your password', type: 'password' },
 ];
 
 export const SignUpModal: FC<SignUpModalPropsType> = ({ signUpModalOpen, setSignUpModalOpen }) => {
@@ -38,15 +40,35 @@ export const SignUpModal: FC<SignUpModalPropsType> = ({ signUpModalOpen, setSign
                         <ModalTitle textColor={textColor}>Create an account</ModalTitle>
                         <Icon name={'close-circle-sharp'} onPress={closeIconPress} color={textColor} size={24} />
                     </ModalTitleContainer>
-                    <FormContainer>
-                        {inputsData.map((input) => (
-                            <ModalInput icon={input.icon} placeholder={input.placeholder} key={input.placeholder} />
-                        ))}
+                    <Formik
+                        initialValues={{ name: '', surname: '', email: '', password: '' }}
+                        onSubmit={(values) => console.log(values)}
+                        validationSchema={validationSchema}
+                    >
+                        {({ handleChange, handleSubmit, touched, errors }) => (
+                            <FormContainer>
+                                {inputsData.map((input, index) => (
+                                    <View key={input.type} style={{ width: '85%' }}>
+                                        <ModalInput
+                                            icon={input.icon}
+                                            placeholder={input.placeholder}
+                                            key={input.placeholder}
+                                            onChangeText={handleChange(input.type)}
+                                            name={input.type}
+                                            secureTextEntry={input.type === 'password'}
+                                        />
+                                        {/*{touched[input.type] && errors[input.type] && (*/}
+                                        {/*    <ErrorText>{errors[input.type]}</ErrorText>*/}
+                                        {/*)}*/}
+                                    </View>
+                                ))}
 
-                        <ButtonSignUpContainer onPress={signUpPress}>
-                            <ButtonSignUpText>Sign up</ButtonSignUpText>
-                        </ButtonSignUpContainer>
-                    </FormContainer>
+                                <ButtonSignUpContainer onPress={handleSubmit}>
+                                    <ButtonSignUpText>Sign up</ButtonSignUpText>
+                                </ButtonSignUpContainer>
+                            </FormContainer>
+                        )}
+                    </Formik>
                 </ModalView>
             </CentredView>
         </Modal>

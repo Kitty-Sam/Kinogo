@@ -1,4 +1,4 @@
-export const getDateNow = () => {
+export const getDateNow = (year?: boolean) => {
     const monthNames = [
         'January',
         'February',
@@ -17,6 +17,10 @@ export const getDateNow = () => {
     const today = new Date();
     const dd = String(today.getDate()).padStart(2, '0');
     const yyyy = today.getFullYear();
+
+    if (year) {
+        return yyyy;
+    }
 
     const day = new Date();
     return 'Date: ' + monthNames[day.getMonth()] + ' ' + dd + ',' + yyyy;
