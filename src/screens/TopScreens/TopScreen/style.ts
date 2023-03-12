@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 import { width } from '~constants/dimensions';
 import { THEME_COLORS } from '~constants/theme';
+import { StyleSheet } from 'react-native';
 
 export const ScreenContainer = styled.SafeAreaView<{ bgColor: string }>`
     flex: 1;
@@ -64,3 +65,11 @@ export const TextInputSearch = styled.TextInput<{ textColor: string }>`
     border-radius: 20px;
     color: ${(props) => props.textColor};
 `;
+
+export const styles = StyleSheet.create({
+    filterIcon: {
+        position: 'absolute',
+        right: 32,
+        top: 16,
+    },
+});

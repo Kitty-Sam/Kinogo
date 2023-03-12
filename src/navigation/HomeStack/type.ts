@@ -1,18 +1,18 @@
-import { NativeStackScreenProps } from 'react-native-screens/native-stack';
-import { IFilm } from '~store/models/IFilm';
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 
 export enum HomeStackNavigationName {
     HOME = 'Home',
-    FILM_DETAILS = "Films' details",
-    CINEMA = 'Choose Cinema & Seats',
+    TOP = 'Top',
+    TICKETS_STACK = 'Tickets',
+    PROFILE = 'Profile',
 }
 
 export type HomeStackParamList = {
     [HomeStackNavigationName.HOME]: undefined;
-    [HomeStackNavigationName.FILM_DETAILS]: { film: IFilm };
-    [HomeStackNavigationName.CINEMA]: { film: IFilm };
+    [HomeStackNavigationName.TOP]: undefined;
+    [HomeStackNavigationName.TICKETS_STACK]: undefined;
+    [HomeStackNavigationName.PROFILE]: undefined;
 };
 
-export type HomeScreenProps = NativeStackScreenProps<HomeStackParamList, HomeStackNavigationName.HOME>;
-export type FilmDetailsScreenProps = NativeStackScreenProps<HomeStackParamList, HomeStackNavigationName.FILM_DETAILS>;
-export type CinemaScreenProps = NativeStackScreenProps<HomeStackParamList, HomeStackNavigationName.CINEMA>;
+export type HomeScreenProps = BottomTabScreenProps<HomeStackParamList, HomeStackNavigationName.HOME>;
+export type ProfileScreenProps = BottomTabScreenProps<HomeStackParamList, HomeStackNavigationName.PROFILE>;

@@ -5,10 +5,8 @@ import { FilmCarouselItemProps } from '~components/FilmCarouselItem/type';
 import { FilmContainer, FilmTitleText, ImageContainer, styles } from '~components/FilmCarouselItem/style';
 import { useColor } from '~hooks/useColor';
 import { poster } from '~constants/posters';
-import { useAppDispatch } from '~store/hooks';
-import { fetchFilmDetails } from '~store/sagas/sagasActions';
 import { useNavigation } from '@react-navigation/native';
-import { HomeStackNavigationName } from '~navigation/HomeStack/type';
+import { RootStackNavigationName } from '~navigation/RootStack/type';
 
 export const WIDTH = width;
 export const CARD_LEN = WIDTH * 0.6;
@@ -33,7 +31,7 @@ export const FilmCarouselItem = memo(({ index, scrollX, item }: FilmCarouselItem
     return (
         <FilmContainer
             onLongPress={() => {
-                navigation.navigate(HomeStackNavigationName.FILM_DETAILS, { film: item });
+                navigation.navigate(RootStackNavigationName.FILM_DETAILS, { film: item });
             }}
         >
             <Animated.View

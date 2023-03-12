@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
-import { RatingScreenProps } from '~navigation/RatingsStack/type';
 
 import {
     BackContainer,
@@ -18,6 +17,7 @@ import ImageColors from 'react-native-image-colors';
 import LinearGradient from 'react-native-linear-gradient';
 import { THEME_COLORS } from '~constants/theme';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { RatingScreenProps } from '~navigation/RatingsStack/type';
 
 const initState = {
     color: THEME_COLORS.lightColor,

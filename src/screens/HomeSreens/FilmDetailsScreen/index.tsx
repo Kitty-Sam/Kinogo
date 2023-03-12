@@ -1,6 +1,5 @@
 import React, { FC, useEffect } from 'react';
 import { StatusBar } from 'react-native';
-import { FilmDetailsScreenProps, HomeStackNavigationName } from '~navigation/HomeStack/type';
 import { useAppDispatch, useAppSelector } from '~store/hooks';
 import { getFilms } from '~store/selectors/getFilms';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -23,8 +22,9 @@ import {
     TextContainer,
     TicketsButtonContainer,
 } from '~screens/HomeSreens/FilmDetailsScreen/style';
+import { FilmDetailsStackScreenProps, RootStackNavigationName } from '~navigation/RootStack/type';
 
-export const FilmDetailsScreen: FC<FilmDetailsScreenProps> = ({ route, navigation }) => {
+export const FilmDetailsScreen: FC<FilmDetailsStackScreenProps> = ({ route, navigation }) => {
     const { film } = route.params;
     const { genre, title, synopsis, type } = film;
 
@@ -44,7 +44,7 @@ export const FilmDetailsScreen: FC<FilmDetailsScreenProps> = ({ route, navigatio
     };
 
     const onGetTicketsPress = () => {
-        navigation.navigate(HomeStackNavigationName.CINEMA, { film });
+        navigation.navigate(RootStackNavigationName.CINEMA, { film });
     };
 
     return (

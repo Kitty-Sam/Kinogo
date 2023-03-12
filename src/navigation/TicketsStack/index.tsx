@@ -1,5 +1,5 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { TicketsStackNavigationName } from '~navigation/TicketsStack/type';
+import { TicketsStackNavigationName, TicketsStackParamList } from '~navigation/TicketsStack/type';
 import { PastScreen } from '~screens/TicketsScreens/PastScreen';
 import { MissedScreen } from '~screens/TicketsScreens/MissedScreen';
 import { UpcomingScreen } from '~screens/TicketsScreens/UpcomingScreen';

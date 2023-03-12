@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useContext } from 'react';
+import React, { FC } from 'react';
 import { ActivityIndicator, FlatList, View } from 'react-native';
 
 import {
@@ -8,11 +8,11 @@ import {
     RightBlockContainer,
     RowContainer,
     ScreenContainer,
+    styles,
     TextInputSearch,
     TitleText,
     TopFilmContainer,
 } from '~screens/TopScreens/TopScreen/style';
-import { ThemeContext } from '~context/ThemeContext';
 import { THEME_COLORS } from '~constants/theme';
 import { useAppSelector } from '~store/hooks';
 import { ITopFilm } from '~store/models/ITopFilm';
@@ -29,6 +29,14 @@ export const TopScreen: FC<TopScreenProps> = ({ navigation }) => {
     const filters = useOpen(false);
 
     const { topFilms, isLoading, filteredTopFilms } = useAppSelector(getTopFilms);
+
+    const onFilmOpenPress = (value: ITopFilm) => () => {
+        navigation.navigate(RatingStackNavigationName.FILM_RATING, { film: value });
+    };
+
+    const onFilterOpenPress = () => {
+        filters.onOpen();
+    };
 
     const renderTopFilmItem = ({ item, index }: { item: ITopFilm; index: number }) => (
         <TopFilmContainer key={item.imdbid}>
@@ -57,9 +65,7 @@ export const TopScreen: FC<TopScreenProps> = ({ navigation }) => {
                     <TitleText textColor={textColor}>{item.rating}</TitleText>
                     <Icon name="star" color={THEME_COLORS.button} style={{ marginLeft: 4 }} />
                 </RowContainer>
-                <ButtonContainer
-                    onPress={() => navigation.navigate(RatingStackNavigationName.FILM_RATING, { film: item })}
-                >
+                <ButtonContainer onPress={onFilmOpenPress(item)}>
                     <AdditionalText textColor={THEME_COLORS.lightColor}>More</AdditionalText>
                     <Icon name="arrow-forward" color={THEME_COLORS.lightColor} />
                 </ButtonContainer>
@@ -78,16 +84,16 @@ export const TopScreen: FC<TopScreenProps> = ({ navigation }) => {
                 <Icon
                     name="options-outline"
                     color={THEME_COLORS.placeholder}
-                    style={{ position: 'absolute', right: 32, top: 12 }}
+                    style={styles.filterIcon}
                     size={18}
-                    onPress={() => filters.onOpen()}
+                    onPress={onFilterOpenPress}
                 />
             </RowContainer>
             {isLoading ? (
                 <ActivityIndicator />
             ) : (
                 <FlatList
-                    style={{ flex: 1 }}
+                    // style={{ flex: 1 }}
                     data={filteredTopFilms.length ? filteredTopFilms : topFilms}
                     keyExtractor={(item) => item.imdbid}
                     renderItem={renderTopFilmItem}

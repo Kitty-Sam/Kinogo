@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useContext } from 'react';
-import { ProfileTabScreenProps } from '~screens/ProfileScreen/type';
+
 import {
     Avatar,
     ButtonsContainer,
@@ -20,9 +20,10 @@ import { useOpen } from '~hooks/useOpen';
 import { ThemeContext, THEMES } from '~context/ThemeContext';
 import { useTheme } from '~hooks/useTheme';
 import { useColor } from '~hooks/useColor';
+import { ProfileScreenProps } from '~navigation/HomeStack/type';
 
 const url = 'https://www.modsen-software.com/';
-export const ProfileScreen: FC<ProfileTabScreenProps> = () => {
+export const ProfileScreen: FC<ProfileScreenProps> = () => {
     const editModal = useOpen(false);
     const settingsModal = useOpen(false);
 
@@ -31,7 +32,7 @@ export const ProfileScreen: FC<ProfileTabScreenProps> = () => {
         useColor();
     const { storeTheme } = useTheme(theme);
 
-    const toggleAndStore = (value: string) => {
+    const toggleAndStore = (value: THEMES) => {
         setTheme(value);
         storeTheme(theme === THEMES.LIGHT ? THEMES.DARK : THEMES.LIGHT);
     };
