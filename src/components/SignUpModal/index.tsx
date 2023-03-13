@@ -15,6 +15,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useColor } from '~hooks/useColor';
 import { Formik } from 'formik';
 import { validationSchema } from '~constants/validationShema';
+import { registerUser } from '~store/sagas/sagasActions';
+import { useAppDispatch } from '~store/hooks';
 
 const inputsData = [
     { icon: require('~assets/icons/name.png'), placeholder: 'Enter your name', type: 'name' },
@@ -23,6 +25,12 @@ const inputsData = [
     { icon: require('~assets/icons/password.png'), placeholder: 'Enter your password', type: 'password' },
 ];
 
+export interface IPersonalData {
+    email: string;
+    name: string;
+    surname: string;
+    password: string;
+}
 export const SignUpModal: FC<SignUpModalPropsType> = ({ signUpModalOpen, setSignUpModalOpen }) => {
     const { textColor, bgColorModal } = useColor();
 
@@ -30,7 +38,12 @@ export const SignUpModal: FC<SignUpModalPropsType> = ({ signUpModalOpen, setSign
         setSignUpModalOpen();
     };
 
-    const signUpPress = () => {};
+    const dispatch = useAppDispatch();
+
+    const signUpPress = (values: IPersonalData) => {
+        dispatch(registerUser(values));
+        setSignUpModalOpen();
+    };
 
     return (
         <Modal animationType="slide" transparent={true} visible={signUpModalOpen}>
@@ -42,7 +55,7 @@ export const SignUpModal: FC<SignUpModalPropsType> = ({ signUpModalOpen, setSign
                     </ModalTitleContainer>
                     <Formik
                         initialValues={{ name: '', surname: '', email: '', password: '' }}
-                        onSubmit={(values) => console.log(values)}
+                        onSubmit={signUpPress}
                         validationSchema={validationSchema}
                     >
                         {({ handleChange, handleSubmit, touched, errors }) => (

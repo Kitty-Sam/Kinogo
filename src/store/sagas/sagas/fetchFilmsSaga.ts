@@ -6,6 +6,7 @@ import { config } from '~src/api/defaultRequest';
 import Config from 'react-native-config';
 
 export function* fetchFilmsWorker() {
+    console.log('api key', Config.API_KEY);
     yield put(fetchFilms());
     try {
         // @ts-ignore
@@ -16,9 +17,12 @@ export function* fetchFilmsWorker() {
             }),
         );
 
+        console.log('result', result);
+
         const data: IFilm[] = result.data.results;
         yield put(fetchFilmsSuccess(data));
     } catch (e: any) {
+        console.log('error Films', e.message);
         yield put(fetchFilmsError(e.message));
     }
 }

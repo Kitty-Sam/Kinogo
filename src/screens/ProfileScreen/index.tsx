@@ -1,13 +1,11 @@
-import React, { FC, useCallback, useContext } from 'react';
+import React, { FC, useCallback, useContext, useEffect } from 'react';
 
 import {
     Avatar,
     ButtonsContainer,
     ProfileButtonContainer,
     ProfileButtonText,
-    ProfileIDText,
     ProfileNameText,
-    ProfileSexText,
     ScreenContainer,
     SmallLogo,
     ThemeButtonContainer,
@@ -21,16 +19,25 @@ import { ThemeContext, THEMES } from '~context/ThemeContext';
 import { useTheme } from '~hooks/useTheme';
 import { useColor } from '~hooks/useColor';
 import { ProfileScreenProps } from '~navigation/HomeStack/type';
+import { fetchUsers, logOutUser } from '~store/sagas/sagasActions';
+import { useAppDispatch, useAppSelector } from '~store/hooks';
+import { getUserInfo } from '~store/selectors/getUserInfo';
 
 const url = 'https://www.modsen-software.com/';
 export const ProfileScreen: FC<ProfileScreenProps> = () => {
     const editModal = useOpen(false);
     const settingsModal = useOpen(false);
 
+    const dispatch = useAppDispatch();
+
     const { setTheme } = useContext(ThemeContext);
     const { theme, themeButtonWhite, themeButtonBlack, textColorWhite, bgColor, textColorBlack, textColor, statusBar } =
         useColor();
     const { storeTheme } = useTheme(theme);
+
+    useEffect(() => {
+        dispatch(fetchUsers());
+    }, []);
 
     const toggleAndStore = (value: THEMES) => {
         setTheme(value);
@@ -44,6 +51,10 @@ export const ProfileScreen: FC<ProfileScreenProps> = () => {
     const turnOnDarkTheme = () => {
         toggleAndStore(THEMES.DARK);
     };
+
+    const { users, user } = useAppSelector(getUserInfo);
+
+    const currentUser = users.find((userFb) => userFb.userId === user.id);
 
     const buttons = [
         {
@@ -69,13 +80,22 @@ export const ProfileScreen: FC<ProfileScreenProps> = () => {
                 }
             }, [url]),
         },
-        { title: 'Log out', onPress: () => {} },
+        {
+            title: 'Log out',
+            onPress: () => {
+                dispatch(logOutUser());
+            },
+        },
     ];
 
     return (
         <ScreenContainer bgColor={bgColor}>
             {/*<StatusBar barStyle={statusBar} />*/}
-            <Avatar source={require('~assets/icons/avatar.png')} />
+            {currentUser ? (
+                <Avatar source={{ uri: currentUser.photo }} />
+            ) : (
+                <Avatar source={require('~assets/icons/avatar.png')} />
+            )}
 
             {editModal.isOpen && (
                 <EditProfileModal editModalOpen={editModal.isOpen} setEditModalOpen={editModal.onClose} />
@@ -84,9 +104,9 @@ export const ProfileScreen: FC<ProfileScreenProps> = () => {
                 <SettingsModal setSettingsModalOpen={settingsModal.onClose} settingsModalOpen={settingsModal.isOpen} />
             )}
 
-            <ProfileNameText textColor={textColor}>Name Surname</ProfileNameText>
-            <ProfileIDText textColor={textColor}>User ID: 123</ProfileIDText>
-            <ProfileSexText textColor={textColor}>Female</ProfileSexText>
+            <ProfileNameText textColor={textColor}>
+                {currentUser ? currentUser.userName + ' ' + currentUser.userSurname : 'user name'}
+            </ProfileNameText>
 
             {buttons.map(({ onPress, title }) => (
                 <ProfileButtonContainer onPress={onPress} key={title}>

@@ -12,7 +12,7 @@ export function* filterTopFilmsWorker({ payload }: FilterTopFilmsType) {
 
     yield put(filterTopFilms([]));
 
-    yield call(fetchTopFilmsWorker);
+    // yield call(fetchTopFilmsWorker);
 
     const topFilms: ITopFilm[] = yield select(getOnlyTopFilms);
 
@@ -41,6 +41,7 @@ export function* filterTopFilmsWorker({ payload }: FilterTopFilmsType) {
 
         yield put(filterTopFilms(filteredYearAndRatingTopFilms));
     } catch (e: any) {
+        console.log('error Top Filter', e.message);
         yield put(fetchTopFilmsError(e.message));
     }
 }

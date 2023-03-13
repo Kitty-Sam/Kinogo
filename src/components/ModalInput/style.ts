@@ -12,11 +12,11 @@ export const Input = styled.TextInput`
     font-weight: 300;
     width: 100%;
     border-bottom-width: 1px;
-    border-color: ${THEME_COLORS.lightColor};
+    border-color: ${THEME_COLORS.placeholder};
     border-style: solid;
     padding: 8px;
     margin: 8px;
-    color: ${THEME_COLORS.lightColor};
+    color: ${THEME_COLORS.placeholder};
 `;
 
 export const InputContainer = styled.View`

@@ -15,6 +15,8 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useColor } from '~hooks/useColor';
 import { Formik } from 'formik';
+import { loginUser } from '~store/sagas/sagasActions';
+import { useAppDispatch } from '~store/hooks';
 
 const inputsData = [
     { icon: require('~assets/icons/email.png'), placeholder: 'example@gmail.com', type: 'email' },
@@ -28,7 +30,11 @@ export const SignInModal: FC<SignInModalPropsType> = ({ signInModalOpen, setSign
         setSignInModalOpen();
     };
 
-    const signInPress = () => {};
+    const dispatch = useAppDispatch();
+
+    const signInPress = (values: { email: string; password: string }) => {
+        dispatch(loginUser(values));
+    };
 
     return (
         <Modal animationType="slide" transparent={true} visible={signInModalOpen}>
@@ -38,8 +44,8 @@ export const SignInModal: FC<SignInModalPropsType> = ({ signInModalOpen, setSign
                         <ModalTitle textColor={textColor}>Sign in to an account</ModalTitle>
                         <Icon name={'close-circle-sharp'} onPress={closeIconPress} color={textColor} size={24} />
                     </ModalTitleContainer>
-                    <Formik initialValues={{ email: '', password: '' }} onSubmit={(values) => console.log(values)}>
-                        {({ handleChange }) => (
+                    <Formik initialValues={{ email: '', password: '' }} onSubmit={signInPress}>
+                        {({ handleChange, handleSubmit }) => (
                             <FormContainer>
                                 {inputsData.map((input) => (
                                     <View key={input.type} style={{ width: '85%' }}>
@@ -53,7 +59,7 @@ export const SignInModal: FC<SignInModalPropsType> = ({ signInModalOpen, setSign
                                         />
                                     </View>
                                 ))}
-                                <ButtonSignUpContainer onPress={signInPress}>
+                                <ButtonSignUpContainer onPress={handleSubmit}>
                                     <ButtonSignUpText>Sign in</ButtonSignUpText>
                                 </ButtonSignUpContainer>
                             </FormContainer>
