@@ -1,42 +1,80 @@
-import React, { FC, useContext } from 'react';
+import React, { FC } from 'react';
 import { Modal } from 'react-native';
-import { ThemeContext } from '~context/ThemeContext';
-import { THEME_COLORS } from '~constants/theme';
 import { FiltersModalPropsType } from '~components/FiltersModal/type';
 import {
     AdditionalText,
+    ButtonContainer,
+    ButtonText,
     CentredView,
     ModalTitle,
     ModalTitleContainer,
     ModalView,
 } from '~components/FiltersModal/style';
 import { RangeSlider } from '~components/RangeSlider';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { useColor } from '~hooks/useColor';
+import { useAppDispatch } from '~store/hooks';
+import { useRange } from '~components/RangeSlider/useRange';
+import { filterTopFilms } from '~store/sagas/sagasActions';
 
 export const FiltersModal: FC<FiltersModalPropsType> = ({ filtersModalOpen, setFiltersModalOpen }) => {
-    const { theme } = useContext(ThemeContext);
-    const textColor = theme === 'light' ? THEME_COLORS.light.text : THEME_COLORS.dark.text;
-    const bgColor = theme === 'light' ? THEME_COLORS.light.themeButton : THEME_COLORS.dark.themeButton;
+    const { bgColorModal, textColor } = useColor();
+
+    const yearFilter = useRange(1996, 2023);
+    const ratingFilter = useRange(6, 9);
+
+    const dispatch = useAppDispatch();
 
     const closeModal = () => setFiltersModalOpen();
+
+    const filterPress = () => {
+        dispatch(
+            filterTopFilms({
+                filters: {
+                    lowYear: yearFilter.low,
+                    highYear: yearFilter.high,
+                    lowRating: ratingFilter.low,
+                    highRating: ratingFilter.high,
+                },
+            }),
+        );
+        setFiltersModalOpen();
+    };
 
     return (
         <Modal animationType="slide" transparent={true} visible={filtersModalOpen}>
             <CentredView>
-                <ModalView bgColor={bgColor}>
+                <ModalView bgColor={bgColorModal}>
                     <ModalTitleContainer>
                         <ModalTitle textColor={textColor}>Filters</ModalTitle>
-                        <ModalTitle textColor={textColor} onPress={closeModal}>
-                            x
-                        </ModalTitle>
+                        <Icon name={'close-circle-sharp'} onPress={closeModal} color={textColor} size={24} />
                     </ModalTitleContainer>
 
                     <AdditionalText textColor={textColor}>Year</AdditionalText>
 
-                    <RangeSlider from={1996} to={2023} />
+                    <RangeSlider
+                        low={yearFilter.low}
+                        high={yearFilter.high}
+                        step={1}
+                        handleValueChange={yearFilter.handleValueChange}
+                        from={yearFilter.from}
+                        to={yearFilter.to}
+                    />
 
                     <AdditionalText textColor={textColor}>Rating</AdditionalText>
 
-                    <RangeSlider from={6} to={9} />
+                    <RangeSlider
+                        low={ratingFilter.low}
+                        high={ratingFilter.high}
+                        step={0.5}
+                        handleValueChange={ratingFilter.handleValueChange}
+                        from={ratingFilter.from}
+                        to={ratingFilter.to}
+                    />
+
+                    <ButtonContainer onPress={filterPress}>
+                        <ButtonText>Filter</ButtonText>
+                    </ButtonContainer>
                 </ModalView>
             </CentredView>
         </Modal>

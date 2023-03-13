@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useContext } from 'react';
+import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, View } from 'react-native';
 
 import {
@@ -8,28 +8,65 @@ import {
     RightBlockContainer,
     RowContainer,
     ScreenContainer,
+    styles,
     TextInputSearch,
     TitleText,
     TopFilmContainer,
 } from '~screens/TopScreens/TopScreen/style';
-import { ThemeContext } from '~context/ThemeContext';
 import { THEME_COLORS } from '~constants/theme';
-import { useAppSelector } from '~store/hooks';
+import { useAppDispatch, useAppSelector } from '~store/hooks';
 import { ITopFilm } from '~store/models/ITopFilm';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useOpen } from '~hooks/useOpen';
 import { FiltersModal } from '~components/FiltersModal';
 import { RatingStackNavigationName, TopScreenProps } from '~navigation/RatingsStack/type';
+import { useColor } from '~hooks/useColor';
+import { getTopFilms } from '~store/selectors/getTopFilms';
+import { debounce } from 'lodash';
+import { filterTopFilms } from '~store/sagas/sagasActions';
+import { width } from '~constants/dimensions';
 
-export const TopScreen: FC<TopScreenProps> = ({ navigation }) => {
-    const { theme } = useContext(ThemeContext);
+export const TopScreen: FC<TopScreenProps> = memo(({ navigation }) => {
+    const { bgColor, textColor } = useColor();
+
+    const [search, setSearch] = useState('');
 
     const filters = useOpen(false);
 
-    const { topFilms, isLoading } = useAppSelector((state) => state.topFilms);
+    const { topFilms, isLoading, filteredTopFilms } = useAppSelector(getTopFilms);
 
-    const textColor = theme === 'light' ? THEME_COLORS.light.text : THEME_COLORS.dark.text;
-    const bgColor = theme === 'light' ? THEME_COLORS.light.background : THEME_COLORS.dark.background;
+    const onFilmOpenPress = (value: ITopFilm) => () => {
+        navigation.navigate(RatingStackNavigationName.FILM_RATING, { film: value });
+    };
+
+    const onFilterOpenPress = () => {
+        setSearch('');
+        filters.onOpen();
+    };
+
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        filterHandler();
+    }, [search]);
+
+    const filterBySearch = () => {
+        if (search) {
+            dispatch(
+                filterTopFilms({
+                    filters: {
+                        lowYear: 1996,
+                        highYear: 2023,
+                        lowRating: 6,
+                        highRating: 9,
+                    },
+                    search: search,
+                }),
+            );
+        }
+    };
+
+    const filterHandler = useCallback(debounce(filterBySearch, 1000), [search]);
 
     const renderTopFilmItem = useCallback(
         ({ item, index }: { item: ITopFilm; index: number }) => (
@@ -59,11 +96,9 @@ export const TopScreen: FC<TopScreenProps> = ({ navigation }) => {
                         <TitleText textColor={textColor}>{item.rating}</TitleText>
                         <Icon name="star" color={THEME_COLORS.button} style={{ marginLeft: 4 }} />
                     </RowContainer>
-                    <ButtonContainer
-                        onPress={() => navigation.navigate(RatingStackNavigationName.FILM_RATING, { film: item })}
-                    >
-                        <AdditionalText textColor={'#fff'}>More</AdditionalText>
-                        <Icon name="arrow-forward" color={'#fff'} />
+                    <ButtonContainer onPress={onFilmOpenPress(item)}>
+                        <AdditionalText textColor={THEME_COLORS.lightColor}>More</AdditionalText>
+                        <Icon name="arrow-forward" color={THEME_COLORS.lightColor} />
                     </ButtonContainer>
                 </RightBlockContainer>
             </TopFilmContainer>
@@ -77,29 +112,32 @@ export const TopScreen: FC<TopScreenProps> = ({ navigation }) => {
                 <TextInputSearch
                     placeholder="search movie in the top"
                     placeholderTextColor={THEME_COLORS.placeholder}
+                    textColor={textColor}
+                    onChangeText={setSearch}
+                    value={search}
                 />
                 <Icon
                     name="options-outline"
                     color={THEME_COLORS.placeholder}
-                    style={{ position: 'absolute', right: 18, top: 10 }}
+                    style={styles.filterIcon}
                     size={18}
-                    onPress={() => filters.onOpen()}
+                    onPress={onFilterOpenPress}
                 />
             </RowContainer>
             {isLoading ? (
                 <ActivityIndicator />
             ) : (
-                <FlatList
-                    style={{ flex: 1 }}
-                    data={topFilms}
-                    keyExtractor={(item) => item.imdbid}
-                    renderItem={renderTopFilmItem}
-                    pagingEnabled={true}
-                    ItemSeparatorComponent={() => <View />}
-                />
+                <View>
+                    <FlatList
+                        maxToRenderPerBatch={10}
+                        data={filteredTopFilms.length ? filteredTopFilms : topFilms}
+                        renderItem={renderTopFilmItem}
+                        getItemLayout={(data, index) => ({ length: width * 0.5, offset: width * 0.5 * index, index })}
+                    />
+                </View>
             )}
 
             {filters.isOpen && <FiltersModal filtersModalOpen={filters.isOpen} setFiltersModalOpen={filters.onClose} />}
         </ScreenContainer>
     );
-};
+});

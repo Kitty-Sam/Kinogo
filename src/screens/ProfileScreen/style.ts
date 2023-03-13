@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { width } from '~constants/dimensions';
+import { THEME_COLORS } from '~constants/theme';
 
 export const ScreenContainer = styled.SafeAreaView<{ bgColor: string }>`
     flex: 1;
@@ -8,23 +8,23 @@ export const ScreenContainer = styled.SafeAreaView<{ bgColor: string }>`
 `;
 
 export const ProfileButtonContainer = styled.TouchableOpacity`
-    margin-top: ${width * 0.05}px;
+    margin-top: 18px;
     width: 50%;
-    padding: 2% 0;
+    padding: 8px 0;
     border-radius: 10px;
-    background-color: #767678;
+    background-color: ${THEME_COLORS.placeholder};
     align-items: center;
     justify-content: center;
 `;
 export const ProfileButtonText = styled.Text`
-    color: #fff;
+    color: ${THEME_COLORS.lightColor};
     text-transform: uppercase;
 `;
 
 export const ThemeButtonContainer = styled.TouchableOpacity<{ bgColor: string }>`
     background-color: ${(props) => props.bgColor};
-    width: 30%;
-    padding: 2% 0;
+    flex: 1;
+    padding: 8px 0;
     border-radius: 10px;
     align-items: center;
     justify-content: center;
@@ -36,39 +36,26 @@ export const ThemeButtonText = styled.Text<{ textColor: string }>`
 `;
 
 export const ButtonsContainer = styled.View`
-    padding-top: ${width * 0.1}px;
+    padding-top: 32px;
     flex-direction: row;
+    margin: 20px 48px;
 `;
 
 export const Avatar = styled.Image`
+    margin-top: 100px;
     width: 150px;
     height: 150px;
-    margin-top: ${width * 0.07}px;
+    border-radius: 75px;
 `;
 
 export const ProfileNameText = styled.Text<{ textColor: string }>`
-    padding-top: 2%;
+    padding: 10px 0;
     font-size: 20px;
-    font-weight: 600;
-    color: ${(props) => props.textColor};
-`;
-
-export const ProfileIDText = styled.Text<{ textColor: string }>`
-    padding-top: 2%;
-    font-size: 15px;
-    font-weight: 600;
-    color: ${(props) => props.textColor};
-`;
-
-export const ProfileSexText = styled.Text<{ textColor: string }>`
-    padding-top: 2%;
-    padding-bottom: 5%;
-    font-size: 15px;
     font-weight: 600;
     color: ${(props) => props.textColor};
 `;
 
 export const SmallLogo = styled.Image`
     position: absolute;
-    bottom: ${width * 0.05}px;
+    bottom: 16px;
 `;

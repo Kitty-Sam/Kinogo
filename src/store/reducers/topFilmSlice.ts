@@ -5,12 +5,14 @@ interface TopFilmState {
     topFilms: ITopFilm[];
     isLoading: boolean;
     error: string;
+    filteredTopFilms: ITopFilm[];
 }
 
 const initialState: TopFilmState = {
     topFilms: [],
     isLoading: false,
     error: '',
+    filteredTopFilms: [],
 };
 
 export const topFilmSlice = createSlice({
@@ -29,8 +31,11 @@ export const topFilmSlice = createSlice({
             state.isLoading = false;
             state.error = payload;
         },
+        filterTopFilms(state, { payload }: PayloadAction<ITopFilm[]>) {
+            state.filteredTopFilms = payload;
+        },
     },
 });
 
 export default topFilmSlice.reducer;
-export const { fetchTopFilms, fetchTopFilmsSuccess, fetchTopFilmsError } = topFilmSlice.actions;
+export const { fetchTopFilms, fetchTopFilmsSuccess, fetchTopFilmsError, filterTopFilms } = topFilmSlice.actions;

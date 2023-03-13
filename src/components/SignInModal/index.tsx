@@ -1,5 +1,5 @@
-import React, { FC, useContext } from 'react';
-import { Modal } from 'react-native';
+import React, { FC } from 'react';
+import { Modal, View } from 'react-native';
 
 import { ModalInput } from '~components/ModalInput';
 import { SignInModalPropsType } from '~components/SignInModal/type';
@@ -12,31 +12,59 @@ import {
     ModalTitleContainer,
     ModalView,
 } from '~components/SignInModal/style';
-import { ThemeContext } from '~context/ThemeContext';
-import { THEME_COLORS } from '~constants/theme';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { useColor } from '~hooks/useColor';
+import { Formik } from 'formik';
+import { loginUser } from '~store/sagas/sagasActions';
+import { useAppDispatch } from '~store/hooks';
+
+const inputsData = [
+    { icon: require('~assets/icons/email.png'), placeholder: 'example@gmail.com', type: 'email' },
+    { icon: require('~assets/icons/password.png'), placeholder: '*****', type: 'password' },
+];
 
 export const SignInModal: FC<SignInModalPropsType> = ({ signInModalOpen, setSignInModalOpen }) => {
-    const { theme } = useContext(ThemeContext);
-    const textColor = theme === 'light' ? THEME_COLORS.light.text : THEME_COLORS.dark.text;
-    const bgColor = theme === 'light' ? THEME_COLORS.light.themeButton : THEME_COLORS.dark.themeButton;
+    const { textColor, bgColorModal } = useColor();
+
+    const closeIconPress = () => {
+        setSignInModalOpen();
+    };
+
+    const dispatch = useAppDispatch();
+
+    const signInPress = (values: { email: string; password: string }) => {
+        dispatch(loginUser(values));
+    };
 
     return (
         <Modal animationType="slide" transparent={true} visible={signInModalOpen}>
             <CentredView>
-                <ModalView bgColor={bgColor}>
+                <ModalView bgColor={bgColorModal}>
                     <ModalTitleContainer>
                         <ModalTitle textColor={textColor}>Sign in to an account</ModalTitle>
-                        <ModalTitle textColor={textColor} onPress={() => setSignInModalOpen()}>
-                            x
-                        </ModalTitle>
+                        <Icon name={'close-circle-sharp'} onPress={closeIconPress} color={textColor} size={24} />
                     </ModalTitleContainer>
-                    <FormContainer>
-                        <ModalInput icon={require('~assets/icons/email.png')} placeholder="example@gmail" />
-                        <ModalInput icon={require('~assets/icons/password.png')} placeholder="*****" />
-                        <ButtonSignUpContainer onPress={() => {}}>
-                            <ButtonSignUpText>Sign in</ButtonSignUpText>
-                        </ButtonSignUpContainer>
-                    </FormContainer>
+                    <Formik initialValues={{ email: '', password: '' }} onSubmit={signInPress}>
+                        {({ handleChange, handleSubmit }) => (
+                            <FormContainer>
+                                {inputsData.map((input) => (
+                                    <View key={input.type} style={{ width: '85%' }}>
+                                        <ModalInput
+                                            icon={input.icon}
+                                            placeholder={input.placeholder}
+                                            key={input.placeholder}
+                                            name={input.type}
+                                            secureTextEntry={input.type === 'password'}
+                                            onChangeText={handleChange(input.type)}
+                                        />
+                                    </View>
+                                ))}
+                                <ButtonSignUpContainer onPress={handleSubmit}>
+                                    <ButtonSignUpText>Sign in</ButtonSignUpText>
+                                </ButtonSignUpContainer>
+                            </FormContainer>
+                        )}
+                    </Formik>
                 </ModalView>
             </CentredView>
         </Modal>

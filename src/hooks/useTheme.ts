@@ -2,7 +2,7 @@ import { useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { THEMES } from '~context/ThemeContext';
 
-export const useTheme = (initValue: string) => {
+export const useTheme = (initValue: THEMES) => {
     const [theme, setTheme] = useState(initValue);
     const getTheme = async () => {
         try {
@@ -11,7 +11,7 @@ export const useTheme = (initValue: string) => {
                 const resultedTheme = await JSON.parse(savedTheme);
                 setTheme(resultedTheme);
             } else {
-                return THEMES.light;
+                return THEMES.LIGHT;
             }
         } catch (error) {
             console.log(error);

@@ -1,4 +1,4 @@
-import React, { FC, useContext } from 'react';
+import React, { FC } from 'react';
 import { WelcomeTabScreenProps } from '~screens/WelcomeScreen/type';
 import {
     LinkText,
@@ -15,10 +15,11 @@ import { Image, TouchableOpacity } from 'react-native';
 import { SignUpModal } from '~components/SignUpModal';
 import { SignInModal } from '~components/SignInModal';
 import { useOpen } from '~hooks/useOpen';
-import { ThemeContext } from '~context/ThemeContext';
 import { THEME_COLORS } from '~constants/theme';
 import { studios } from '~constants/studios';
 import { useTranslation } from 'react-i18next';
+import { useColor } from '~hooks/useColor';
+import { getDateNow } from '~src/helpers/getDateNow';
 
 export const WelcomeScreen: FC<WelcomeTabScreenProps> = () => {
     const signInModal = useOpen(false);
@@ -58,9 +59,8 @@ export const WelcomeScreen: FC<WelcomeTabScreenProps> = () => {
             color: THEME_COLORS.welcomeButtons.textGitHub,
         },
     ];
-    const { theme } = useContext(ThemeContext);
-    const textColor = theme === 'light' ? THEME_COLORS.light.text : THEME_COLORS.dark.text;
-    const bgColor = theme === 'light' ? THEME_COLORS.light.background : THEME_COLORS.dark.background;
+
+    const { bgColor, textColor } = useColor();
 
     return (
         <ScreenContainer bgColor={bgColor}>
@@ -92,7 +92,10 @@ export const WelcomeScreen: FC<WelcomeTabScreenProps> = () => {
                 ))}
             </StudiosContainer>
 
-            <VersionText textColor={textColor}>{translate('welcomeScreen.version')}</VersionText>
+            <VersionText textColor={textColor}>
+                {getDateNow(true)}
+                {translate('welcomeScreen.version')}
+            </VersionText>
         </ScreenContainer>
     );
 };

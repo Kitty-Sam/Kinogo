@@ -1,13 +1,11 @@
-import React, { FC, useCallback, useContext } from 'react';
-import { ProfileTabScreenProps } from '~screens/ProfileScreen/type';
+import React, { FC, useCallback, useContext, useEffect } from 'react';
+
 import {
     Avatar,
     ButtonsContainer,
     ProfileButtonContainer,
     ProfileButtonText,
-    ProfileIDText,
     ProfileNameText,
-    ProfileSexText,
     ScreenContainer,
     SmallLogo,
     ThemeButtonContainer,
@@ -15,24 +13,48 @@ import {
 } from '~screens/ProfileScreen/style';
 import { EditProfileModal } from '~components/EditProfileModal';
 import { SettingsModal } from '~components/SettingsModal';
-import { Alert, Linking, StatusBar } from 'react-native';
+import { Alert, Linking } from 'react-native';
 import { useOpen } from '~hooks/useOpen';
-import { ThemeContext } from '~context/ThemeContext';
-import { THEME_COLORS } from '~constants/theme';
+import { ThemeContext, THEMES } from '~context/ThemeContext';
 import { useTheme } from '~hooks/useTheme';
+import { useColor } from '~hooks/useColor';
+import { ProfileScreenProps } from '~navigation/HomeStack/type';
+import { fetchUsers, logOutUser } from '~store/sagas/sagasActions';
+import { useAppDispatch, useAppSelector } from '~store/hooks';
+import { getUserInfo } from '~store/selectors/getUserInfo';
 
 const url = 'https://www.modsen-software.com/';
-export const ProfileScreen: FC<ProfileTabScreenProps> = () => {
+export const ProfileScreen: FC<ProfileScreenProps> = () => {
     const editModal = useOpen(false);
     const settingsModal = useOpen(false);
 
-    const { theme, setTheme } = useContext(ThemeContext);
+    const dispatch = useAppDispatch();
+
+    const { setTheme } = useContext(ThemeContext);
+    const { theme, themeButtonWhite, themeButtonBlack, textColorWhite, bgColor, textColorBlack, textColor, statusBar } =
+        useColor();
     const { storeTheme } = useTheme(theme);
 
-    const toggleAndStore = (value: string) => {
+    useEffect(() => {
+        dispatch(fetchUsers());
+    }, []);
+
+    const toggleAndStore = (value: THEMES) => {
         setTheme(value);
-        storeTheme(theme === 'light' ? 'dark' : 'light');
+        storeTheme(theme === THEMES.LIGHT ? THEMES.DARK : THEMES.LIGHT);
     };
+
+    const turnOnLightTheme = () => {
+        toggleAndStore(THEMES.LIGHT);
+    };
+
+    const turnOnDarkTheme = () => {
+        toggleAndStore(THEMES.DARK);
+    };
+
+    const { users, user } = useAppSelector(getUserInfo);
+
+    const currentUser = users.find((userFb) => userFb.userId === user.id);
 
     const buttons = [
         {
@@ -58,21 +80,22 @@ export const ProfileScreen: FC<ProfileTabScreenProps> = () => {
                 }
             }, [url]),
         },
-        { title: 'Log out', onPress: () => {} },
+        {
+            title: 'Log out',
+            onPress: () => {
+                dispatch(logOutUser());
+            },
+        },
     ];
-
-    const bgColor = theme === 'light' ? THEME_COLORS.light.background : THEME_COLORS.dark.background;
-    const textColor = theme === 'light' ? THEME_COLORS.light.text : THEME_COLORS.dark.text;
-    const themeButtonWhite = theme === 'light' ? THEME_COLORS.dark.themeButton : THEME_COLORS.light.themeButton;
-    const themeButtonBlack = theme === 'light' ? THEME_COLORS.light.themeButton : THEME_COLORS.dark.themeButton;
-    const textColorBlack = theme === 'light' ? THEME_COLORS.dark.themeButton : THEME_COLORS.light.themeButton;
-    const textColorWhite = theme === 'light' ? THEME_COLORS.light.themeButton : THEME_COLORS.dark.themeButton;
-    const statusBar = theme === 'light' ? 'dark-content' : 'light-content';
 
     return (
         <ScreenContainer bgColor={bgColor}>
-            <StatusBar barStyle={statusBar} />
-            <Avatar source={require('~assets/icons/avatar.png')} />
+            {/*<StatusBar barStyle={statusBar} />*/}
+            {currentUser ? (
+                <Avatar source={{ uri: currentUser.photo }} />
+            ) : (
+                <Avatar source={require('~assets/icons/avatar.png')} />
+            )}
 
             {editModal.isOpen && (
                 <EditProfileModal editModalOpen={editModal.isOpen} setEditModalOpen={editModal.onClose} />
@@ -81,9 +104,9 @@ export const ProfileScreen: FC<ProfileTabScreenProps> = () => {
                 <SettingsModal setSettingsModalOpen={settingsModal.onClose} settingsModalOpen={settingsModal.isOpen} />
             )}
 
-            <ProfileNameText textColor={textColor}>Name Surname</ProfileNameText>
-            <ProfileIDText textColor={textColor}>User ID: 123</ProfileIDText>
-            <ProfileSexText textColor={textColor}>Female</ProfileSexText>
+            <ProfileNameText textColor={textColor}>
+                {currentUser ? currentUser.userName + ' ' + currentUser.userSurname : 'user name'}
+            </ProfileNameText>
 
             {buttons.map(({ onPress, title }) => (
                 <ProfileButtonContainer onPress={onPress} key={title}>
@@ -92,10 +115,10 @@ export const ProfileScreen: FC<ProfileTabScreenProps> = () => {
             ))}
 
             <ButtonsContainer>
-                <ThemeButtonContainer bgColor={themeButtonWhite} onPress={() => toggleAndStore('light')}>
+                <ThemeButtonContainer bgColor={themeButtonWhite} onPress={turnOnLightTheme}>
                     <ThemeButtonText textColor={textColorWhite}>White</ThemeButtonText>
                 </ThemeButtonContainer>
-                <ThemeButtonContainer bgColor={themeButtonBlack} onPress={() => toggleAndStore('dark')}>
+                <ThemeButtonContainer bgColor={themeButtonBlack} onPress={turnOnDarkTheme}>
                     <ThemeButtonText textColor={textColorBlack}>Black</ThemeButtonText>
                 </ThemeButtonContainer>
             </ButtonsContainer>

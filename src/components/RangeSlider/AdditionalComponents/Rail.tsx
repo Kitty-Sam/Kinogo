@@ -7,6 +7,6 @@ export const Rail = memo(() => <RailContainer />);
 export const RailContainer = styled.View`
     flex: 1;
     height: 5px;
-    background-color: ${THEME_COLORS.scheduleWrapper};
+    background-color: ${THEME_COLORS.placeholder};
     border-radius: 2px;
 `;

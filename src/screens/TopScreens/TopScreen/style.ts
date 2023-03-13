@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 import { width } from '~constants/dimensions';
 import { THEME_COLORS } from '~constants/theme';
+import { StyleSheet } from 'react-native';
 
 export const ScreenContainer = styled.SafeAreaView<{ bgColor: string }>`
     flex: 1;
@@ -55,11 +56,20 @@ export const ButtonContainer = styled.TouchableOpacity`
     border-radius: 5px;
 `;
 
-export const TextInputSearch = styled.TextInput`
+export const TextInputSearch = styled.TextInput<{ textColor: string }>`
     border-color: grey;
     border-width: 1px;
-    width: 80%;
-    padding: 10px;
+    flex: 2;
+    margin: 4px 18px 20px 18px;
+    padding: 12px;
     border-radius: 20px;
-    margin-bottom: 16px;
+    color: ${(props) => props.textColor};
 `;
+
+export const styles = StyleSheet.create({
+    filterIcon: {
+        position: 'absolute',
+        right: 32,
+        top: 16,
+    },
+});

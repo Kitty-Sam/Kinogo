@@ -4,15 +4,23 @@ import { StyleSheet } from 'react-native';
 import { CARD_LEN } from '~components/FilmCarouselItem/index';
 
 export const FilmTitleText = styled.Text<{ textColor: string }>`
-    padding: ${width * 0.05}px ${width * 0.05}px;
+    padding: 10px 10px;
     font-size: 16px;
     font-weight: 500;
+    width: ${CARD_LEN}px;
+    text-align: center;
     color: ${(props) => props.textColor};
 `;
 
 export const ImageContainer = styled.Image`
     width: 100%;
     height: 100%;
+    object-fit: cover;
+`;
+
+export const FilmContainer = styled.TouchableOpacity`
+    flex-direction: column;
+    align-items: center;
 `;
 
 export const styles = StyleSheet.create({

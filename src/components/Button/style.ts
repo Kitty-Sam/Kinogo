@@ -5,10 +5,10 @@ export const Container = styled.TouchableOpacity<{ bgColor: string }>`
     align-items: center;
     justify-content: center;
     width: 80%;
-    padding: 4% 5%;
+    padding: 16px 10px;
     border-radius: 10px;
     background-color: ${(props) => props.bgColor};
-    margin: 3%;
+    margin: 12px;
 `;
 
 export const Title = styled.Text<{ textColor: string }>`

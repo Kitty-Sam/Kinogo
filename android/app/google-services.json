@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "409803002905",
+    "project_id": "kinogo-b22b3",
+    "storage_bucket": "kinogo-b22b3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:409803002905:android:4841957036b6be929e4688",
+        "android_client_info": {
+          "package_name": "com.kinogo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "409803002905-bbgencb3jqb1a59v7s8jo7689dd712vb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kinogo",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "409803002905-ist5k3bepttvrb4as426staef1qfa3jj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSol4io9tcTa6gf2psE73z20wqJhuSewI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "409803002905-ist5k3bepttvrb4as426staef1qfa3jj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

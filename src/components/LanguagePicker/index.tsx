@@ -1,6 +1,6 @@
-import React, { FC, useContext, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList, View } from 'react-native';
+import { FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useOpen } from '~hooks/useOpen';
 import { LanguagePickerProps } from '~components/LanguagePicker/type';
@@ -12,12 +12,10 @@ import {
     ItemContainer,
     PickerText,
 } from '~components/LanguagePicker/style';
-import { ThemeContext } from '~context/ThemeContext';
-import { THEME_COLORS } from '~constants/theme';
+import { useColor } from '~hooks/useColor';
 
 export const LanguagePicker: FC<LanguagePickerProps> = ({ label, data }) => {
-    const { theme } = useContext(ThemeContext);
-    const textColor = theme === 'light' ? THEME_COLORS.light.text : THEME_COLORS.dark.text;
+    const { textColor } = useColor();
 
     const [selected, setSelected] = useState<{ label: string; value: string } | null>(null);
 
@@ -38,7 +36,7 @@ export const LanguagePicker: FC<LanguagePickerProps> = ({ label, data }) => {
         </ItemContainer>
     );
 
-    const renderDropdown = () => {
+    const DropDown = () => {
         return (
             <>
                 {isOpen && (
@@ -65,7 +63,7 @@ export const LanguagePicker: FC<LanguagePickerProps> = ({ label, data }) => {
                     <Icon name="chevron-up" onPress={onClose} size={24} color={textColor} />
                 )}
             </ContainerView>
-            <View>{renderDropdown()}</View>
+            <DropDown />
         </CentredView>
     );
 };
