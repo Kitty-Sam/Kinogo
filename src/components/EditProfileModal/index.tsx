@@ -15,15 +15,16 @@ import {
 } from '~components/EditProfileModal/style';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useColor } from '~hooks/useColor';
+import { Formik } from 'formik';
 
 const inputDataEnd = [
-    { icon: require('~assets/icons/password.png'), placeholder: 'Enter strong password' },
-    { icon: require('~assets/icons/password.png'), placeholder: 'Enter current password' },
+    { icon: require('~assets/icons/password.png'), placeholder: 'Enter strong password', type: 'password' },
+    { icon: require('~assets/icons/password.png'), placeholder: 'Enter current password', type: 'password' },
 ];
 
 const inputDataStart = [
-    { icon: require('~assets/icons/name.png'), placeholder: 'Enter your new name' },
-    { icon: require('~assets/icons/surname.png'), placeholder: 'Enter your new surname' },
+    { icon: require('~assets/icons/name.png'), placeholder: 'Enter your new name', type: 'name' },
+    { icon: require('~assets/icons/surname.png'), placeholder: 'Enter your new surname', type: 'surname' },
 ];
 
 export const EditProfileModal: FC<EditProfilePropsType> = ({ editModalOpen, setEditModalOpen }) => {
@@ -43,20 +44,36 @@ export const EditProfileModal: FC<EditProfilePropsType> = ({ editModalOpen, setE
                         <ModalTitle textColor={textColor}>Edit your profile</ModalTitle>
                         <Icon name={'close-circle-sharp'} onPress={onCloseIconPress} color={textColor} size={24} />
                     </ModalTitleContainer>
-                    <FormContainer>
-                        <AdditionalText textColor={textColor}>Change your personal data</AdditionalText>
-                        {inputDataStart.map((input) => (
-                            <ModalInput icon={input.icon} placeholder={input.placeholder} key={input.placeholder} />
-                        ))}
-                        <AdditionalText textColor={textColor}>Change your password</AdditionalText>
-                        {inputDataEnd.map((input) => (
-                            <ModalInput icon={input.icon} placeholder={input.placeholder} key={input.placeholder} />
-                        ))}
+                    <Formik initialValues={{ email: '', password: '' }} onSubmit={() => console.log()}>
+                        {({ handleChange, handleSubmit }) => (
+                            <FormContainer>
+                                <AdditionalText textColor={textColor}>Change your personal data</AdditionalText>
+                                {inputDataStart.map((input) => (
+                                    <ModalInput
+                                        icon={input.icon}
+                                        placeholder={input.placeholder}
+                                        key={input.placeholder}
+                                        name={input.type}
+                                        onChangeText={handleChange(input.type)}
+                                    />
+                                ))}
+                                <AdditionalText textColor={textColor}>Change your password</AdditionalText>
+                                {inputDataEnd.map((input) => (
+                                    <ModalInput
+                                        icon={input.icon}
+                                        placeholder={input.placeholder}
+                                        key={input.placeholder}
+                                        name={input.type}
+                                        onChangeText={handleChange(input.type)}
+                                    />
+                                ))}
 
-                        <ButtonContainer onPress={editPress}>
-                            <ButtonText>Edit</ButtonText>
-                        </ButtonContainer>
-                    </FormContainer>
+                                <ButtonContainer onPress={editPress}>
+                                    <ButtonText>Edit</ButtonText>
+                                </ButtonContainer>
+                            </FormContainer>
+                        )}
+                    </Formik>
                 </ModalView>
             </CentredView>
         </Modal>

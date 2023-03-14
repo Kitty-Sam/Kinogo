@@ -36,14 +36,21 @@ import {
     SeatType,
 } from '~screens/HomeSreens/CinemaScreen/cinemaConst';
 import { HomeStackNavigationName } from '~navigation/HomeStack/type';
+import { useOpen } from '~hooks/useOpen';
+import { CalendarModal } from '~components/CalendarModal';
+import { addNewOrder } from '~store/sagas/sagasActions';
+import { useAppDispatch } from '~store/hooks';
 
 export const CinemaScreen: FC<CinemaScreenProps> = ({ route, navigation }) => {
     const [isPressedScheduleItemId, setIsPressedScheduleItemId] = useState('');
     const [seatPressed, setSeatPressed] = useState<Array<string>>([]);
+    const [markedDate, setMarkedDate] = useState(() => getDateNow(false, true));
 
     const { film } = route.params;
 
     const { textColor, bgColor } = useColor();
+
+    const calendar = useOpen(false);
 
     const goBackPress = () => {
         navigation.goBack();
@@ -56,23 +63,38 @@ export const CinemaScreen: FC<CinemaScreenProps> = ({ route, navigation }) => {
 
     const onSeatPress = (id: string) => () => {
         if (!isPressedScheduleItemId) {
-            Alert.alert('Choose time first');
+            Alert.alert('Choose date and time first');
             return;
         }
         setSeatPressed((prev) => (prev.includes(id) ? prev.filter((el) => el !== id) : prev.concat(id)));
     };
 
+    const dispatch = useAppDispatch();
+
     const onBuyNowPress = () => {
         navigation.navigate(RootStackNavigationName.HOME, {
             screen: HomeStackNavigationName.TICKETS_STACK,
-            params: {
-                film: film,
-                ticket: {
-                    ticketInfo: schedule.filter((el) => el.id === isPressedScheduleItemId)[0],
-                    amount: seatPressed.length,
-                },
-            },
         });
+        dispatch(
+            addNewOrder({
+                markedDate,
+                film,
+                session: schedule.filter((el) => el.id === isPressedScheduleItemId)[0],
+                quantity: seatPressed.length,
+                id: Date.now().toString(),
+            }),
+        );
+        // console.log(
+        //     'order',
+        //     markedDate,
+        //     film,
+        //     seatPressed.length,
+        //     schedule.filter((el) => el.id === isPressedScheduleItemId)[0],
+        // );
+    };
+
+    const onCalendarPress = () => {
+        calendar.onOpen();
     };
 
     return (
@@ -87,7 +109,7 @@ export const CinemaScreen: FC<CinemaScreenProps> = ({ route, navigation }) => {
                     <HeaderText textColor={textColor}>Schedule</HeaderText>
                     <AdditionalText textColor={textColor}>{getDateNow()}</AdditionalText>
                 </View>
-                <Icon name={'calendar-outline'} size={18} color={textColor} />
+                <Icon name={'calendar-outline'} size={18} color={textColor} onPress={onCalendarPress} />
             </ScheduleContainer>
             <View>
                 <FlatList
@@ -169,6 +191,15 @@ export const CinemaScreen: FC<CinemaScreenProps> = ({ route, navigation }) => {
                     <ButtonBoldText textColor={textColor}>Book Now</ButtonBoldText>
                 </ButtonContainer>
             </BuyTicketBlock>
+
+            {calendar.isOpen && (
+                <CalendarModal
+                    calendarOpen={calendar.isOpen}
+                    setCalendarOpen={calendar.onClose}
+                    markedDate={markedDate}
+                    setMarkedDate={setMarkedDate}
+                />
+            )}
         </RootContainer>
     );
 };

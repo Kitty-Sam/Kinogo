@@ -1,3 +1,5 @@
+import Config from 'react-native-config';
+
 export const config = {
     params: {
         start_year: '2022',
@@ -9,7 +11,8 @@ export const config = {
         sort: 'latest',
     },
     headers: {
-        'X-RapidAPI-Key': '6f9f1c21bbmsh38598045e1cf883p17ea6ejsneaa66e5d9136',
+        // 'X-RapidAPI-Key': '6f9f1c21bbmsh38598045e1cf883p17ea6ejsneaa66e5d9136',
+        'X-RapidAPI-Key': Config.API_KEY,
         'X-RapidAPI-Host': 'ott-details.p.rapidapi.com',
     },
 };

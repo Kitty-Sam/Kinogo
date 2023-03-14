@@ -4,6 +4,7 @@ import { fetchFilmsWorker } from '~store/sagas/sagas/fetchFilmsSaga';
 import { fetchTopFilmsWorker } from '~store/sagas/sagas/fetchTopFilmsSaga';
 import { filterTopFilmsWorker } from '~store/sagas/sagas/filterTopFilmsSaga';
 import {
+    ADD_NEW_ORDER,
     FETCH_FILM_DETAILS,
     FETCH_FILMS,
     FETCH_TOP_FILMS,
@@ -18,6 +19,7 @@ import { registerWorker } from '~store/sagas/sagas/registerSaga';
 import { loginWorker } from '~store/sagas/sagas/loginSaga';
 import { logOutWorker } from '~store/sagas/sagas/logOutSaga';
 import { fetchUsersWorker } from '~store/sagas/sagas/fetchUsersSaga';
+import { addNewOrderWorker } from '~store/sagas/sagas/addNewOrderSaga';
 
 export function* watchClickSaga() {
     yield takeEvery(FETCH_FILMS, fetchFilmsWorker);
@@ -28,6 +30,7 @@ export function* watchClickSaga() {
     yield takeLatest(LOGIN_USER, loginWorker);
     yield takeLatest(LOGOUT_USER, logOutWorker);
     yield takeLatest(FETCH_USERS, fetchUsersWorker);
+    yield takeLatest(ADD_NEW_ORDER, addNewOrderWorker);
 }
 
 export default function* rootSaga() {

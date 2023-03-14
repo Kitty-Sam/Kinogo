@@ -1,4 +1,5 @@
 import {
+    ADD_NEW_ORDER,
     FETCH_FILM_DETAILS,
     FETCH_FILMS,
     FETCH_TOP_FILMS,
@@ -8,6 +9,8 @@ import {
     LOGOUT_USER,
     REGISTER_USER,
 } from '~store/sagas/sagasActionTypes';
+import { IFilm } from '~store/models/IFilm';
+import { ISession } from '~screens/HomeSreens/CinemaScreen/cinemaConst';
 
 //Fetch data Actions
 export const fetchFilms = () => {
@@ -49,7 +52,6 @@ export interface RegisterPayloadType {
     email: string;
     name: string;
     surname: string;
-    // navigation: StackNavigationProp<AuthStackParamList>;
 }
 
 export const registerUser = (payload: RegisterPayloadType) => ({
@@ -77,3 +79,18 @@ export const logOutUser = () => {
 export const fetchUsers = () => {
     return { type: FETCH_USERS };
 };
+
+export interface AddNewOrderPayloadType {
+    id: string;
+    markedDate: string | number;
+    film: IFilm;
+    quantity: number;
+    session: ISession;
+}
+
+export const addNewOrder = (payload: AddNewOrderPayloadType) => ({
+    type: ADD_NEW_ORDER,
+    payload,
+});
+
+export type AddNewOrderType = ReturnType<typeof addNewOrder>;

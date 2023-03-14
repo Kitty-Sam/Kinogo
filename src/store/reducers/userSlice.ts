@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { AddNewOrderPayloadType } from '~store/sagas/sagasActions';
 
 export interface IUser {
     userName: string;
@@ -14,6 +15,7 @@ interface UserState {
     isLoading: boolean;
     error: string;
     isLogged: boolean;
+    currentOrder: AddNewOrderPayloadType;
 }
 
 const initialState: UserState = {
@@ -21,6 +23,7 @@ const initialState: UserState = {
     isLoading: false,
     error: '',
     isLogged: false,
+    currentOrder: {} as AddNewOrderPayloadType,
     users: [],
 };
 
@@ -40,6 +43,9 @@ export const userSlice = createSlice({
         setCurrentUser(state, { payload }: PayloadAction<{ id: string }>) {
             state.user = payload;
         },
+        setCurrentOrder(state, { payload }: PayloadAction<AddNewOrderPayloadType>) {
+            state.currentOrder = payload;
+        },
         fetchUsers(state, { payload }: PayloadAction<Array<IUser>>) {
             state.users = payload;
         },
@@ -47,4 +53,5 @@ export const userSlice = createSlice({
 });
 
 export default userSlice.reducer;
-export const { isLogged, loadingUser, loadingUserSuccess, setCurrentUser, fetchUsers } = userSlice.actions;
+export const { isLogged, loadingUser, loadingUserSuccess, setCurrentUser, fetchUsers, setCurrentOrder } =
+    userSlice.actions;

@@ -17,8 +17,6 @@ export function* fetchFilmsWorker() {
             }),
         );
 
-        console.log('result', result);
-
         const data: IFilm[] = result.data.results;
         yield put(fetchFilmsSuccess(data));
     } catch (e: any) {
