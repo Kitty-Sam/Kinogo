@@ -16,11 +16,14 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useColor } from '~hooks/useColor';
 import { Formik } from 'formik';
+import { updateUser } from '~store/sagas/sagasActions';
+import { useAppDispatch, useAppSelector } from '~store/hooks';
+import { getCurrentUserId } from '~store/selectors/getUserInfo';
 
-const inputDataEnd = [
-    { icon: require('~assets/icons/password.png'), placeholder: 'Enter strong password', type: 'password' },
-    { icon: require('~assets/icons/password.png'), placeholder: 'Enter current password', type: 'password' },
-];
+// const inputDataEnd = [
+//     { icon: require('~assets/icons/password.png'), placeholder: 'Enter strong password', type: 'password' },
+//     { icon: require('~assets/icons/password.png'), placeholder: 'Enter current password', type: 'password' },
+// ];
 
 const inputDataStart = [
     { icon: require('~assets/icons/name.png'), placeholder: 'Enter your new name', type: 'name' },
@@ -34,7 +37,13 @@ export const EditProfileModal: FC<EditProfilePropsType> = ({ editModalOpen, setE
         setEditModalOpen();
     };
 
-    const editPress = () => {};
+    const currentUserId = useAppSelector(getCurrentUserId);
+
+    const dispatch = useAppDispatch();
+    const editPress = (values: { name: string; surname: string }) => {
+        dispatch(updateUser({ currentUserId: currentUserId, newName: values.name, newSurname: values.surname }));
+        setEditModalOpen();
+    };
 
     return (
         <Modal animationType="slide" transparent={true} visible={editModalOpen}>
@@ -44,7 +53,7 @@ export const EditProfileModal: FC<EditProfilePropsType> = ({ editModalOpen, setE
                         <ModalTitle textColor={textColor}>Edit your profile</ModalTitle>
                         <Icon name={'close-circle-sharp'} onPress={onCloseIconPress} color={textColor} size={24} />
                     </ModalTitleContainer>
-                    <Formik initialValues={{ email: '', password: '' }} onSubmit={() => console.log()}>
+                    <Formik initialValues={{ name: '', surname: '' }} onSubmit={editPress}>
                         {({ handleChange, handleSubmit }) => (
                             <FormContainer>
                                 <AdditionalText textColor={textColor}>Change your personal data</AdditionalText>
@@ -57,18 +66,18 @@ export const EditProfileModal: FC<EditProfilePropsType> = ({ editModalOpen, setE
                                         onChangeText={handleChange(input.type)}
                                     />
                                 ))}
-                                <AdditionalText textColor={textColor}>Change your password</AdditionalText>
-                                {inputDataEnd.map((input) => (
-                                    <ModalInput
-                                        icon={input.icon}
-                                        placeholder={input.placeholder}
-                                        key={input.placeholder}
-                                        name={input.type}
-                                        onChangeText={handleChange(input.type)}
-                                    />
-                                ))}
+                                {/*<AdditionalText textColor={textColor}>Change your password</AdditionalText>*/}
+                                {/*{inputDataEnd.map((input) => (*/}
+                                {/*    <ModalInput*/}
+                                {/*        icon={input.icon}*/}
+                                {/*        placeholder={input.placeholder}*/}
+                                {/*        key={input.placeholder}*/}
+                                {/*        name={input.type}*/}
+                                {/*        onChangeText={handleChange(input.type)}*/}
+                                {/*    />*/}
+                                {/*))}*/}
 
-                                <ButtonContainer onPress={editPress}>
+                                <ButtonContainer onPress={handleSubmit}>
                                     <ButtonText>Edit</ButtonText>
                                 </ButtonContainer>
                             </FormContainer>

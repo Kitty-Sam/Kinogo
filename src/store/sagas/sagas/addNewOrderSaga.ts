@@ -2,7 +2,7 @@ import { AddNewOrderType } from '~store/sagas/sagasActions';
 import { database } from '~src/helpers/getDataBaseURL';
 import { Alert } from 'react-native';
 import { put, select } from 'redux-saga/effects';
-import { loadingUser, loadingUserSuccess, setCurrentOrder } from '~store/reducers/userSlice';
+import { addOrder, loadingUser, loadingUserSuccess } from '~store/reducers/userSlice';
 import { getCurrentUserId } from '~store/selectors/getUserInfo';
 
 export function* addNewOrderWorker({ payload }: AddNewOrderType) {
@@ -12,13 +12,14 @@ export function* addNewOrderWorker({ payload }: AddNewOrderType) {
     try {
         yield put(loadingUser());
 
-        yield database.ref(`/users/${currentUserId}`).child('order').child(`${id}`).set({
-            date: markedDate,
+        yield database.ref(`/users/${currentUserId}`).child('orders').child(`${id}`).set({
+            id,
+            markedDate,
             session,
             film,
-            tickets: quantity,
+            quantity,
         });
-        yield put(setCurrentOrder(payload));
+        yield put(addOrder(payload));
         yield put(loadingUserSuccess());
     } catch (e: any) {
         console.log('add new order error', e.message);

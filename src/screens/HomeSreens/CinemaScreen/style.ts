@@ -66,14 +66,14 @@ export const ScheduleContainer = styled.View`
     justify-content: space-between;
 `;
 
-export const ScheduleItemContainer = styled.TouchableOpacity`
+export const ScheduleItemContainer = styled.TouchableOpacity<{ bgColor: string }>`
     height: 70px;
-    border-width: 2px;
+    border-width: 1px;
     border-color: ${THEME_COLORS.placeholder};
     padding: 10px;
     margin: 20px 18px;
     border-radius: 10px;
-    background-color: ${THEME_COLORS.itemWrapper};
+    background-color: ${(props) => props.bgColor};
 `;
 
 export const SeatsContainer = styled.View`

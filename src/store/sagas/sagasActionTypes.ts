@@ -9,6 +9,9 @@ export const REGISTER_USER = 'REGISTER_USER';
 export const LOGIN_USER = 'LOGIN_USER';
 export const LOGOUT_USER = 'LOGOUT_USER';
 export const FETCH_USERS = 'FETCH_USERS';
+export const UPDATE_USER = 'UPDATE_USER';
 
 //Cinema
 export const ADD_NEW_ORDER = 'ADD_NEW_ORDER';
+export const REMOVE_ORDER = 'REMOVE_ORDER';
+export const FETCH_ORDERS = 'FETCH_ORDERS';

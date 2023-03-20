@@ -26,7 +26,7 @@ import {
     SeatWrapper,
     styles,
 } from '~screens/HomeSreens/CinemaScreen/style';
-import { getDateNow } from '~src/helpers/getDateNow';
+import { today, todayWithMonth } from '~src/helpers/getDateNow';
 import { THEME_COLORS } from '~constants/theme';
 import {
     schedule,
@@ -44,11 +44,11 @@ import { useAppDispatch } from '~store/hooks';
 export const CinemaScreen: FC<CinemaScreenProps> = ({ route, navigation }) => {
     const [isPressedScheduleItemId, setIsPressedScheduleItemId] = useState('');
     const [seatPressed, setSeatPressed] = useState<Array<string>>([]);
-    const [markedDate, setMarkedDate] = useState(() => getDateNow(false, true));
+    const [markedDate, setMarkedDate] = useState(today);
 
     const { film } = route.params;
 
-    const { textColor, bgColor } = useColor();
+    const { textColor, bgColor, bgColorModal } = useColor();
 
     const calendar = useOpen(false);
 
@@ -84,13 +84,6 @@ export const CinemaScreen: FC<CinemaScreenProps> = ({ route, navigation }) => {
                 id: Date.now().toString(),
             }),
         );
-        // console.log(
-        //     'order',
-        //     markedDate,
-        //     film,
-        //     seatPressed.length,
-        //     schedule.filter((el) => el.id === isPressedScheduleItemId)[0],
-        // );
     };
 
     const onCalendarPress = () => {
@@ -107,7 +100,7 @@ export const CinemaScreen: FC<CinemaScreenProps> = ({ route, navigation }) => {
             <ScheduleContainer>
                 <View>
                     <HeaderText textColor={textColor}>Schedule</HeaderText>
-                    <AdditionalText textColor={textColor}>{getDateNow()}</AdditionalText>
+                    <AdditionalText textColor={textColor}>Date: {todayWithMonth}</AdditionalText>
                 </View>
                 <Icon name={'calendar-outline'} size={18} color={textColor} onPress={onCalendarPress} />
             </ScheduleContainer>
@@ -118,6 +111,7 @@ export const CinemaScreen: FC<CinemaScreenProps> = ({ route, navigation }) => {
                     showsHorizontalScrollIndicator={false}
                     renderItem={({ item }) => (
                         <ScheduleItemContainer
+                            bgColor={bgColorModal}
                             onPress={scheduleItemPress(item.id)}
                             style={isPressedScheduleItemId === item.id && { borderColor: THEME_COLORS.button }}
                         >

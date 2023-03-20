@@ -1,5 +1,5 @@
 import React, { FC, memo, useCallback, useState } from 'react';
-import { ActivityIndicator, FlatList, View } from 'react-native';
+import { ActivityIndicator, FlatList, StatusBar, View } from 'react-native';
 
 import {
     ActivityIndicatorWrapper,
@@ -27,7 +27,7 @@ export const HomeScreen: FC<HomeScreenProps> = memo(() => {
     const [scrollX, setScrollX] = useState(0);
 
     const { films, isLoading } = useAppSelector(getFilms);
-    const { bgColor, textColor } = useColor();
+    const { bgColor, textColor, statusBar } = useColor();
 
     const onCategoryPress = (item: string) => () => setCategory(item);
 
@@ -45,6 +45,7 @@ export const HomeScreen: FC<HomeScreenProps> = memo(() => {
 
     return (
         <ScreenContainer bgColor={bgColor}>
+            <StatusBar barStyle={statusBar} />
             {!isLoading ? (
                 <>
                     <ChapterTitleText textColor={textColor}>Coming Soon</ChapterTitleText>

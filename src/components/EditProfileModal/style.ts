@@ -12,7 +12,7 @@ export const CentredView = styled.View`
 export const ModalView = styled.View<{ bgColor: string }>`
     background-color: ${(props) => props.bgColor};
     border-radius: 10px;
-    flex: 0.6;
+    flex: 0.5;
 `;
 
 export const ModalTitle = styled.Text<{ textColor: string }>`
@@ -31,6 +31,9 @@ export const FormContainer = styled.View`
     margin-top: 12px;
     flex: 1;
     align-items: center;
+    width: 70%;
+    margin-left: 10px;
+    margin-right: 10px;
 `;
 
 export const ButtonContainer = styled.TouchableOpacity`

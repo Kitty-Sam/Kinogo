@@ -2,12 +2,15 @@ import {
     ADD_NEW_ORDER,
     FETCH_FILM_DETAILS,
     FETCH_FILMS,
+    FETCH_ORDERS,
     FETCH_TOP_FILMS,
     FETCH_USERS,
     FILTER_TOP_FILMS,
     LOGIN_USER,
     LOGOUT_USER,
     REGISTER_USER,
+    REMOVE_ORDER,
+    UPDATE_USER,
 } from '~store/sagas/sagasActionTypes';
 import { IFilm } from '~store/models/IFilm';
 import { ISession } from '~screens/HomeSreens/CinemaScreen/cinemaConst';
@@ -80,6 +83,18 @@ export const fetchUsers = () => {
     return { type: FETCH_USERS };
 };
 
+export interface UpdateUserPayloadType {
+    newName: string;
+    newSurname: string;
+    currentUserId: string;
+}
+export const updateUser = (payload: UpdateUserPayloadType) => ({
+    type: UPDATE_USER,
+    payload,
+});
+
+export type UpdateUserType = ReturnType<typeof updateUser>;
+
 export interface AddNewOrderPayloadType {
     id: string;
     markedDate: string | number;
@@ -94,3 +109,20 @@ export const addNewOrder = (payload: AddNewOrderPayloadType) => ({
 });
 
 export type AddNewOrderType = ReturnType<typeof addNewOrder>;
+
+export const fetchOrders = () => {
+    return { type: FETCH_ORDERS };
+};
+
+export type FetchOrdersType = ReturnType<typeof fetchOrders>;
+
+export interface RemoveOrderPayloadType {
+    id: string;
+}
+
+export const removeOrder = (payload: RemoveOrderPayloadType) => ({
+    type: REMOVE_ORDER,
+    payload,
+});
+
+export type RemoveOrderType = ReturnType<typeof removeOrder>;

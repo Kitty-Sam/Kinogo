@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Modal } from 'react-native';
+import { Alert, Modal } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useColor } from '~hooks/useColor';
@@ -15,6 +15,8 @@ import {
 } from '~components/CalendarModal/style';
 import { Calendar } from 'react-native-calendars';
 import { THEME_COLORS } from '~constants/theme';
+import moment from 'moment';
+import { today } from '~src/helpers/getDateNow';
 
 export const CalendarModal: FC<CalendarPropsType> = ({ calendarOpen, setCalendarOpen, markedDate, setMarkedDate }) => {
     const { bgColorModal, textColor } = useColor();
@@ -27,8 +29,7 @@ export const CalendarModal: FC<CalendarPropsType> = ({ calendarOpen, setCalendar
         [markedDate]: { selected: true, marked: true, selectedColor: THEME_COLORS.button },
     };
 
-    const chooseDate = (date: any) => () => {
-        console.log(date);
+    const chooseDate = () => {
         setCalendarOpen();
     };
 
@@ -43,6 +44,13 @@ export const CalendarModal: FC<CalendarPropsType> = ({ calendarOpen, setCalendar
                     <Calendar
                         style={styles.calendar}
                         onDayPress={(day) => {
+                            const TODAY = today;
+                            const ORDER_DAY = moment(day).format('YYYY-DD-MM');
+
+                            if (TODAY > ORDER_DAY) {
+                                Alert.alert(`It's impossible to choose the past, ${day.dateString}`);
+                                return;
+                            }
                             setMarkedDate(day.dateString);
                         }}
                         markedDates={mark}
@@ -63,7 +71,7 @@ export const CalendarModal: FC<CalendarPropsType> = ({ calendarOpen, setCalendar
                             arrowColor: THEME_COLORS.button,
                         }}
                     />
-                    <ButtonContainer onPress={chooseDate(markedDate)}>
+                    <ButtonContainer onPress={chooseDate}>
                         <ButtonText>Choose</ButtonText>
                     </ButtonContainer>
                 </ModalView>

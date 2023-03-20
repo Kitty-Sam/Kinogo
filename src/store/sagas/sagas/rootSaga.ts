@@ -7,12 +7,15 @@ import {
     ADD_NEW_ORDER,
     FETCH_FILM_DETAILS,
     FETCH_FILMS,
+    FETCH_ORDERS,
     FETCH_TOP_FILMS,
     FETCH_USERS,
     FILTER_TOP_FILMS,
     LOGIN_USER,
     LOGOUT_USER,
     REGISTER_USER,
+    REMOVE_ORDER,
+    UPDATE_USER,
 } from '~store/sagas/sagasActionTypes';
 import { fetchFilmDetailWorker } from '~store/sagas/sagas/fetchFilmDetailSaga';
 import { registerWorker } from '~store/sagas/sagas/registerSaga';
@@ -20,6 +23,9 @@ import { loginWorker } from '~store/sagas/sagas/loginSaga';
 import { logOutWorker } from '~store/sagas/sagas/logOutSaga';
 import { fetchUsersWorker } from '~store/sagas/sagas/fetchUsersSaga';
 import { addNewOrderWorker } from '~store/sagas/sagas/addNewOrderSaga';
+import { fetchOrdersWorker } from '~store/sagas/sagas/fetchOrdersSaga';
+import { removeOrderWorker } from '~store/sagas/sagas/removeOrderSaga';
+import { updateUserInfoWorker } from '~store/sagas/sagas/updateUserInfoSaga';
 
 export function* watchClickSaga() {
     yield takeEvery(FETCH_FILMS, fetchFilmsWorker);
@@ -29,8 +35,11 @@ export function* watchClickSaga() {
     yield takeLatest(REGISTER_USER, registerWorker);
     yield takeLatest(LOGIN_USER, loginWorker);
     yield takeLatest(LOGOUT_USER, logOutWorker);
+    yield takeLatest(UPDATE_USER, updateUserInfoWorker);
     yield takeLatest(FETCH_USERS, fetchUsersWorker);
     yield takeLatest(ADD_NEW_ORDER, addNewOrderWorker);
+    yield takeLatest(REMOVE_ORDER, removeOrderWorker);
+    yield takeLatest(FETCH_ORDERS, fetchOrdersWorker);
 }
 
 export default function* rootSaga() {

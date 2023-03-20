@@ -103,7 +103,7 @@ export const TopScreen: FC<TopScreenProps> = memo(({ navigation }) => {
                 </RightBlockContainer>
             </TopFilmContainer>
         ),
-        [],
+        [textColor],
     );
 
     return (

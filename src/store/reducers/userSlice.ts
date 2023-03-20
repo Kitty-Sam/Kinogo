@@ -15,7 +15,7 @@ interface UserState {
     isLoading: boolean;
     error: string;
     isLogged: boolean;
-    currentOrder: AddNewOrderPayloadType;
+    orders: AddNewOrderPayloadType[];
 }
 
 const initialState: UserState = {
@@ -23,8 +23,8 @@ const initialState: UserState = {
     isLoading: false,
     error: '',
     isLogged: false,
-    currentOrder: {} as AddNewOrderPayloadType,
     users: [],
+    orders: [],
 };
 
 export const userSlice = createSlice({
@@ -43,15 +43,36 @@ export const userSlice = createSlice({
         setCurrentUser(state, { payload }: PayloadAction<{ id: string }>) {
             state.user = payload;
         },
-        setCurrentOrder(state, { payload }: PayloadAction<AddNewOrderPayloadType>) {
-            state.currentOrder = payload;
+        addOrder(state, { payload }: PayloadAction<AddNewOrderPayloadType>) {
+            state.orders = state.orders.concat(payload);
+        },
+        removeOrder(state, { payload }: PayloadAction<{ id: string }>) {
+            state.orders = state.orders.filter((order) => order.id !== payload.id);
         },
         fetchUsers(state, { payload }: PayloadAction<Array<IUser>>) {
             state.users = payload;
+        },
+        updateUser(state, { payload }: PayloadAction<{ currentUserId: string; newName: string; newSurname: string }>) {
+            let currentUser = state.users.filter((user) => user.userId === payload.currentUserId)[0];
+            currentUser.userName = payload.newName;
+            currentUser.userSurname = payload.newSurname;
+            state.users = [...state.users, currentUser];
+        },
+        fetchOrders(state, { payload }: PayloadAction<Array<AddNewOrderPayloadType>>) {
+            state.orders = payload;
         },
     },
 });
 
 export default userSlice.reducer;
-export const { isLogged, loadingUser, loadingUserSuccess, setCurrentUser, fetchUsers, setCurrentOrder } =
-    userSlice.actions;
+export const {
+    isLogged,
+    loadingUser,
+    loadingUserSuccess,
+    setCurrentUser,
+    fetchUsers,
+    addOrder,
+    fetchOrders,
+    removeOrder,
+    updateUser,
+} = userSlice.actions;

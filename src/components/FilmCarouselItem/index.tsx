@@ -28,12 +28,12 @@ export const FilmCarouselItem = memo(({ index, scrollX, item }: FilmCarouselItem
         };
     });
 
+    const onFilmPress = () => {
+        navigation.navigate(RootStackNavigationName.FILM_DETAILS, { film: item });
+    };
+
     return (
-        <FilmContainer
-            onLongPress={() => {
-                navigation.navigate(RootStackNavigationName.FILM_DETAILS, { film: item });
-            }}
-        >
+        <FilmContainer onLongPress={onFilmPress}>
             <Animated.View
                 style={[
                     styles.root,

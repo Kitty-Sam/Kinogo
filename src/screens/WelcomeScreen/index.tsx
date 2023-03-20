@@ -19,7 +19,6 @@ import { THEME_COLORS } from '~constants/theme';
 import { studios } from '~constants/studios';
 import { useTranslation } from 'react-i18next';
 import { useColor } from '~hooks/useColor';
-import { getDateNow } from '~src/helpers/getDateNow';
 
 export const WelcomeScreen: FC<WelcomeTabScreenProps> = () => {
     const signInModal = useOpen(false);
@@ -93,7 +92,7 @@ export const WelcomeScreen: FC<WelcomeTabScreenProps> = () => {
             </StudiosContainer>
 
             <VersionText textColor={textColor}>
-                {getDateNow(true)}
+                {/*{getDateNow(true)}*/}
                 {translate('welcomeScreen.version')}
             </VersionText>
         </ScreenContainer>

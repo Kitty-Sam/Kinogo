@@ -13,7 +13,7 @@ import {
 } from '~screens/ProfileScreen/style';
 import { EditProfileModal } from '~components/EditProfileModal';
 import { SettingsModal } from '~components/SettingsModal';
-import { Alert, Linking } from 'react-native';
+import { Alert, Linking, StatusBar } from 'react-native';
 import { useOpen } from '~hooks/useOpen';
 import { ThemeContext, THEMES } from '~context/ThemeContext';
 import { useTheme } from '~hooks/useTheme';
@@ -90,7 +90,7 @@ export const ProfileScreen: FC<ProfileScreenProps> = () => {
 
     return (
         <ScreenContainer bgColor={bgColor}>
-            {/*<StatusBar barStyle={statusBar} />*/}
+            <StatusBar barStyle={statusBar} />
             {currentUser ? (
                 <Avatar source={{ uri: currentUser.photo }} />
             ) : (

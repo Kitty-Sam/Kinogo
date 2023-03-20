@@ -7,6 +7,9 @@ import { useTheme } from '~hooks/useTheme';
 import { useAppDispatch, useAppSelector } from '~store/hooks';
 import { getUserInfo } from '~store/selectors/getUserInfo';
 import { fetchFilms, fetchTopFilms } from '~src/store/sagas/sagasActions';
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs(['Warning: Async Storage has been extracted from react-native core']);
 
 export const App = () => {
     const { theme, setTheme, getTheme } = useTheme(THEMES.LIGHT);
@@ -16,8 +19,8 @@ export const App = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(fetchFilms());
-        dispatch(fetchTopFilms());
+        // dispatch(fetchFilms());
+        // dispatch(fetchTopFilms());
     }, []);
 
     useEffect(() => {
