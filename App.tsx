@@ -19,8 +19,8 @@ export const App = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        // dispatch(fetchFilms());
-        // dispatch(fetchTopFilms());
+        dispatch(fetchFilms());
+        dispatch(fetchTopFilms());
     }, []);
 
     useEffect(() => {

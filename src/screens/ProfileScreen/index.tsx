@@ -1,20 +1,8 @@
 import React, { FC, useCallback, useContext, useEffect } from 'react';
 
-import {
-    Avatar,
-    ButtonsContainer,
-    ProfileButtonContainer,
-    ProfileButtonText,
-    ProfileNameText,
-    ScreenContainer,
-    SmallLogo,
-    ThemeButtonContainer,
-    ThemeButtonText,
-} from '~screens/ProfileScreen/style';
-import { EditProfileModal } from '~components/EditProfileModal';
-import { SettingsModal } from '~components/SettingsModal';
-import { Alert, Linking, StatusBar } from 'react-native';
-import { useOpen } from '~hooks/useOpen';
+import { Avatar, ButtonsContainer, ProfileNameText, ScreenContainer, SmallLogo } from '~screens/ProfileScreen/style';
+import { EditProfile } from '~components/EditProfile';
+import { Alert, Linking, Modal, StatusBar } from 'react-native';
 import { ThemeContext, THEMES } from '~context/ThemeContext';
 import { useTheme } from '~hooks/useTheme';
 import { useColor } from '~hooks/useColor';
@@ -23,16 +11,30 @@ import { fetchUsers, logOutUser } from '~store/sagas/sagasActions';
 import { useAppDispatch, useAppSelector } from '~store/hooks';
 import { getUserInfo } from '~store/selectors/getUserInfo';
 import { url } from '~src/api/defaultRequest';
+import { getModalType } from '~store/selectors/getModalType';
+import { setModalType } from '~store/reducers/modalSlice';
+import { CentredView, ModalView } from '~components/style';
+import { Settings } from '~components/Settings';
+import { SimpleButton } from '~components/SimpleButton';
+import { THEME_COLORS } from '~constants/theme';
 
 export const ProfileScreen: FC<ProfileScreenProps> = () => {
-    const editModal = useOpen(false);
-    const settingsModal = useOpen(false);
+    const type = useAppSelector(getModalType);
 
     const dispatch = useAppDispatch();
 
     const { setTheme } = useContext(ThemeContext);
-    const { theme, themeButtonWhite, themeButtonBlack, textColorWhite, bgColor, textColorBlack, textColor, statusBar } =
-        useColor();
+    const {
+        theme,
+        themeButtonWhite,
+        themeButtonBlack,
+        textColorWhite,
+        bgColor,
+        textColorBlack,
+        textColor,
+        statusBar,
+        bgColorModal,
+    } = useColor();
     const { storeTheme } = useTheme(theme);
 
     useEffect(() => {
@@ -59,15 +61,11 @@ export const ProfileScreen: FC<ProfileScreenProps> = () => {
     const buttons = [
         {
             title: 'Edit profile info',
-            onPress: () => {
-                editModal.onOpen();
-            },
+            onPress: () => dispatch(setModalType({ type: 'edit' })),
         },
         {
             title: 'Settings',
-            onPress: () => {
-                settingsModal.onOpen();
-            },
+            onPress: () => dispatch(setModalType({ type: 'settings' })),
         },
         {
             title: 'Private policy',
@@ -97,11 +95,23 @@ export const ProfileScreen: FC<ProfileScreenProps> = () => {
                 <Avatar source={require('~assets/icons/avatar.png')} />
             )}
 
-            {editModal.isOpen && (
-                <EditProfileModal editModalOpen={editModal.isOpen} setEditModalOpen={editModal.onClose} />
+            {type === 'edit' && (
+                <Modal animationType="slide" transparent={true} visible={!!type}>
+                    <CentredView>
+                        <ModalView bgColor={bgColorModal}>
+                            <EditProfile />
+                        </ModalView>
+                    </CentredView>
+                </Modal>
             )}
-            {settingsModal.isOpen && (
-                <SettingsModal setSettingsModalOpen={settingsModal.onClose} settingsModalOpen={settingsModal.isOpen} />
+            {type === 'settings' && (
+                <Modal animationType="slide" transparent={true} visible={!!type}>
+                    <CentredView>
+                        <ModalView bgColor={bgColorModal}>
+                            <Settings />
+                        </ModalView>
+                    </CentredView>
+                </Modal>
             )}
 
             <ProfileNameText textColor={textColor}>
@@ -109,18 +119,28 @@ export const ProfileScreen: FC<ProfileScreenProps> = () => {
             </ProfileNameText>
 
             {buttons.map(({ onPress, title }) => (
-                <ProfileButtonContainer onPress={onPress} key={title}>
-                    <ProfileButtonText>{title}</ProfileButtonText>
-                </ProfileButtonContainer>
+                <SimpleButton
+                    title={title}
+                    onPress={onPress}
+                    key={title}
+                    backgroundColor={THEME_COLORS.placeholder}
+                    textColor={THEME_COLORS.lightColor}
+                />
             ))}
 
             <ButtonsContainer>
-                <ThemeButtonContainer bgColor={themeButtonWhite} onPress={turnOnLightTheme}>
-                    <ThemeButtonText textColor={textColorWhite}>White</ThemeButtonText>
-                </ThemeButtonContainer>
-                <ThemeButtonContainer bgColor={themeButtonBlack} onPress={turnOnDarkTheme}>
-                    <ThemeButtonText textColor={textColorBlack}>Black</ThemeButtonText>
-                </ThemeButtonContainer>
+                <SimpleButton
+                    title={'White'}
+                    onPress={turnOnLightTheme}
+                    backgroundColor={themeButtonWhite}
+                    textColor={textColorWhite}
+                />
+                <SimpleButton
+                    title={'Black'}
+                    onPress={turnOnDarkTheme}
+                    backgroundColor={themeButtonBlack}
+                    textColor={textColorBlack}
+                />
             </ButtonsContainer>
 
             <SmallLogo source={require('~assets/icons/small_logo.png')} />

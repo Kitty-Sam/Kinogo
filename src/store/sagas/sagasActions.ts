@@ -103,6 +103,7 @@ export interface AddNewOrderPayloadType {
     session: ISession;
 }
 
+//Order
 export const addNewOrder = (payload: AddNewOrderPayloadType) => ({
     type: ADD_NEW_ORDER,
     payload,

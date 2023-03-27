@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface IModal {
-    type: 'login' | 'signUp' | 'filters' | 'calendar' | null;
+    type: 'login' | 'edit' | 'settings' | 'signUp' | 'filters' | 'calendar' | null;
 }
 
 const initialState: IModal = {
@@ -13,7 +13,7 @@ export const modalSlice = createSlice({
     initialState,
     reducers: {
         setModalType(state, { payload }: PayloadAction<IModal>) {
-            state = payload;
+            state.type = payload.type;
         },
         removeModalType(state) {
             state.type = null;
@@ -22,4 +22,4 @@ export const modalSlice = createSlice({
 });
 
 export default modalSlice.reducer;
-export const { setModalType } = modalSlice.actions;
+export const { setModalType, removeModalType } = modalSlice.actions;

@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useState } from 'react';
-import { Alert, FlatList, View } from 'react-native';
+import { Alert, FlatList, Modal, View } from 'react-native';
 
 import { CinemaScreenProps, RootStackNavigationName } from '~navigation/RootStack/type';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -38,24 +38,25 @@ import {
     SeatType,
 } from '~screens/HomeSreens/CinemaScreen/cinemaConst';
 import { HomeStackNavigationName } from '~navigation/HomeStack/type';
-import { useOpen } from '~hooks/useOpen';
 import { CalendarModal } from '~components/CalendarModal';
 import { addNewOrder } from '~store/sagas/sagasActions';
-import { useAppDispatch } from '~store/hooks';
+import { useAppDispatch, useAppSelector } from '~store/hooks';
 import { initialNumToRender, numColumnsForCinema } from '~constants/flatlist';
+import { setModalType } from '~store/reducers/modalSlice';
+import { CentredView, ModalView } from '~components/style';
+import { getModalType } from '~store/selectors/getModalType';
 
 export const CinemaScreen: FC<CinemaScreenProps> = ({ route, navigation }) => {
     const [isPressedScheduleItemId, setIsPressedScheduleItemId] = useState('');
     const [seatPressed, setSeatPressed] = useState<Array<string>>([]);
     const [markedDate, setMarkedDate] = useState(today);
+    const type = useAppSelector(getModalType);
 
     const { film } = route.params;
 
     const dispatch = useAppDispatch();
 
     const { textColor, bgColor, bgColorModal } = useColor();
-
-    const calendar = useOpen(false);
 
     const goBackPress = () => {
         navigation.goBack();
@@ -117,7 +118,7 @@ export const CinemaScreen: FC<CinemaScreenProps> = ({ route, navigation }) => {
     );
 
     const onCalendarPress = () => {
-        calendar.onOpen();
+        dispatch(setModalType({ type: 'calendar' }));
     };
 
     return (
@@ -206,13 +207,14 @@ export const CinemaScreen: FC<CinemaScreenProps> = ({ route, navigation }) => {
                 </ButtonContainer>
             </BuyTicketBlock>
 
-            {calendar.isOpen && (
-                <CalendarModal
-                    calendarOpen={calendar.isOpen}
-                    setCalendarOpen={calendar.onClose}
-                    markedDate={markedDate}
-                    setMarkedDate={setMarkedDate}
-                />
+            {type === 'calendar' && (
+                <Modal animationType="slide" transparent={true} visible={!!type}>
+                    <CentredView>
+                        <ModalView bgColor={bgColorModal}>
+                            <CalendarModal markedDate={markedDate} setMarkedDate={setMarkedDate} />
+                        </ModalView>
+                    </CentredView>
+                </Modal>
             )}
         </RootContainer>
     );

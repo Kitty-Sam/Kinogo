@@ -1,38 +1,9 @@
 import styled from 'styled-components/native';
-import { THEME_COLORS } from '~constants/theme';
 
 export const ScreenContainer = styled.SafeAreaView<{ bgColor: string }>`
     flex: 1;
     align-items: center;
     background-color: ${(props) => props.bgColor};
-`;
-
-export const ProfileButtonContainer = styled.TouchableOpacity`
-    margin-top: 18px;
-    width: 50%;
-    padding: 8px 0;
-    border-radius: 10px;
-    background-color: ${THEME_COLORS.placeholder};
-    align-items: center;
-    justify-content: center;
-`;
-export const ProfileButtonText = styled.Text`
-    color: ${THEME_COLORS.lightColor};
-    text-transform: uppercase;
-`;
-
-export const ThemeButtonContainer = styled.TouchableOpacity<{ bgColor: string }>`
-    background-color: ${(props) => props.bgColor};
-    flex: 1;
-    padding: 8px 0;
-    border-radius: 10px;
-    align-items: center;
-    justify-content: center;
-`;
-
-export const ThemeButtonText = styled.Text<{ textColor: string }>`
-    color: ${(props) => props.textColor};
-    text-transform: uppercase;
 `;
 
 export const ButtonsContainer = styled.View`

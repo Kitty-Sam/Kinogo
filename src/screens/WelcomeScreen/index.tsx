@@ -11,18 +11,22 @@ import {
     VersionText,
 } from '~screens/WelcomeScreen/style';
 import { Button } from '~components/Button';
-import { Image, TouchableOpacity } from 'react-native';
-import { SignUpModal } from '~components/SignUpModal';
-import { SignInModal } from '~components/SignInModal';
-import { useOpen } from '~hooks/useOpen';
+import { Image, Modal, TouchableOpacity } from 'react-native';
+import { SignInModal } from '~components/SignIn';
 import { THEME_COLORS } from '~constants/theme';
 import { studios } from '~constants/studios';
 import { useTranslation } from 'react-i18next';
 import { useColor } from '~hooks/useColor';
+import { useAppDispatch, useAppSelector } from '~store/hooks';
+import { getModalType } from '~store/selectors/getModalType';
+
+import { setModalType } from '~store/reducers/modalSlice';
+import { SignUpModal } from '~components/SignUp';
+import { year } from '~src/helpers/getDateNow';
+import { CentredView, ModalView } from '~components/style';
 
 export const WelcomeScreen: FC<WelcomeTabScreenProps> = () => {
-    const signInModal = useOpen(false);
-    const signUpModal = useOpen(false);
+    const type = useAppSelector(getModalType);
 
     const { t: translate } = useTranslation();
 
@@ -30,9 +34,7 @@ export const WelcomeScreen: FC<WelcomeTabScreenProps> = () => {
         {
             icon: require('~assets/icons/person.png'),
             title: 'Create an Account',
-            onPress: () => {
-                signUpModal.onOpen();
-            },
+            onPress: () => dispatch(setModalType({ type: 'signUp' })),
             bgColor: THEME_COLORS.welcomeButtons.bgCrAcc,
             color: THEME_COLORS.welcomeButtons.textCrAcc,
         },
@@ -59,17 +61,31 @@ export const WelcomeScreen: FC<WelcomeTabScreenProps> = () => {
         },
     ];
 
-    const { bgColor, textColor } = useColor();
+    const { bgColor, textColor, bgColorModal } = useColor();
+
+    const dispatch = useAppDispatch();
 
     return (
         <ScreenContainer bgColor={bgColor}>
             <Logo source={require('~assets/icons/logo.png')} />
 
-            {signUpModal.isOpen && (
-                <SignUpModal setSignUpModalOpen={signUpModal.onClose} signUpModalOpen={signUpModal.isOpen} />
+            {type === 'login' && (
+                <Modal animationType="slide" transparent={true} visible={!!type}>
+                    <CentredView>
+                        <ModalView bgColor={bgColorModal}>
+                            <SignInModal />
+                        </ModalView>
+                    </CentredView>
+                </Modal>
             )}
-            {signInModal.isOpen && (
-                <SignInModal setSignInModalOpen={signInModal.onClose} signInModalOpen={signInModal.isOpen} />
+            {type === 'signUp' && (
+                <Modal animationType="slide" transparent={true} visible={!!type}>
+                    <CentredView>
+                        <ModalView bgColor={bgColorModal}>
+                            <SignUpModal />
+                        </ModalView>
+                    </CentredView>
+                </Modal>
             )}
 
             <Title textColor={textColor}>{translate('welcomeScreen.title')}</Title>
@@ -80,7 +96,7 @@ export const WelcomeScreen: FC<WelcomeTabScreenProps> = () => {
 
             <TextContainer>
                 <Text textColor={textColor}>{translate('welcomeScreen.hasAccount')}</Text>
-                <TouchableOpacity onPress={() => signInModal.onOpen()}>
+                <TouchableOpacity onPress={() => dispatch(setModalType({ type: 'login' }))}>
                     <LinkText textColor={textColor}>{translate('welcomeScreen.login')}</LinkText>
                 </TouchableOpacity>
             </TextContainer>
@@ -92,7 +108,7 @@ export const WelcomeScreen: FC<WelcomeTabScreenProps> = () => {
             </StudiosContainer>
 
             <VersionText textColor={textColor}>
-                {/*{getDateNow(true)}*/}
+                {year}
                 {translate('welcomeScreen.version')}
             </VersionText>
         </ScreenContainer>

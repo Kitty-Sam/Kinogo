@@ -1,7 +1,6 @@
 import { IFilm } from '../models/IFilm';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IFilmDetails } from '~store/models/IFilmDetails';
-import { ITopFilm } from '~store/models/ITopFilm';
 
 interface FilmState {
     films: IFilm[];

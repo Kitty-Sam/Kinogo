@@ -1,3 +1,4 @@
 import { firebase } from '@react-native-firebase/database';
+import Config from 'react-native-config';
 
-export const database = firebase.app().database('https://kinogo-b22b3-default-rtdb.firebaseio.com/');
+export const database = firebase.app().database(Config.DB_URL!);

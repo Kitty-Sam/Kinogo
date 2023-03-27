@@ -10,7 +10,7 @@ export const InputIcon = styled.Image<{ color: string }>`
 export const Input = styled.TextInput`
     font-size: 14px;
     font-weight: 300;
-    width: 100%;
+    width: 80%;
     border-bottom-width: 1px;
     border-color: ${THEME_COLORS.placeholder};
     border-style: solid;

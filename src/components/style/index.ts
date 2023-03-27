@@ -1,18 +1,21 @@
 import styled from 'styled-components/native';
+import { THEME_COLORS } from '~constants/theme';
 
+// Modal
 export const CentredView = styled.View`
     flex: 1;
     justify-content: center;
     align-items: center;
-    margin-top: 32px;
     background-color: rgba(#0, 0.5);
 `;
 
 export const ModalView = styled.View<{ bgColor: string }>`
     background-color: ${(props) => props.bgColor};
     border-radius: 10px;
-    flex: 0.5;
+    padding: 20px;
 `;
+
+// SignIn SignUp Edit Settings
 
 export const ModalTitle = styled.Text<{ textColor: string }>`
     font-size: 20px;
@@ -23,14 +26,21 @@ export const ModalTitle = styled.Text<{ textColor: string }>`
 export const ModalTitleContainer = styled.View`
     flex-direction: row;
     justify-content: space-around;
-    margin: 24px 0;
+`;
+
+export const FormContainer = styled.View`
+    align-items: center;
+`;
+
+export const ErrorText = styled.Text`
+    font-size: 8px;
+    color: ${THEME_COLORS.error};
 `;
 
 export const AdditionalText = styled.Text<{ textColor: string }>`
-    padding: 32px 0 0 32px;
-    font-size: 16px;
-    font-weight: 500;
-    text-transform: uppercase;
+    margin-top: 16px;
+    font-size: 14px;
+    font-weight: 300;
     color: ${(props) => props.textColor};
 `;
 
@@ -46,9 +56,4 @@ export const Text = styled.Text<{ textColor: string }>`
     font-weight: 500;
     text-transform: uppercase;
     color: ${(props) => props.textColor};
-`;
-
-export const BackDrop = styled.TouchableWithoutFeedback`
-    flex: 1;
-    opacity: 0.5;
 `;

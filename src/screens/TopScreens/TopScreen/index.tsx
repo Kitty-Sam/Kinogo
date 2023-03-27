@@ -1,5 +1,5 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, View } from 'react-native';
+import { ActivityIndicator, FlatList, Modal, View } from 'react-native';
 
 import {
     AdditionalText,
@@ -17,23 +17,26 @@ import { THEME_COLORS } from '~constants/theme';
 import { useAppDispatch, useAppSelector } from '~store/hooks';
 import { ITopFilm } from '~store/models/ITopFilm';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useOpen } from '~hooks/useOpen';
-import { FiltersModal } from '~components/FiltersModal';
+
 import { RatingStackNavigationName, TopScreenProps } from '~navigation/RatingsStack/type';
 import { useColor } from '~hooks/useColor';
 import { getTopFilms } from '~store/selectors/getTopFilms';
 import { debounce } from 'lodash';
 import { filterTopFilms } from '~store/sagas/sagasActions';
 import { width } from '~constants/dimensions';
+import { getModalType } from '~store/selectors/getModalType';
+import { setModalType } from '~store/reducers/modalSlice';
+import { CentredView, ModalView } from '~components/style';
+import { Filters } from '~components/Filters';
+import { maxToRenderPerBatch } from '~constants/flatlist';
 
 export const TopScreen: FC<TopScreenProps> = memo(({ navigation }) => {
-    const { bgColor, textColor } = useColor();
-
+    const type = useAppSelector(getModalType);
     const [search, setSearch] = useState('');
 
-    const filters = useOpen(false);
-
     const { topFilms, isLoading, filteredTopFilms } = useAppSelector(getTopFilms);
+
+    const { bgColor, textColor, bgColorModal } = useColor();
 
     const onFilmOpenPress = (value: ITopFilm) => () => {
         navigation.navigate(RatingStackNavigationName.FILM_RATING, { film: value });
@@ -41,7 +44,7 @@ export const TopScreen: FC<TopScreenProps> = memo(({ navigation }) => {
 
     const onFilterOpenPress = () => {
         setSearch('');
-        filters.onOpen();
+        dispatch(setModalType({ type: 'filters' }));
     };
 
     const dispatch = useAppDispatch();
@@ -108,6 +111,15 @@ export const TopScreen: FC<TopScreenProps> = memo(({ navigation }) => {
 
     return (
         <ScreenContainer bgColor={bgColor}>
+            {type === 'filters' && (
+                <Modal animationType="slide" transparent={true} visible={!!type}>
+                    <CentredView>
+                        <ModalView bgColor={bgColorModal}>
+                            <Filters />
+                        </ModalView>
+                    </CentredView>
+                </Modal>
+            )}
             <RowContainer>
                 <TextInputSearch
                     placeholder="search movie in the top"
@@ -124,20 +136,19 @@ export const TopScreen: FC<TopScreenProps> = memo(({ navigation }) => {
                     onPress={onFilterOpenPress}
                 />
             </RowContainer>
+
             {isLoading ? (
                 <ActivityIndicator />
             ) : (
                 <View>
                     <FlatList
-                        maxToRenderPerBatch={10}
+                        maxToRenderPerBatch={maxToRenderPerBatch}
                         data={filteredTopFilms.length ? filteredTopFilms : topFilms}
                         renderItem={renderTopFilmItem}
                         getItemLayout={(data, index) => ({ length: width * 0.5, offset: width * 0.5 * index, index })}
                     />
                 </View>
             )}
-
-            {filters.isOpen && <FiltersModal filtersModalOpen={filters.isOpen} setFiltersModalOpen={filters.onClose} />}
         </ScreenContainer>
     );
 });
