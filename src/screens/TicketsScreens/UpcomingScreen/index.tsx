@@ -23,6 +23,7 @@ import { THEME_COLORS } from '~constants/theme';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import { fetchOrders, removeOrder } from '~store/sagas/sagasActions';
+import { poster } from '~constants/posters';
 
 export const UpcomingScreen = () => {
     const { bgColorModal, bgColor, textColor, statusBar } = useColor();
@@ -50,8 +51,7 @@ export const UpcomingScreen = () => {
                         data={currentOrders}
                         renderItem={({ item }) => (
                             <TicketContainer bgColor={bgColorModal}>
-                                {/*<Image source={{ uri: item ? item.film?.imageurl[0] : poster }} />*/}
-                                <Image />
+                                <Image source={{ uri: item.film.imageurl?.length ? item.film?.imageurl[0] : poster }} />
                                 <TextContainer>
                                     <RowContainer>
                                         <TitleText textColor={textColor}>{item.film.title.slice(0, 8)}...</TitleText>

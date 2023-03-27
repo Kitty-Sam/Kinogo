@@ -30,6 +30,7 @@ export const ModalTitleContainer = styled.View`
 export const FormContainer = styled.View`
     flex: 1;
     margin: 0 18px;
+    width: 80%;
 `;
 
 export const ButtonSignUpContainer = styled.TouchableOpacity`

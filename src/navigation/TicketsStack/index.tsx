@@ -1,7 +1,6 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { TicketsStackNavigationName } from '~navigation/TicketsStack/type';
 import { PastScreen } from '~screens/TicketsScreens/PastScreen';
-import { MissedScreen } from '~screens/TicketsScreens/MissedScreen';
 import { UpcomingScreen } from '~screens/TicketsScreens/UpcomingScreen';
 import { THEME_COLORS } from '~constants/theme';
 import { useColor } from '~hooks/useColor';
@@ -28,7 +27,6 @@ export const TicketsStack = () => {
         >
             <TopTab.Screen name={TicketsStackNavigationName.UPCOMING} component={UpcomingScreen} />
             <TopTab.Screen name={TicketsStackNavigationName.PAST} component={PastScreen} />
-            <TopTab.Screen name={TicketsStackNavigationName.MISSED} component={MissedScreen} />
         </TopTab.Navigator>
     );
 };

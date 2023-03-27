@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { Alert, FlatList, View } from 'react-native';
 
 import { CinemaScreenProps, RootStackNavigationName } from '~navigation/RootStack/type';
@@ -29,6 +29,8 @@ import {
 import { today, todayWithMonth } from '~src/helpers/getDateNow';
 import { THEME_COLORS } from '~constants/theme';
 import {
+    ISeat,
+    ISession,
     schedule,
     seatsLeftArr,
     seatsRightArr,
@@ -40,6 +42,7 @@ import { useOpen } from '~hooks/useOpen';
 import { CalendarModal } from '~components/CalendarModal';
 import { addNewOrder } from '~store/sagas/sagasActions';
 import { useAppDispatch } from '~store/hooks';
+import { initialNumToRender, numColumnsForCinema } from '~constants/flatlist';
 
 export const CinemaScreen: FC<CinemaScreenProps> = ({ route, navigation }) => {
     const [isPressedScheduleItemId, setIsPressedScheduleItemId] = useState('');
@@ -47,6 +50,8 @@ export const CinemaScreen: FC<CinemaScreenProps> = ({ route, navigation }) => {
     const [markedDate, setMarkedDate] = useState(today);
 
     const { film } = route.params;
+
+    const dispatch = useAppDispatch();
 
     const { textColor, bgColor, bgColorModal } = useColor();
 
@@ -69,8 +74,6 @@ export const CinemaScreen: FC<CinemaScreenProps> = ({ route, navigation }) => {
         setSeatPressed((prev) => (prev.includes(id) ? prev.filter((el) => el !== id) : prev.concat(id)));
     };
 
-    const dispatch = useAppDispatch();
-
     const onBuyNowPress = () => {
         navigation.navigate(RootStackNavigationName.HOME, {
             screen: HomeStackNavigationName.TICKETS_STACK,
@@ -86,6 +89,33 @@ export const CinemaScreen: FC<CinemaScreenProps> = ({ route, navigation }) => {
         );
     };
 
+    const renderScheduleItem = useCallback(
+        ({ item }: { item: ISession }) => (
+            <ScheduleItemContainer
+                bgColor={bgColorModal}
+                onPress={scheduleItemPress(item.id)}
+                style={isPressedScheduleItemId === item.id && { borderColor: THEME_COLORS.button }}
+            >
+                <AdditionalBoldText textColor={textColor}>
+                    {item.dateStart} - {item.dateEnd}
+                </AdditionalBoldText>
+                <AdditionalText textColor={textColor}>Cinema: {item.type}</AdditionalText>
+                <AdditionalText textColor={textColor}>{item.seats} seats available</AdditionalText>
+            </ScheduleItemContainer>
+        ),
+        [isPressedScheduleItemId, bgColorModal, textColor],
+    );
+
+    const renderSeatItem = useCallback(
+        ({ item }: { item: ISeat }) => (
+            <SeatContainer
+                style={seatPressed.includes(item.id) && { backgroundColor: THEME_COLORS.seatSelected }}
+                onPress={onSeatPress(item.id)}
+            />
+        ),
+        [seatPressed],
+    );
+
     const onCalendarPress = () => {
         calendar.onOpen();
     };
@@ -93,7 +123,13 @@ export const CinemaScreen: FC<CinemaScreenProps> = ({ route, navigation }) => {
     return (
         <RootContainer bgColor={bgColor}>
             <BackContainer>
-                <Icon name={'arrow-back'} onPress={goBackPress} size={24} style={styles.iconBack} color={textColor} />
+                <Icon
+                    name={'arrow-back'}
+                    onPress={goBackPress}
+                    size={THEME_COLORS.iconSize['24']}
+                    style={styles.iconBack}
+                    color={textColor}
+                />
                 <HeaderText textColor={textColor}>Choose cinema & Seats</HeaderText>
             </BackContainer>
 
@@ -102,26 +138,20 @@ export const CinemaScreen: FC<CinemaScreenProps> = ({ route, navigation }) => {
                     <HeaderText textColor={textColor}>Schedule</HeaderText>
                     <AdditionalText textColor={textColor}>Date: {todayWithMonth}</AdditionalText>
                 </View>
-                <Icon name={'calendar-outline'} size={18} color={textColor} onPress={onCalendarPress} />
+                <Icon
+                    name={'calendar-outline'}
+                    size={THEME_COLORS.iconSize['18']}
+                    color={textColor}
+                    onPress={onCalendarPress}
+                />
             </ScheduleContainer>
             <View>
                 <FlatList
+                    initialNumToRender={initialNumToRender}
                     data={schedule}
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
-                    renderItem={({ item }) => (
-                        <ScheduleItemContainer
-                            bgColor={bgColorModal}
-                            onPress={scheduleItemPress(item.id)}
-                            style={isPressedScheduleItemId === item.id && { borderColor: THEME_COLORS.button }}
-                        >
-                            <AdditionalBoldText textColor={textColor}>
-                                {item.dateStart} - {item.dateEnd}
-                            </AdditionalBoldText>
-                            <AdditionalText textColor={textColor}>Cinema: {item.type}</AdditionalText>
-                            <AdditionalText textColor={textColor}>{item.seats} seats available</AdditionalText>
-                        </ScheduleItemContainer>
-                    )}
+                    renderItem={renderScheduleItem}
                 />
             </View>
 
@@ -134,43 +164,33 @@ export const CinemaScreen: FC<CinemaScreenProps> = ({ route, navigation }) => {
             <ScreenContainer>
                 <FlatList
                     data={seatsLeftArr}
-                    numColumns={4}
+                    numColumns={numColumnsForCinema}
                     columnWrapperStyle={styles.columnWrapperLeft}
-                    renderItem={({ item }) => (
-                        <SeatContainer
-                            style={seatPressed.includes(item.id) && { backgroundColor: THEME_COLORS.seatSelected }}
-                            onPress={onSeatPress(item.id)}
-                        />
-                    )}
+                    renderItem={renderSeatItem}
                 />
                 <Gap />
                 <FlatList
                     data={seatsRightArr}
-                    numColumns={4}
+                    numColumns={numColumnsForCinema}
                     columnWrapperStyle={styles.columnWrapperRight}
-                    renderItem={({ item }) => (
-                        <SeatContainer
-                            style={seatPressed.includes(item.id) && { backgroundColor: THEME_COLORS.seatSelected }}
-                            onPress={onSeatPress(item.id)}
-                        />
-                    )}
+                    renderItem={renderSeatItem}
                 />
             </ScreenContainer>
 
             <SeatsExplanationContainer>
-                {seatsSorts.map((el) => (
-                    <SeatWrapper key={el}>
+                {seatsSorts.map((seat) => (
+                    <SeatWrapper key={seat}>
                         <SeatContainer
                             style={{
                                 backgroundColor:
-                                    el === SeatType.RESERVED
+                                    seat === SeatType.RESERVED
                                         ? THEME_COLORS.seatReserved
-                                        : el === SeatType.SELECTED
+                                        : seat === SeatType.SELECTED
                                         ? THEME_COLORS.seatSelected
                                         : undefined,
                             }}
                         />
-                        <AdditionalText textColor={textColor}>{el}</AdditionalText>
+                        <AdditionalText textColor={textColor}>{seat}</AdditionalText>
                     </SeatWrapper>
                 ))}
             </SeatsExplanationContainer>

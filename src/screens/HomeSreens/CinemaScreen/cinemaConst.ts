@@ -70,9 +70,14 @@ export enum SeatType {
     SELECTED = 'selected',
 }
 
+export interface ISeat {
+    id: string;
+    type: SeatType;
+}
+
 export const seatsSorts = [SeatType.AVAILABLE, SeatType.RESERVED, SeatType.SELECTED];
 
-export const seat = { id: '', type: SeatType.AVAILABLE };
+export const seat: ISeat = { id: '', type: SeatType.AVAILABLE };
 
 export const seatsLeftArr = Array(34)
     .fill(seat)

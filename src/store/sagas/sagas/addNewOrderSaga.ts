@@ -7,6 +7,7 @@ import { getCurrentUserId } from '~store/selectors/getUserInfo';
 
 export function* addNewOrderWorker({ payload }: AddNewOrderType) {
     const { film, session, quantity, markedDate, id } = payload;
+
     const currentUserId: string = yield select(getCurrentUserId);
 
     try {

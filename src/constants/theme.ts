@@ -43,4 +43,8 @@ export const THEME_COLORS = {
         bgGitHub: '#000000',
         textGitHub: '#FFFFFF',
     },
+    iconSize: {
+        18: 18,
+        24: 24,
+    },
 };

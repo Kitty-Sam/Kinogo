@@ -52,10 +52,16 @@ export const FilmDetailsScreen: FC<FilmDetailsStackScreenProps> = ({ route, navi
             <StatusBar hidden />
             <Image source={{ uri: film.imageurl.length ? film.imageurl[0] : poster }} />
             <TicketsButtonContainer onPress={onGetTicketsPress}>
-                <Icon name={'rocket'} size={24} color={textColor} />
+                <Icon name={'rocket'} size={THEME_COLORS.iconSize['24']} color={textColor} />
                 <ButtonText textColor={textColor}>Get Tickets</ButtonText>
             </TicketsButtonContainer>
-            <Icon name={'arrow-back'} onPress={goBackPress} size={24} style={styles.iconBack} color={textColor} />
+            <Icon
+                name={'arrow-back'}
+                onPress={goBackPress}
+                size={THEME_COLORS.iconSize['24']}
+                style={styles.iconBack}
+                color={textColor}
+            />
 
             <TextContainer>
                 <RowContainer>
@@ -68,9 +74,19 @@ export const FilmDetailsScreen: FC<FilmDetailsStackScreenProps> = ({ route, navi
 
             <CommentContainer>
                 <RowCenterContainer>
-                    <Icon name={'person'} size={24} style={styles.iconAvatar} color={THEME_COLORS.placeholder} />
+                    <Icon
+                        name={'person'}
+                        size={THEME_COLORS.iconSize['24']}
+                        style={styles.iconAvatar}
+                        color={THEME_COLORS.placeholder}
+                    />
                     <CommentTextInput placeholder="Add a comment" placeholderTextColor={THEME_COLORS.placeholder} />
-                    <Icon name={'send'} size={18} style={styles.iconSend} color={THEME_COLORS.placeholder} />
+                    <Icon
+                        name={'send'}
+                        size={THEME_COLORS.iconSize['18']}
+                        style={styles.iconSend}
+                        color={THEME_COLORS.placeholder}
+                    />
                 </RowCenterContainer>
             </CommentContainer>
         </ScreenContainer>

@@ -22,8 +22,8 @@ import { ProfileScreenProps } from '~navigation/HomeStack/type';
 import { fetchUsers, logOutUser } from '~store/sagas/sagasActions';
 import { useAppDispatch, useAppSelector } from '~store/hooks';
 import { getUserInfo } from '~store/selectors/getUserInfo';
+import { url } from '~src/api/defaultRequest';
 
-const url = 'https://www.modsen-software.com/';
 export const ProfileScreen: FC<ProfileScreenProps> = () => {
     const editModal = useOpen(false);
     const settingsModal = useOpen(false);

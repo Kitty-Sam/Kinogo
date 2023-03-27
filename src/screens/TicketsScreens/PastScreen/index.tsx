@@ -22,6 +22,7 @@ import { fetchOrders, removeOrder } from '~store/sagas/sagasActions';
 import { useAppDispatch, useAppSelector } from '~store/hooks';
 import { getUserInfo } from '~store/selectors/getUserInfo';
 import { today } from '~src/helpers/getDateNow';
+import { poster } from '~constants/posters';
 
 export const PastScreen = () => {
     const { bgColor, textColor, bgColorModal } = useColor();
@@ -46,7 +47,7 @@ export const PastScreen = () => {
                     data={currentOrders}
                     renderItem={({ item }) => (
                         <TicketContainer style={{ marginTop: 10, marginLeft: 18 }} bgColor={bgColorModal}>
-                            <Image source={{ uri: item.film.imageurl[0] }} />
+                            <Image source={{ uri: item.film.imageurl?.length ? item.film.imageurl[0] : poster }} />
                             <TextContainer>
                                 <RowContainer>
                                     <TitleText textColor={textColor}>{item.film.title.slice(0, 8)}...</TitleText>

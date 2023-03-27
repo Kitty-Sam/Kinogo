@@ -1,4 +1,3 @@
-import { width } from '~constants/dimensions';
 import React, { memo } from 'react';
 import Animated, { Extrapolation, interpolate, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import { FilmCarouselItemProps } from '~components/FilmCarouselItem/type';
@@ -7,11 +6,7 @@ import { useColor } from '~hooks/useColor';
 import { poster } from '~constants/posters';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackNavigationName } from '~navigation/RootStack/type';
-
-export const WIDTH = width;
-export const CARD_LEN = WIDTH * 0.6;
-export const SPACING = WIDTH * 0.04;
-export const SIDE_CARD_LEN = (WIDTH * 0.04) / 2;
+import { CARD_LEN, SIDE_CARD_LEN, SPACING } from '~components/FilmCarouselItem/config';
 
 export const FilmCarouselItem = memo(({ index, scrollX, item }: FilmCarouselItemProps) => {
     const size = useSharedValue(0.8);

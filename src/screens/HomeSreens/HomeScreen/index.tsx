@@ -1,5 +1,5 @@
 import React, { FC, memo, useCallback, useState } from 'react';
-import { ActivityIndicator, FlatList, StatusBar, View } from 'react-native';
+import { ActivityIndicator, FlatList, NativeScrollEvent, NativeSyntheticEvent, StatusBar, View } from 'react-native';
 
 import {
     ActivityIndicatorWrapper,
@@ -16,11 +16,14 @@ import { useAppSelector } from '~store/hooks';
 import { categories } from '~constants/categories';
 
 import Animated from 'react-native-reanimated';
-import { CARD_LEN, FilmCarouselItem, SPACING } from '~components/FilmCarouselItem';
+import { FilmCarouselItem } from '~components/FilmCarouselItem';
 import { poster } from '~constants/posters';
 import { useColor } from '~hooks/useColor';
 import { getFilms } from '~store/selectors/getFilms';
 import { HomeScreenProps } from '~navigation/HomeStack/type';
+import { snapToInterval } from '~components/FilmCarouselItem/config';
+import { IFilm } from '~store/models/IFilm';
+import { decelerationRate, initialNumToRender, scrollEventThrottle } from '~constants/flatlist';
 
 export const HomeScreen: FC<HomeScreenProps> = memo(() => {
     const [category, setCategory] = useState('Action');
@@ -30,6 +33,8 @@ export const HomeScreen: FC<HomeScreenProps> = memo(() => {
     const { bgColor, textColor, statusBar } = useColor();
 
     const onCategoryPress = (item: string) => () => setCategory(item);
+
+    const filteredFilms = films.filter((el) => el.genre.includes(category));
 
     const renderCategoryItem = useCallback(
         ({ item }: { item: string }) => (
@@ -42,6 +47,17 @@ export const HomeScreen: FC<HomeScreenProps> = memo(() => {
         ),
         [category, bgColor],
     );
+
+    const renderFilmItem = useCallback(
+        ({ item, index }: { item: IFilm; index: number }) => (
+            <FilmCarouselItem index={index} item={item} scrollX={scrollX} />
+        ),
+        [scrollX],
+    );
+
+    const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+        setScrollX(event.nativeEvent.contentOffset.x);
+    };
 
     return (
         <ScreenContainer bgColor={bgColor}>
@@ -60,7 +76,7 @@ export const HomeScreen: FC<HomeScreenProps> = memo(() => {
 
                     <View>
                         <FlatList
-                            initialNumToRender={10}
+                            initialNumToRender={initialNumToRender}
                             pagingEnabled={true}
                             horizontal={true}
                             showsHorizontalScrollIndicator={false}
@@ -74,23 +90,18 @@ export const HomeScreen: FC<HomeScreenProps> = memo(() => {
 
                     <Animated.View>
                         <FlatList
-                            initialNumToRender={10}
+                            initialNumToRender={initialNumToRender}
                             snapToAlignment="center"
                             disableScrollViewPanResponder={true}
                             disableIntervalMomentum={true}
-                            scrollEventThrottle={16}
+                            scrollEventThrottle={scrollEventThrottle}
                             showsHorizontalScrollIndicator={false}
-                            decelerationRate={0.8}
-                            snapToInterval={CARD_LEN + SPACING * 1.5}
-                            data={films.filter((el) => el.genre.includes(category))}
-                            renderItem={({ item, index }) => (
-                                <FilmCarouselItem index={index} item={item} scrollX={scrollX} />
-                            )}
+                            decelerationRate={decelerationRate}
+                            snapToInterval={snapToInterval}
+                            data={filteredFilms}
+                            renderItem={renderFilmItem}
                             horizontal={true}
-                            keyExtractor={(item) => item.imdbid}
-                            onScroll={(event) => {
-                                setScrollX(event.nativeEvent.contentOffset.x);
-                            }}
+                            onScroll={onScroll}
                         />
                     </Animated.View>
                 </>

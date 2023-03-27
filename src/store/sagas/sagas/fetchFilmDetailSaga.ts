@@ -15,7 +15,7 @@ export function* fetchFilmDetailWorker({ payload }: FetchFilmDetailsType) {
                 config: {
                     params: { id: id },
                     headers: {
-                        'X-RapidAPI-Key': '6f9f1c21bbmsh38598045e1cf883p17ea6ejsneaa66e5d9136',
+                        'X-RapidAPI-Key': Config.API_KEY!,
                         'X-RapidAPI-Host': 'movie-details1.p.rapidapi.com',
                     },
                 },

@@ -13,7 +13,7 @@ export function* fetchTopFilmsWorker() {
                 url: Config.API_TOP_URL!,
                 config: {
                     headers: {
-                        'X-RapidAPI-Key': '6f9f1c21bbmsh38598045e1cf883p17ea6ejsneaa66e5d9136',
+                        'X-RapidAPI-Key': Config.API_KEY!,
                         'X-RapidAPI-Host': 'imdb-top-100-movies.p.rapidapi.com',
                     },
                 },

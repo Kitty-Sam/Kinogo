@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 import { width } from '~constants/dimensions';
 import { StyleSheet } from 'react-native';
-import { CARD_LEN } from '~components/FilmCarouselItem/index';
+import { CARD_LEN } from '~components/FilmCarouselItem/config';
 
 export const FilmTitleText = styled.Text<{ textColor: string }>`
     padding: 10px 10px;
