@@ -1,4 +1,5 @@
 import React from 'react';
+import { View } from 'react-native';
 
 import { ModalInput } from '~components/ModalInput';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -11,7 +12,7 @@ import { removeModalType } from '~store/reducers/modalSlice';
 import { ISignUp } from '~components/SignUp/type';
 import { inputsData } from '~components/SignUp/inputs';
 import { SimpleButton } from '~components/SimpleButton';
-import { FormContainer, ModalTitle, ModalTitleContainer } from '~components/style';
+import { ErrorText, FormContainer, ModalTitle, ModalTitleContainer } from '~components/style';
 import { THEME_COLORS } from '~constants/theme';
 
 export const SignUpModal = () => {
@@ -42,11 +43,10 @@ export const SignUpModal = () => {
                 {({ handleChange, handleSubmit, touched, errors }) => (
                     <FormContainer>
                         {inputsData.map((input, index) => (
-                            <>
+                            <View key={input.type}>
                                 <ModalInput
                                     icon={input.icon}
                                     placeholder={input.placeholder}
-                                    key={index}
                                     onChangeText={handleChange(input.type)}
                                     name={input.type}
                                     secureTextEntry={input.type === 'password'}
@@ -54,7 +54,7 @@ export const SignUpModal = () => {
                                 {/*{touched[input.type] && errors[input.type] && (*/}
                                 {/*    <ErrorText>{errors[input.type]}</ErrorText>*/}
                                 {/*)}*/}
-                            </>
+                            </View>
                         ))}
 
                         <SimpleButton

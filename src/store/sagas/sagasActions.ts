@@ -6,6 +6,8 @@ import {
     FETCH_TOP_FILMS,
     FETCH_USERS,
     FILTER_TOP_FILMS,
+    GOOGLE_LOGIN_USER,
+    GOOGLE_LOGOUT_USER,
     LOGIN_USER,
     LOGOUT_USER,
     REGISTER_USER,
@@ -74,6 +76,18 @@ export const loginUser = (payload: LoginPayloadType) => ({
 });
 
 export type LoginUserType = ReturnType<typeof loginUser>;
+
+export const googleLoginUser = () => ({
+    type: GOOGLE_LOGIN_USER,
+});
+
+export type GoogleLoginUserType = ReturnType<typeof googleLoginUser>;
+
+export const googleLogOutUser = () => ({
+    type: GOOGLE_LOGOUT_USER,
+});
+
+export type GoogleLogOutUserType = ReturnType<typeof googleLogOutUser>;
 
 export const logOutUser = () => {
     return { type: LOGOUT_USER };

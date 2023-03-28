@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useState } from 'react';
-import { Alert, FlatList, Modal, View } from 'react-native';
+import { Alert, FlatList, View } from 'react-native';
 
 import { CinemaScreenProps, RootStackNavigationName } from '~navigation/RootStack/type';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -43,8 +43,8 @@ import { addNewOrder } from '~store/sagas/sagasActions';
 import { useAppDispatch, useAppSelector } from '~store/hooks';
 import { initialNumToRender, numColumnsForCinema } from '~constants/flatlist';
 import { setModalType } from '~store/reducers/modalSlice';
-import { CentredView, ModalView } from '~components/style';
 import { getModalType } from '~store/selectors/getModalType';
+import { CustomModal } from '~components/CustomModal';
 
 export const CinemaScreen: FC<CinemaScreenProps> = ({ route, navigation }) => {
     const [isPressedScheduleItemId, setIsPressedScheduleItemId] = useState('');
@@ -76,9 +76,7 @@ export const CinemaScreen: FC<CinemaScreenProps> = ({ route, navigation }) => {
     };
 
     const onBuyNowPress = () => {
-        navigation.navigate(RootStackNavigationName.HOME, {
-            screen: HomeStackNavigationName.TICKETS_STACK,
-        });
+        console.log('press buy');
         dispatch(
             addNewOrder({
                 markedDate,
@@ -88,6 +86,9 @@ export const CinemaScreen: FC<CinemaScreenProps> = ({ route, navigation }) => {
                 id: Date.now().toString(),
             }),
         );
+        navigation.navigate(RootStackNavigationName.HOME, {
+            screen: HomeStackNavigationName.TICKETS_STACK,
+        });
     };
 
     const renderScheduleItem = useCallback(
@@ -208,13 +209,9 @@ export const CinemaScreen: FC<CinemaScreenProps> = ({ route, navigation }) => {
             </BuyTicketBlock>
 
             {type === 'calendar' && (
-                <Modal animationType="slide" transparent={true} visible={!!type}>
-                    <CentredView>
-                        <ModalView bgColor={bgColorModal}>
-                            <CalendarModal markedDate={markedDate} setMarkedDate={setMarkedDate} />
-                        </ModalView>
-                    </CentredView>
-                </Modal>
+                <CustomModal>
+                    <CalendarModal markedDate={markedDate} setMarkedDate={setMarkedDate} />
+                </CustomModal>
             )}
         </RootContainer>
     );

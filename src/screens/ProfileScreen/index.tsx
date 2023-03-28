@@ -2,21 +2,21 @@ import React, { FC, useCallback, useContext, useEffect } from 'react';
 
 import { Avatar, ButtonsContainer, ProfileNameText, ScreenContainer, SmallLogo } from '~screens/ProfileScreen/style';
 import { EditProfile } from '~components/EditProfile';
-import { Alert, Linking, Modal, StatusBar } from 'react-native';
+import { Alert, Linking, StatusBar } from 'react-native';
 import { ThemeContext, THEMES } from '~context/ThemeContext';
 import { useTheme } from '~hooks/useTheme';
 import { useColor } from '~hooks/useColor';
 import { ProfileScreenProps } from '~navigation/HomeStack/type';
-import { fetchUsers, logOutUser } from '~store/sagas/sagasActions';
+import { fetchUsers, googleLogOutUser, logOutUser } from '~store/sagas/sagasActions';
 import { useAppDispatch, useAppSelector } from '~store/hooks';
 import { getUserInfo } from '~store/selectors/getUserInfo';
 import { url } from '~src/api/defaultRequest';
 import { getModalType } from '~store/selectors/getModalType';
 import { setModalType } from '~store/reducers/modalSlice';
-import { CentredView, ModalView } from '~components/style';
 import { Settings } from '~components/Settings';
 import { SimpleButton } from '~components/SimpleButton';
 import { THEME_COLORS } from '~constants/theme';
+import { CustomModal } from '~components/CustomModal';
 
 export const ProfileScreen: FC<ProfileScreenProps> = () => {
     const type = useAppSelector(getModalType);
@@ -24,17 +24,8 @@ export const ProfileScreen: FC<ProfileScreenProps> = () => {
     const dispatch = useAppDispatch();
 
     const { setTheme } = useContext(ThemeContext);
-    const {
-        theme,
-        themeButtonWhite,
-        themeButtonBlack,
-        textColorWhite,
-        bgColor,
-        textColorBlack,
-        textColor,
-        statusBar,
-        bgColorModal,
-    } = useColor();
+    const { theme, themeButtonWhite, themeButtonBlack, textColorWhite, bgColor, textColorBlack, textColor, statusBar } =
+        useColor();
     const { storeTheme } = useTheme(theme);
 
     useEffect(() => {
@@ -80,9 +71,10 @@ export const ProfileScreen: FC<ProfileScreenProps> = () => {
         },
         {
             title: 'Log out',
-            onPress: () => {
-                dispatch(logOutUser());
-            },
+            onPress: () => dispatch(googleLogOutUser()),
+            // onPress: () => {
+            //     dispatch(logOutUser());
+            // },
         },
     ];
 
@@ -96,22 +88,14 @@ export const ProfileScreen: FC<ProfileScreenProps> = () => {
             )}
 
             {type === 'edit' && (
-                <Modal animationType="slide" transparent={true} visible={!!type}>
-                    <CentredView>
-                        <ModalView bgColor={bgColorModal}>
-                            <EditProfile />
-                        </ModalView>
-                    </CentredView>
-                </Modal>
+                <CustomModal>
+                    <EditProfile />
+                </CustomModal>
             )}
             {type === 'settings' && (
-                <Modal animationType="slide" transparent={true} visible={!!type}>
-                    <CentredView>
-                        <ModalView bgColor={bgColorModal}>
-                            <Settings />
-                        </ModalView>
-                    </CentredView>
-                </Modal>
+                <CustomModal>
+                    <Settings />
+                </CustomModal>
             )}
 
             <ProfileNameText textColor={textColor}>

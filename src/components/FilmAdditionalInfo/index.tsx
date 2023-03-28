@@ -2,10 +2,9 @@ import React, { FC, useCallback, useState } from 'react';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { THEME_COLORS } from '~constants/theme';
-import { ActivityIndicator, Alert, Text } from 'react-native';
+import { ActivityIndicator, Alert } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import { getYoutubeIdFromURL } from '~src/helpers/getYoutubeIdFromURL';
-import { width } from '~constants/dimensions';
 import {
     AdditionalText,
     ChapterTitleText,
@@ -18,9 +17,7 @@ import {
     TitleText,
 } from '~components/FilmAdditionalInfo/style';
 import { FilmAdditionalInfoPropsType } from '~components/FilmAdditionalInfo/type';
-
-const playerHeight = 200;
-const playerWidth = width * 0.9;
+import { playerHeight, playerWidth } from '~components/FilmAdditionalInfo/player';
 
 export const FilmAdditionalInfo: FC<FilmAdditionalInfoPropsType> = ({ film, openModal, textColor }) => {
     const [playing, setPlaying] = useState(false);

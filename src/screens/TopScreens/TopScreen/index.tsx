@@ -1,5 +1,5 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Modal, View } from 'react-native';
+import { ActivityIndicator, FlatList, View } from 'react-native';
 
 import {
     AdditionalText,
@@ -26,9 +26,9 @@ import { filterTopFilms } from '~store/sagas/sagasActions';
 import { width } from '~constants/dimensions';
 import { getModalType } from '~store/selectors/getModalType';
 import { setModalType } from '~store/reducers/modalSlice';
-import { CentredView, ModalView } from '~components/style';
 import { Filters } from '~components/Filters';
 import { maxToRenderPerBatch } from '~constants/flatlist';
+import { CustomModal } from '~components/CustomModal';
 
 export const TopScreen: FC<TopScreenProps> = memo(({ navigation }) => {
     const type = useAppSelector(getModalType);
@@ -36,7 +36,7 @@ export const TopScreen: FC<TopScreenProps> = memo(({ navigation }) => {
 
     const { topFilms, isLoading, filteredTopFilms } = useAppSelector(getTopFilms);
 
-    const { bgColor, textColor, bgColorModal } = useColor();
+    const { bgColor, textColor } = useColor();
 
     const onFilmOpenPress = (value: ITopFilm) => () => {
         navigation.navigate(RatingStackNavigationName.FILM_RATING, { film: value });
@@ -112,13 +112,9 @@ export const TopScreen: FC<TopScreenProps> = memo(({ navigation }) => {
     return (
         <ScreenContainer bgColor={bgColor}>
             {type === 'filters' && (
-                <Modal animationType="slide" transparent={true} visible={!!type}>
-                    <CentredView>
-                        <ModalView bgColor={bgColorModal}>
-                            <Filters />
-                        </ModalView>
-                    </CentredView>
-                </Modal>
+                <CustomModal>
+                    <Filters />
+                </CustomModal>
             )}
             <RowContainer>
                 <TextInputSearch

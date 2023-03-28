@@ -11,6 +11,8 @@ import {
     FETCH_TOP_FILMS,
     FETCH_USERS,
     FILTER_TOP_FILMS,
+    GOOGLE_LOGIN_USER,
+    GOOGLE_LOGOUT_USER,
     LOGIN_USER,
     LOGOUT_USER,
     REGISTER_USER,
@@ -26,6 +28,8 @@ import { addNewOrderWorker } from '~store/sagas/sagas/addNewOrderSaga';
 import { fetchOrdersWorker } from '~store/sagas/sagas/fetchOrdersSaga';
 import { removeOrderWorker } from '~store/sagas/sagas/removeOrderSaga';
 import { updateUserInfoWorker } from '~store/sagas/sagas/updateUserInfoSaga';
+import { googleSignInWorker } from '~store/sagas/sagas/googleSignInSaga';
+import { googleSignOutWorker } from '~store/sagas/sagas/googleSignOutSaga';
 
 export function* watchClickSaga() {
     yield takeEvery(FETCH_FILMS, fetchFilmsWorker);
@@ -40,6 +44,8 @@ export function* watchClickSaga() {
     yield takeLatest(ADD_NEW_ORDER, addNewOrderWorker);
     yield takeLatest(REMOVE_ORDER, removeOrderWorker);
     yield takeLatest(FETCH_ORDERS, fetchOrdersWorker);
+    yield takeLatest(GOOGLE_LOGIN_USER, googleSignInWorker);
+    yield takeLatest(GOOGLE_LOGOUT_USER, googleSignOutWorker);
 }
 
 export default function* rootSaga() {

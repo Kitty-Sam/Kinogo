@@ -8,7 +8,7 @@ import { Formik } from 'formik';
 import { updateUser } from '~store/sagas/sagasActions';
 import { useAppDispatch, useAppSelector } from '~store/hooks';
 import { getCurrentUserId } from '~store/selectors/getUserInfo';
-import { inputDataStart } from '~components/EditProfile/inputs';
+import { inputDataEnd, inputDataStart } from '~components/EditProfile/inputs';
 import { SimpleButton } from '~components/SimpleButton';
 import { removeModalType } from '~store/reducers/modalSlice';
 import { AdditionalText, FormContainer, ModalTitle, ModalTitleContainer } from '~components/style';
@@ -49,16 +49,16 @@ export const EditProfile = () => {
                                 onChangeText={handleChange(input.type)}
                             />
                         ))}
-                        {/*<AdditionalText textColor={textColor}>Change your password</AdditionalText>*/}
-                        {/*{inputDataEnd.map((input) => (*/}
-                        {/*    <ModalInput*/}
-                        {/*        icon={input.icon}*/}
-                        {/*        placeholder={input.placeholder}*/}
-                        {/*        key={input.placeholder}*/}
-                        {/*        name={input.type}*/}
-                        {/*        onChangeText={handleChange(input.type)}*/}
-                        {/*    />*/}
-                        {/*))}*/}
+                        <AdditionalText textColor={textColor}>Change your password</AdditionalText>
+                        {inputDataEnd.map((input) => (
+                            <ModalInput
+                                icon={input.icon}
+                                placeholder={input.placeholder}
+                                key={input.placeholder}
+                                name={input.type}
+                                onChangeText={handleChange(input.type)}
+                            />
+                        ))}
 
                         <SimpleButton
                             title={'Edit'}

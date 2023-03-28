@@ -24,6 +24,8 @@ import { setModalType } from '~store/reducers/modalSlice';
 import { SignUpModal } from '~components/SignUp';
 import { year } from '~src/helpers/getDateNow';
 import { CentredView, ModalView } from '~components/style';
+import { CustomModal } from '~components/CustomModal';
+import { googleLoginUser } from '~store/sagas/sagasActions';
 
 export const WelcomeScreen: FC<WelcomeTabScreenProps> = () => {
     const type = useAppSelector(getModalType);
@@ -41,7 +43,7 @@ export const WelcomeScreen: FC<WelcomeTabScreenProps> = () => {
         {
             icon: require('~assets/icons/google.png'),
             title: 'Continue with google',
-            onPress: () => {},
+            onPress: () => dispatch(googleLoginUser()),
             bgColor: THEME_COLORS.welcomeButtons.bgGoogle,
             color: THEME_COLORS.welcomeButtons.textGoogle,
         },
@@ -61,7 +63,7 @@ export const WelcomeScreen: FC<WelcomeTabScreenProps> = () => {
         },
     ];
 
-    const { bgColor, textColor, bgColorModal } = useColor();
+    const { bgColor, textColor } = useColor();
 
     const dispatch = useAppDispatch();
 
@@ -70,22 +72,14 @@ export const WelcomeScreen: FC<WelcomeTabScreenProps> = () => {
             <Logo source={require('~assets/icons/logo.png')} />
 
             {type === 'login' && (
-                <Modal animationType="slide" transparent={true} visible={!!type}>
-                    <CentredView>
-                        <ModalView bgColor={bgColorModal}>
-                            <SignInModal />
-                        </ModalView>
-                    </CentredView>
-                </Modal>
+                <CustomModal>
+                    <SignInModal />
+                </CustomModal>
             )}
             {type === 'signUp' && (
-                <Modal animationType="slide" transparent={true} visible={!!type}>
-                    <CentredView>
-                        <ModalView bgColor={bgColorModal}>
-                            <SignUpModal />
-                        </ModalView>
-                    </CentredView>
-                </Modal>
+                <CustomModal>
+                    <SignUpModal />
+                </CustomModal>
             )}
 
             <Title textColor={textColor}>{translate('welcomeScreen.title')}</Title>

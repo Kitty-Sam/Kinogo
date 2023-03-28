@@ -11,6 +11,9 @@ export const LOGOUT_USER = 'LOGOUT_USER';
 export const FETCH_USERS = 'FETCH_USERS';
 export const UPDATE_USER = 'UPDATE_USER';
 
+export const GOOGLE_LOGIN_USER = 'GOOGLE_LOGIN_USER';
+export const GOOGLE_LOGOUT_USER = 'GOOGLE_LOGOUT_USER';
+
 //Cinema
 export const ADD_NEW_ORDER = 'ADD_NEW_ORDER';
 export const REMOVE_ORDER = 'REMOVE_ORDER';
