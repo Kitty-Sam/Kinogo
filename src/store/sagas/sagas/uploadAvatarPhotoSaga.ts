@@ -26,9 +26,9 @@ export function* uploadAvatarPhotoWorker() {
 
         // setAvatar(image.path);
 
-        const referenceAll = storage().ref().child(`${currentUserId}`).child('uploadAvatar');
+        const reference = storage().ref().child(`${currentUserId}`).child('avatar');
         try {
-            yield referenceAll.putFile(image.path, metadata);
+            yield reference.putFile(image.path, metadata);
             const resultedPhotos: string[] = yield getPhotoFromStorage(currentUserId);
 
             yield database.ref(`/users/${currentUserId}`).update({

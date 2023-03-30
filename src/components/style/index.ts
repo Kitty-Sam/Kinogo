@@ -9,6 +9,10 @@ export const CentredView = styled.View`
     background-color: rgba(#0, 0.5);
 `;
 
+export const CentredSimpleView = styled.View`
+    align-items: center;
+`;
+
 export const ModalView = styled.View<{ bgColor: string }>`
     background-color: ${(props) => props.bgColor};
     border-radius: 10px;

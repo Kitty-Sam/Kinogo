@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -29,11 +29,14 @@ export const LanguagePicker: FC<LanguagePickerProps> = ({ label, data }) => {
         onClose();
     };
 
-    const renderItem = ({ item }: { item: { value: string; label: string } }) => (
-        <ItemContainer onPress={() => onItemPress(item)}>
-            <CountryFlag isoCode={item.value === 'en' ? 'us' : 'ru'} size={25} />
-            <PickerText textColor={textColor}>{item.label}</PickerText>
-        </ItemContainer>
+    const renderItem = useCallback(
+        ({ item }: { item: { value: string; label: string } }) => (
+            <ItemContainer onPress={() => onItemPress(item)}>
+                <CountryFlag isoCode={item.value === 'en' ? 'us' : 'ru'} size={25} />
+                <PickerText textColor={textColor}>{item.label}</PickerText>
+            </ItemContainer>
+        ),
+        [textColor],
     );
 
     const DropDown = () => {

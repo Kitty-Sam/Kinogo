@@ -11,7 +11,7 @@ import {
     VersionText,
 } from '~screens/WelcomeScreen/style';
 import { Button } from '~components/Button';
-import { Image, Modal, TouchableOpacity } from 'react-native';
+import { Image, StatusBar, TouchableOpacity } from 'react-native';
 import { SignInModal } from '~components/SignIn';
 import { THEME_COLORS } from '~constants/theme';
 import { studios } from '~constants/studios';
@@ -23,7 +23,6 @@ import { getModalType } from '~store/selectors/getModalType';
 import { setModalType } from '~store/reducers/modalSlice';
 import { SignUpModal } from '~components/SignUp';
 import { year } from '~src/helpers/getDateNow';
-import { CentredView, ModalView } from '~components/style';
 import { CustomModal } from '~components/CustomModal';
 import { googleLoginUser } from '~store/sagas/sagasActions';
 
@@ -63,12 +62,13 @@ export const WelcomeScreen: FC<WelcomeTabScreenProps> = () => {
         },
     ];
 
-    const { bgColor, textColor } = useColor();
+    const { bgColor, textColor, statusBar } = useColor();
 
     const dispatch = useAppDispatch();
 
     return (
         <ScreenContainer bgColor={bgColor}>
+            <StatusBar barStyle={statusBar} />
             <Logo source={require('~assets/icons/logo.png')} />
 
             {type === 'login' && (

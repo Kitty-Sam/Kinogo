@@ -8,15 +8,16 @@ import { useRange } from '~components/RangeSlider/useRange';
 import { filterTopFilms } from '~store/sagas/sagasActions';
 import { removeModalType } from '~store/reducers/modalSlice';
 import { SimpleButton } from '~components/SimpleButton';
-import { AdditionalText, ModalTitle, ModalTitleContainer } from '~components/style';
+import { AdditionalText, CentredSimpleView, ModalTitle, ModalTitleContainer } from '~components/style';
 import { THEME_COLORS } from '~constants/theme';
-import { View } from 'react-native';
+import { initFilterConfig } from '~components/Filters/config';
 
 export const Filters = () => {
     const { textColor } = useColor();
+    const { lowYear, lowRating, highYear, highRating, ratingStep, yearStep } = initFilterConfig;
 
-    const yearFilter = useRange(1996, 2023);
-    const ratingFilter = useRange(6, 9);
+    const year = useRange(lowYear, highYear);
+    const rating = useRange(lowRating, highRating);
 
     const dispatch = useAppDispatch();
 
@@ -26,10 +27,10 @@ export const Filters = () => {
         dispatch(
             filterTopFilms({
                 filters: {
-                    lowYear: yearFilter.low,
-                    highYear: yearFilter.high,
-                    lowRating: ratingFilter.low,
-                    highRating: ratingFilter.high,
+                    lowYear: year.low,
+                    highYear: year.high,
+                    lowRating: rating.low,
+                    highRating: rating.high,
                 },
             }),
         );
@@ -46,32 +47,32 @@ export const Filters = () => {
             <AdditionalText textColor={textColor}>Year</AdditionalText>
 
             <RangeSlider
-                low={yearFilter.low}
-                high={yearFilter.high}
-                step={1}
-                handleValueChange={yearFilter.handleValueChange}
-                from={yearFilter.from}
-                to={yearFilter.to}
+                low={year.low}
+                high={year.high}
+                step={yearStep}
+                handleValueChange={year.handleValueChange}
+                from={year.from}
+                to={year.to}
             />
 
             <AdditionalText textColor={textColor}>Rating</AdditionalText>
 
             <RangeSlider
-                low={ratingFilter.low}
-                high={ratingFilter.high}
-                step={0.5}
-                handleValueChange={ratingFilter.handleValueChange}
-                from={ratingFilter.from}
-                to={ratingFilter.to}
+                low={rating.low}
+                high={rating.high}
+                step={ratingStep}
+                handleValueChange={rating.handleValueChange}
+                from={rating.from}
+                to={rating.to}
             />
-            <View style={{ alignItems: 'center' }}>
+            <CentredSimpleView>
                 <SimpleButton
                     title={'Filter'}
                     onPress={filterPress}
                     backgroundColor={THEME_COLORS.button}
                     textColor={THEME_COLORS.lightColor}
                 />
-            </View>
+            </CentredSimpleView>
         </>
     );
 };

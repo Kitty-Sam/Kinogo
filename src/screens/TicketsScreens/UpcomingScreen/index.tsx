@@ -31,7 +31,7 @@ export const UpcomingScreen = () => {
         <ScreenContainer bgColor={bgColor}>
             <StatusBar barStyle={statusBar} />
             <ListContainer>
-                {currentOrders.length && <FlatList data={currentOrders} renderItem={renderOrderItem} />}
+                {currentOrders.length ? <FlatList data={currentOrders} renderItem={renderOrderItem} /> : <></>}
             </ListContainer>
         </ScreenContainer>
     );

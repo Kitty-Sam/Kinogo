@@ -88,11 +88,13 @@ export const ProfileScreen: FC<ProfileScreenProps> = () => {
 
     const makeImage = () => {
         dispatch(makeAvatar());
+        onClose();
     };
 
     const uploadImage = () => {
         onToggle();
         dispatch(uploadAvatar());
+        onClose();
     };
 
     return (
