@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { width } from '~constants/dimensions';
+import { THEME_COLORS } from '~constants/theme';
 
 export const InputIcon = styled.Image<{ color: string }>`
     width: 14px;
@@ -10,13 +10,13 @@ export const InputIcon = styled.Image<{ color: string }>`
 export const Input = styled.TextInput`
     font-size: 14px;
     font-weight: 300;
-    width: 70%;
+    width: 80%;
     border-bottom-width: 1px;
-    border-color: #ccc;
+    border-color: ${THEME_COLORS.placeholder};
     border-style: solid;
-    padding: 4px;
-    margin: ${width * 0.03}px;
-    color: #fff;
+    padding: 8px;
+    margin: 8px;
+    color: ${THEME_COLORS.placeholder};
 `;
 
 export const InputContainer = styled.View`

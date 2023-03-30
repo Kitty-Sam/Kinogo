@@ -2,17 +2,15 @@ import styled from 'styled-components/native';
 
 export const RootContainer = styled.View`
     align-items: center;
+    margin: 10px;
 `;
 
 export const LabelsContainer = styled.View`
     flex-direction: row;
-    width: 80%;
-    justify-content: space-between;
-    margin-top: 10px;
-    margin-bottom: 10px;
 `;
 
-export const RangeText = styled.Text`
+export const RangeText = styled.Text<{ textColor: string }>`
     font-size: 14px;
-    color: #fff;
+    margin-right: 24px;
+    color: ${(props) => props.textColor};
 `;

@@ -13,7 +13,7 @@ export const RatingStack = () => {
             <Stack.Screen
                 name={RatingStackNavigationName.FILM_RATING}
                 component={FilmRatingScreen}
-                options={{ headerShown: true }}
+                options={{ headerShown: false }}
             />
         </Stack.Navigator>
     );

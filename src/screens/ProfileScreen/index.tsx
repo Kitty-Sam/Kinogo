@@ -1,51 +1,68 @@
-import React, { FC, useCallback, useContext } from 'react';
-import { ProfileTabScreenProps } from '~screens/ProfileScreen/type';
-import {
-    Avatar,
-    ButtonsContainer,
-    ProfileButtonContainer,
-    ProfileButtonText,
-    ProfileIDText,
-    ProfileNameText,
-    ProfileSexText,
-    ScreenContainer,
-    SmallLogo,
-    ThemeButtonContainer,
-    ThemeButtonText,
-} from '~screens/ProfileScreen/style';
-import { EditProfileModal } from '~components/EditProfileModal';
-import { SettingsModal } from '~components/SettingsModal';
+import React, { FC, useCallback, useContext, useEffect } from 'react';
+
+import { ButtonsContainer, ProfileNameText, ScreenContainer, SmallLogo } from '~screens/ProfileScreen/style';
+import { EditProfile } from '~components/EditProfile';
 import { Alert, Linking, StatusBar } from 'react-native';
-import { useOpen } from '~hooks/useOpen';
-import { ThemeContext } from '~context/ThemeContext';
-import { THEME_COLORS } from '~constants/theme';
+import { ThemeContext, THEMES } from '~context/ThemeContext';
 import { useTheme } from '~hooks/useTheme';
+import { useColor } from '~hooks/useColor';
+import { ProfileScreenProps } from '~navigation/HomeStack/type';
+import { fetchUsers, googleLogOutUser, makeAvatar, uploadAvatar } from '~store/sagas/sagasActions';
+import { useAppDispatch, useAppSelector } from '~store/hooks';
+import { getUserInfo } from '~store/selectors/getUserInfo';
+import { url } from '~src/api/defaultRequest';
+import { getModalType } from '~store/selectors/getModalType';
+import { setModalType } from '~store/reducers/modalSlice';
+import { Settings } from '~components/Settings';
+import { SimpleButton } from '~components/SimpleButton';
+import { THEME_COLORS } from '~constants/theme';
+import { CustomModal } from '~components/CustomModal';
+import { useDisclose } from 'native-base';
+import { AvatarPhoto } from '~components/Avatar';
+import { ChangeAvatarPhotoBlock } from '~components/ChangeAvatarPhotoBlock';
+import { poster } from '~constants/posters';
 
-const url = 'https://www.modsen-software.com/';
-export const ProfileScreen: FC<ProfileTabScreenProps> = () => {
-    const editModal = useOpen(false);
-    const settingsModal = useOpen(false);
+export const ProfileScreen: FC<ProfileScreenProps> = () => {
+    const { users, user } = useAppSelector(getUserInfo);
+    const type = useAppSelector(getModalType);
 
-    const { theme, setTheme } = useContext(ThemeContext);
+    const currentUser = users.find((userFb) => userFb.userId === user.id);
+    const photo = currentUser ? currentUser.photo : poster;
+
+    // const [avatar, setAvatar] = useState<string>(photo);
+
+    const dispatch = useAppDispatch();
+
+    const { setTheme } = useContext(ThemeContext);
+    const { theme, themeButtonWhite, themeButtonBlack, textColorWhite, bgColor, textColorBlack, textColor, statusBar } =
+        useColor();
     const { storeTheme } = useTheme(theme);
 
-    const toggleAndStore = (value: string) => {
+    useEffect(() => {
+        dispatch(fetchUsers());
+    }, []);
+
+    const toggleAndStore = (value: THEMES) => {
         setTheme(value);
-        storeTheme(theme === 'light' ? 'dark' : 'light');
+        storeTheme(theme === THEMES.LIGHT ? THEMES.DARK : THEMES.LIGHT);
+    };
+
+    const turnOnLightTheme = () => {
+        toggleAndStore(THEMES.LIGHT);
+    };
+
+    const turnOnDarkTheme = () => {
+        toggleAndStore(THEMES.DARK);
     };
 
     const buttons = [
         {
             title: 'Edit profile info',
-            onPress: () => {
-                editModal.onOpen();
-            },
+            onPress: () => dispatch(setModalType({ type: 'edit' })),
         },
         {
             title: 'Settings',
-            onPress: () => {
-                settingsModal.onOpen();
-            },
+            onPress: () => dispatch(setModalType({ type: 'settings' })),
         },
         {
             title: 'Private policy',
@@ -58,49 +75,73 @@ export const ProfileScreen: FC<ProfileTabScreenProps> = () => {
                 }
             }, [url]),
         },
-        { title: 'Log out', onPress: () => {} },
+        {
+            title: 'Log out',
+            onPress: () => dispatch(googleLogOutUser()),
+            // onPress: () => {
+            //     dispatch(logOutUser());
+            // },
+        },
     ];
 
-    const bgColor = theme === 'light' ? THEME_COLORS.light.background : THEME_COLORS.dark.background;
-    const textColor = theme === 'light' ? THEME_COLORS.light.text : THEME_COLORS.dark.text;
-    const themeButtonWhite = theme === 'light' ? THEME_COLORS.dark.themeButton : THEME_COLORS.light.themeButton;
-    const themeButtonBlack = theme === 'light' ? THEME_COLORS.light.themeButton : THEME_COLORS.dark.themeButton;
-    const textColorBlack = theme === 'light' ? THEME_COLORS.dark.themeButton : THEME_COLORS.light.themeButton;
-    const textColorWhite = theme === 'light' ? THEME_COLORS.light.themeButton : THEME_COLORS.dark.themeButton;
-    const statusBar = theme === 'light' ? 'dark-content' : 'light-content';
+    const { isOpen, onOpen, onClose, onToggle } = useDisclose();
+
+    const makeImage = () => {
+        dispatch(makeAvatar());
+    };
+
+    const uploadImage = () => {
+        onToggle();
+        dispatch(uploadAvatar());
+    };
 
     return (
         <ScreenContainer bgColor={bgColor}>
             <StatusBar barStyle={statusBar} />
-            <Avatar source={require('~assets/icons/avatar.png')} />
+            <AvatarPhoto avatar={photo} onOpenChangePhotoMenu={onOpen} />
 
-            {editModal.isOpen && (
-                <EditProfileModal editModalOpen={editModal.isOpen} setEditModalOpen={editModal.onClose} />
+            {type === 'edit' && (
+                <CustomModal>
+                    <EditProfile />
+                </CustomModal>
             )}
-            {settingsModal.isOpen && (
-                <SettingsModal setSettingsModalOpen={settingsModal.onClose} settingsModalOpen={settingsModal.isOpen} />
+            {type === 'settings' && (
+                <CustomModal>
+                    <Settings />
+                </CustomModal>
             )}
 
-            <ProfileNameText textColor={textColor}>Name Surname</ProfileNameText>
-            <ProfileIDText textColor={textColor}>User ID: 123</ProfileIDText>
-            <ProfileSexText textColor={textColor}>Female</ProfileSexText>
+            <ProfileNameText textColor={textColor}>
+                {currentUser ? currentUser.userName + ' ' + currentUser.userSurname : 'user name'}
+            </ProfileNameText>
 
             {buttons.map(({ onPress, title }) => (
-                <ProfileButtonContainer onPress={onPress} key={title}>
-                    <ProfileButtonText>{title}</ProfileButtonText>
-                </ProfileButtonContainer>
+                <SimpleButton
+                    title={title}
+                    onPress={onPress}
+                    key={title}
+                    backgroundColor={THEME_COLORS.placeholder}
+                    textColor={THEME_COLORS.lightColor}
+                />
             ))}
 
             <ButtonsContainer>
-                <ThemeButtonContainer bgColor={themeButtonWhite} onPress={() => toggleAndStore('light')}>
-                    <ThemeButtonText textColor={textColorWhite}>White</ThemeButtonText>
-                </ThemeButtonContainer>
-                <ThemeButtonContainer bgColor={themeButtonBlack} onPress={() => toggleAndStore('dark')}>
-                    <ThemeButtonText textColor={textColorBlack}>Black</ThemeButtonText>
-                </ThemeButtonContainer>
+                <SimpleButton
+                    title={'White'}
+                    onPress={turnOnLightTheme}
+                    backgroundColor={themeButtonWhite}
+                    textColor={textColorWhite}
+                />
+                <SimpleButton
+                    title={'Black'}
+                    onPress={turnOnDarkTheme}
+                    backgroundColor={themeButtonBlack}
+                    textColor={textColorBlack}
+                />
             </ButtonsContainer>
 
             <SmallLogo source={require('~assets/icons/small_logo.png')} />
+            <ChangeAvatarPhotoBlock makeImage={makeImage} isOpen={isOpen} onClose={onClose} uploadImage={uploadImage} />
         </ScreenContainer>
     );
 };

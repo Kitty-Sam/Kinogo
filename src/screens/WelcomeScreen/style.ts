@@ -11,11 +11,11 @@ export const Title = styled.Text<{ textColor: string }>`
     font-size: 32px;
     font-style: italic;
     color: ${(props) => props.textColor};
-    padding: ${width * 0.05}px;
+    padding: 18px;
 `;
 
 export const Logo = styled.Image`
-    margin-top: ${width * 0.05}px;
+    margin-top: 10px;
 `;
 
 export const Text = styled.Text<{ textColor: string }>`
@@ -29,7 +29,7 @@ export const VersionText = styled.Text<{ textColor: string }>`
     font-style: italic;
     color: ${(props) => props.textColor};
     position: absolute;
-    bottom: ${width * 0.05}px;
+    bottom: 18px;
 `;
 
 export const LinkText = styled.Text<{ textColor: string }>`
@@ -37,7 +37,7 @@ export const LinkText = styled.Text<{ textColor: string }>`
     font-style: italic;
     text-decoration-line: underline;
     color: ${(props) => props.textColor};
-    padding-right: 10%;
+    padding-right: 10px;
 `;
 
 export const TextContainer = styled.View`
@@ -45,8 +45,8 @@ export const TextContainer = styled.View`
 `;
 
 export const StudiosContainer = styled.View`
-    padding-top: ${width * 0.06}px;
-    padding-bottom: ${width * 0.05}px;
+    padding-top: 16px;
+    padding-bottom: 16px;
     flex-direction: row;
     width: 85%;
     align-items: center;

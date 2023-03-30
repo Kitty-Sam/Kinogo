@@ -8,8 +8,8 @@ export const Thumb = memo(() => <ThumbContainer />);
 
 export const ThumbContainer = styled.View`
     border-width: 1px;
-    border-color: #fff;
-    background-color: ${THEME_COLORS.scheduleWrapper};
+    border-color:${THEME_COLORS.lightColor}
+    background-color: ${THEME_COLORS.placeholder};
     border-radius: ${THUMB_RADIUS}px;
     width: ${THUMB_RADIUS * 2}px;
     height: ${THUMB_RADIUS * 2}px;

@@ -1,19 +1,38 @@
-import React, { useContext } from 'react';
-import { StatusBar } from 'react-native';
-import { ThemeContext } from '~context/ThemeContext';
-import { THEME_COLORS } from '~constants/theme';
-import { ScreenContainer, Title } from '~screens/TicketsScreens/style';
+import React, { useCallback, useEffect } from 'react';
+import { ListContainer, ScreenContainer } from '~screens/TicketsScreens/style';
+import { useColor } from '~hooks/useColor';
+import { useAppDispatch, useAppSelector } from '~store/hooks';
+import { getUserInfo } from '~store/selectors/getUserInfo';
+import { FlatList, StatusBar } from 'react-native';
+import { today } from '~src/helpers/getDateNow';
+import moment from 'moment/moment';
+import { AddNewOrderPayloadType, fetchOrders } from '~store/sagas/sagasActions';
+import { OrderItem } from '~components/OrderItem';
 
 export const UpcomingScreen = () => {
-    const { theme } = useContext(ThemeContext);
-    const statusBar = theme === 'light' ? 'dark-content' : 'light-content';
-    const bgColor = theme === 'light' ? THEME_COLORS.light.background : THEME_COLORS.dark.background;
-    const textColor = theme === 'light' ? THEME_COLORS.light.text : THEME_COLORS.dark.text;
+    const { bgColor, textColor, statusBar } = useColor();
+
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        dispatch(fetchOrders());
+    }, []);
+
+    const { orders } = useAppSelector(getUserInfo);
+
+    const currentOrders = orders.filter((order) => moment(order.markedDate).format('YYYY-DD-MM') >= today);
+
+    const renderOrderItem = useCallback(
+        ({ item }: { item: AddNewOrderPayloadType }) => <OrderItem item={item} />,
+        [textColor],
+    );
 
     return (
         <ScreenContainer bgColor={bgColor}>
             <StatusBar barStyle={statusBar} />
-            <Title textColor={textColor}>upcoming</Title>
+            <ListContainer>
+                {currentOrders.length && <FlatList data={currentOrders} renderItem={renderOrderItem} />}
+            </ListContainer>
         </ScreenContainer>
     );
 };

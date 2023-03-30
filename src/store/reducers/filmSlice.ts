@@ -1,16 +1,19 @@
 import { IFilm } from '../models/IFilm';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { IFilmDetails } from '~store/models/IFilmDetails';
 
 interface FilmState {
     films: IFilm[];
     isLoading: boolean;
     error: string;
+    filmDetails: IFilmDetails;
 }
 
 const initialState: FilmState = {
     films: [],
     isLoading: false,
     error: '',
+    filmDetails: {} as IFilmDetails,
 };
 
 export const filmSlice = createSlice({
@@ -29,8 +32,11 @@ export const filmSlice = createSlice({
             state.isLoading = false;
             state.error = payload;
         },
+        fetchFilmDetails(state, { payload }: PayloadAction<IFilmDetails>) {
+            state.filmDetails = payload;
+        },
     },
 });
 
 export default filmSlice.reducer;
-export const { fetchFilms, fetchFilmsSuccess, fetchFilmsError } = filmSlice.actions;
+export const { fetchFilms, fetchFilmsSuccess, fetchFilmsError, fetchFilmDetails } = filmSlice.actions;

@@ -1,4 +1,4 @@
-import React, { FC, useContext } from 'react';
+import React, { FC } from 'react';
 import { WelcomeTabScreenProps } from '~screens/WelcomeScreen/type';
 import {
     LinkText,
@@ -11,18 +11,24 @@ import {
     VersionText,
 } from '~screens/WelcomeScreen/style';
 import { Button } from '~components/Button';
-import { Image, TouchableOpacity } from 'react-native';
-import { SignUpModal } from '~components/SignUpModal';
-import { SignInModal } from '~components/SignInModal';
-import { useOpen } from '~hooks/useOpen';
-import { ThemeContext } from '~context/ThemeContext';
+import { Image, Modal, TouchableOpacity } from 'react-native';
+import { SignInModal } from '~components/SignIn';
 import { THEME_COLORS } from '~constants/theme';
 import { studios } from '~constants/studios';
 import { useTranslation } from 'react-i18next';
+import { useColor } from '~hooks/useColor';
+import { useAppDispatch, useAppSelector } from '~store/hooks';
+import { getModalType } from '~store/selectors/getModalType';
+
+import { setModalType } from '~store/reducers/modalSlice';
+import { SignUpModal } from '~components/SignUp';
+import { year } from '~src/helpers/getDateNow';
+import { CentredView, ModalView } from '~components/style';
+import { CustomModal } from '~components/CustomModal';
+import { googleLoginUser } from '~store/sagas/sagasActions';
 
 export const WelcomeScreen: FC<WelcomeTabScreenProps> = () => {
-    const signInModal = useOpen(false);
-    const signUpModal = useOpen(false);
+    const type = useAppSelector(getModalType);
 
     const { t: translate } = useTranslation();
 
@@ -30,16 +36,14 @@ export const WelcomeScreen: FC<WelcomeTabScreenProps> = () => {
         {
             icon: require('~assets/icons/person.png'),
             title: 'Create an Account',
-            onPress: () => {
-                signUpModal.onOpen();
-            },
+            onPress: () => dispatch(setModalType({ type: 'signUp' })),
             bgColor: THEME_COLORS.welcomeButtons.bgCrAcc,
             color: THEME_COLORS.welcomeButtons.textCrAcc,
         },
         {
             icon: require('~assets/icons/google.png'),
             title: 'Continue with google',
-            onPress: () => {},
+            onPress: () => dispatch(googleLoginUser()),
             bgColor: THEME_COLORS.welcomeButtons.bgGoogle,
             color: THEME_COLORS.welcomeButtons.textGoogle,
         },
@@ -58,19 +62,24 @@ export const WelcomeScreen: FC<WelcomeTabScreenProps> = () => {
             color: THEME_COLORS.welcomeButtons.textGitHub,
         },
     ];
-    const { theme } = useContext(ThemeContext);
-    const textColor = theme === 'light' ? THEME_COLORS.light.text : THEME_COLORS.dark.text;
-    const bgColor = theme === 'light' ? THEME_COLORS.light.background : THEME_COLORS.dark.background;
+
+    const { bgColor, textColor } = useColor();
+
+    const dispatch = useAppDispatch();
 
     return (
         <ScreenContainer bgColor={bgColor}>
             <Logo source={require('~assets/icons/logo.png')} />
 
-            {signUpModal.isOpen && (
-                <SignUpModal setSignUpModalOpen={signUpModal.onClose} signUpModalOpen={signUpModal.isOpen} />
+            {type === 'login' && (
+                <CustomModal>
+                    <SignInModal />
+                </CustomModal>
             )}
-            {signInModal.isOpen && (
-                <SignInModal setSignInModalOpen={signInModal.onClose} signInModalOpen={signInModal.isOpen} />
+            {type === 'signUp' && (
+                <CustomModal>
+                    <SignUpModal />
+                </CustomModal>
             )}
 
             <Title textColor={textColor}>{translate('welcomeScreen.title')}</Title>
@@ -81,7 +90,7 @@ export const WelcomeScreen: FC<WelcomeTabScreenProps> = () => {
 
             <TextContainer>
                 <Text textColor={textColor}>{translate('welcomeScreen.hasAccount')}</Text>
-                <TouchableOpacity onPress={() => signInModal.onOpen()}>
+                <TouchableOpacity onPress={() => dispatch(setModalType({ type: 'login' }))}>
                     <LinkText textColor={textColor}>{translate('welcomeScreen.login')}</LinkText>
                 </TouchableOpacity>
             </TextContainer>
@@ -92,7 +101,10 @@ export const WelcomeScreen: FC<WelcomeTabScreenProps> = () => {
                 ))}
             </StudiosContainer>
 
-            <VersionText textColor={textColor}>{translate('welcomeScreen.version')}</VersionText>
+            <VersionText textColor={textColor}>
+                {year}
+                {translate('welcomeScreen.version')}
+            </VersionText>
         </ScreenContainer>
     );
 };

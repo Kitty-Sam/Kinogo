@@ -10,10 +10,10 @@ export function* fetchTopFilmsWorker() {
         // @ts-ignore
         let result: any = yield call(() =>
             callAPI({
-                url: 'https://imdb-top-100-movies.p.rapidapi.com/',
+                url: Config.API_TOP_URL!,
                 config: {
                     headers: {
-                        'X-RapidAPI-Key': Config.API_KEY,
+                        'X-RapidAPI-Key': Config.API_KEY!,
                         'X-RapidAPI-Host': 'imdb-top-100-movies.p.rapidapi.com',
                     },
                 },
@@ -23,6 +23,7 @@ export function* fetchTopFilmsWorker() {
         const data: ITopFilm[] = result.data;
         yield put(fetchTopFilmsSuccess(data));
     } catch (e: any) {
+        console.log('error Top', e.message);
         yield put(fetchTopFilmsError(e.message));
     }
 }

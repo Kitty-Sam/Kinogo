@@ -1,23 +1,19 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { TicketsStackNavigationName } from '~navigation/TicketsStack/type';
 import { PastScreen } from '~screens/TicketsScreens/PastScreen';
-import { MissedScreen } from '~screens/TicketsScreens/MissedScreen';
 import { UpcomingScreen } from '~screens/TicketsScreens/UpcomingScreen';
 import { THEME_COLORS } from '~constants/theme';
-import { useContext } from 'react';
-import { ThemeContext } from '~context/ThemeContext';
+import { useColor } from '~hooks/useColor';
 
 const TopTab = createMaterialTopTabNavigator();
 
 export const TicketsStack = () => {
-    const { theme } = useContext(ThemeContext);
-    const bgColor = theme === 'light' ? THEME_COLORS.light.background : THEME_COLORS.dark.background;
-    const textColor = theme === 'light' ? THEME_COLORS.light.text : THEME_COLORS.dark.text;
+    const { bgColorModal, textColor } = useColor();
 
     return (
         <TopTab.Navigator
             screenOptions={{
-                tabBarStyle: { paddingTop: 50, backgroundColor: bgColor },
+                tabBarStyle: { paddingTop: 50, backgroundColor: bgColorModal },
                 tabBarActiveTintColor: THEME_COLORS.button,
                 tabBarInactiveTintColor: textColor,
                 tabBarIndicatorStyle: {
@@ -31,7 +27,6 @@ export const TicketsStack = () => {
         >
             <TopTab.Screen name={TicketsStackNavigationName.UPCOMING} component={UpcomingScreen} />
             <TopTab.Screen name={TicketsStackNavigationName.PAST} component={PastScreen} />
-            <TopTab.Screen name={TicketsStackNavigationName.MISSED} component={MissedScreen} />
         </TopTab.Navigator>
     );
 };
