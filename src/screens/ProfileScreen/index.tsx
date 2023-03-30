@@ -1,13 +1,13 @@
 import React, { FC, useCallback, useContext, useEffect } from 'react';
 
-import { Avatar, ButtonsContainer, ProfileNameText, ScreenContainer, SmallLogo } from '~screens/ProfileScreen/style';
+import { ButtonsContainer, ProfileNameText, ScreenContainer, SmallLogo } from '~screens/ProfileScreen/style';
 import { EditProfile } from '~components/EditProfile';
 import { Alert, Linking, StatusBar } from 'react-native';
 import { ThemeContext, THEMES } from '~context/ThemeContext';
 import { useTheme } from '~hooks/useTheme';
 import { useColor } from '~hooks/useColor';
 import { ProfileScreenProps } from '~navigation/HomeStack/type';
-import { fetchUsers, googleLogOutUser, logOutUser } from '~store/sagas/sagasActions';
+import { fetchUsers, googleLogOutUser, makeAvatar, uploadAvatar } from '~store/sagas/sagasActions';
 import { useAppDispatch, useAppSelector } from '~store/hooks';
 import { getUserInfo } from '~store/selectors/getUserInfo';
 import { url } from '~src/api/defaultRequest';
@@ -17,9 +17,19 @@ import { Settings } from '~components/Settings';
 import { SimpleButton } from '~components/SimpleButton';
 import { THEME_COLORS } from '~constants/theme';
 import { CustomModal } from '~components/CustomModal';
+import { useDisclose } from 'native-base';
+import { AvatarPhoto } from '~components/Avatar';
+import { ChangeAvatarPhotoBlock } from '~components/ChangeAvatarPhotoBlock';
+import { poster } from '~constants/posters';
 
 export const ProfileScreen: FC<ProfileScreenProps> = () => {
+    const { users, user } = useAppSelector(getUserInfo);
     const type = useAppSelector(getModalType);
+
+    const currentUser = users.find((userFb) => userFb.userId === user.id);
+    const photo = currentUser ? currentUser.photo : poster;
+
+    // const [avatar, setAvatar] = useState<string>(photo);
 
     const dispatch = useAppDispatch();
 
@@ -44,10 +54,6 @@ export const ProfileScreen: FC<ProfileScreenProps> = () => {
     const turnOnDarkTheme = () => {
         toggleAndStore(THEMES.DARK);
     };
-
-    const { users, user } = useAppSelector(getUserInfo);
-
-    const currentUser = users.find((userFb) => userFb.userId === user.id);
 
     const buttons = [
         {
@@ -78,14 +84,21 @@ export const ProfileScreen: FC<ProfileScreenProps> = () => {
         },
     ];
 
+    const { isOpen, onOpen, onClose, onToggle } = useDisclose();
+
+    const makeImage = () => {
+        dispatch(makeAvatar());
+    };
+
+    const uploadImage = () => {
+        onToggle();
+        dispatch(uploadAvatar());
+    };
+
     return (
         <ScreenContainer bgColor={bgColor}>
             <StatusBar barStyle={statusBar} />
-            {currentUser ? (
-                <Avatar source={{ uri: currentUser.photo }} />
-            ) : (
-                <Avatar source={require('~assets/icons/avatar.png')} />
-            )}
+            <AvatarPhoto avatar={photo} onOpenChangePhotoMenu={onOpen} />
 
             {type === 'edit' && (
                 <CustomModal>
@@ -128,6 +141,7 @@ export const ProfileScreen: FC<ProfileScreenProps> = () => {
             </ButtonsContainer>
 
             <SmallLogo source={require('~assets/icons/small_logo.png')} />
+            <ChangeAvatarPhotoBlock makeImage={makeImage} isOpen={isOpen} onClose={onClose} uploadImage={uploadImage} />
         </ScreenContainer>
     );
 };

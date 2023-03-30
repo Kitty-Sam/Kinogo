@@ -18,3 +18,7 @@ export const GOOGLE_LOGOUT_USER = 'GOOGLE_LOGOUT_USER';
 export const ADD_NEW_ORDER = 'ADD_NEW_ORDER';
 export const REMOVE_ORDER = 'REMOVE_ORDER';
 export const FETCH_ORDERS = 'FETCH_ORDERS';
+
+//Avatar
+export const MAKE_AVATAR = 'MAKE_AVATAR';
+export const UPLOAD_AVATAR = 'UPLOAD_AVATAR';

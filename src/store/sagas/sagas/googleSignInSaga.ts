@@ -16,8 +16,6 @@ export function* googleSignInWorker() {
 
         const { uid: userId, displayName: userName, email: userEmail, photoURL: photo } = userCred.user;
 
-        console.log('userCred.user', userCred.user);
-
         yield put(setCurrentUser({ id: userId }));
 
         const reference: FirebaseDatabaseTypes.Reference = yield database.ref(`/users/`);
@@ -26,7 +24,6 @@ export function* googleSignInWorker() {
         if (snapshot.val()) {
             const users: IUser[] = Object.values(snapshot.val());
             const currentUser = users.find((user) => user.userId === userId);
-            console.log('currentUser', currentUser);
 
             if (!currentUser) {
                 yield database

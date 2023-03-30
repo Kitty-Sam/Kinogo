@@ -1,9 +1,19 @@
 export const inputDataEnd = [
-    { icon: require('~assets/icons/password.png'), placeholder: 'Enter strong password', type: 'password' },
-    { icon: require('~assets/icons/password.png'), placeholder: 'Enter current password', type: 'password' },
+    {
+        id: '1',
+        icon: require('~assets/icons/password.png'),
+        placeholder: 'Enter current password',
+        type: 'oldPassword',
+    },
+    {
+        id: '2',
+        icon: require('~assets/icons/password.png'),
+        placeholder: 'Enter strong  password',
+        type: 'newPassword',
+    },
 ];
 
 export const inputDataStart = [
-    { icon: require('~assets/icons/name.png'), placeholder: 'Enter your new name', type: 'name' },
-    { icon: require('~assets/icons/surname.png'), placeholder: 'Enter your new surname', type: 'surname' },
+    { id: '1', icon: require('~assets/icons/name.png'), placeholder: 'Enter your new name', type: 'name' },
+    { id: '2', icon: require('~assets/icons/surname.png'), placeholder: 'Enter your new surname', type: 'surname' },
 ];

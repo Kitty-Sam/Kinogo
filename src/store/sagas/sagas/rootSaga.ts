@@ -15,9 +15,11 @@ import {
     GOOGLE_LOGOUT_USER,
     LOGIN_USER,
     LOGOUT_USER,
+    MAKE_AVATAR,
     REGISTER_USER,
     REMOVE_ORDER,
     UPDATE_USER,
+    UPLOAD_AVATAR,
 } from '~store/sagas/sagasActionTypes';
 import { fetchFilmDetailWorker } from '~store/sagas/sagas/fetchFilmDetailSaga';
 import { registerWorker } from '~store/sagas/sagas/registerSaga';
@@ -30,6 +32,8 @@ import { removeOrderWorker } from '~store/sagas/sagas/removeOrderSaga';
 import { updateUserInfoWorker } from '~store/sagas/sagas/updateUserInfoSaga';
 import { googleSignInWorker } from '~store/sagas/sagas/googleSignInSaga';
 import { googleSignOutWorker } from '~store/sagas/sagas/googleSignOutSaga';
+import { makeAvatarPhotoWorker } from '~store/sagas/sagas/makeAvatarPhotoSaga';
+import { uploadAvatarPhotoWorker } from '~store/sagas/sagas/uploadAvatarPhotoSaga';
 
 export function* watchClickSaga() {
     yield takeEvery(FETCH_FILMS, fetchFilmsWorker);
@@ -46,6 +50,8 @@ export function* watchClickSaga() {
     yield takeLatest(FETCH_ORDERS, fetchOrdersWorker);
     yield takeLatest(GOOGLE_LOGIN_USER, googleSignInWorker);
     yield takeLatest(GOOGLE_LOGOUT_USER, googleSignOutWorker);
+    yield takeLatest(MAKE_AVATAR, makeAvatarPhotoWorker);
+    yield takeLatest(UPLOAD_AVATAR, uploadAvatarPhotoWorker);
 }
 
 export default function* rootSaga() {

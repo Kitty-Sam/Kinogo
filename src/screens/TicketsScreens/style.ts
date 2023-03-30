@@ -55,6 +55,16 @@ export const TicketContainer = styled.View<{ bgColor: string }>`
     background-color: ${(props) => props.bgColor};
 `;
 
+export const TicketWrapper = styled.View<{ bgColor: string }>`
+    width: 90%;
+    background-color: ${THEME_COLORS.placeholder};
+    flex-direction: row;
+    border-radius: 10px;
+    background-color: ${(props) => props.bgColor};
+    margin-top: 10px;
+    margin-left: 18px;
+`;
+
 export const Image = styled.Image`
     width: 100px;
     border-radius: 10px;

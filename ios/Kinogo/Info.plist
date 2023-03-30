@@ -56,6 +56,10 @@
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+    	<string>app needs access</string>
+    <key>NSCameraUsageDescription</key>
+    	<string>app needs access</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
@@ -68,5 +72,13 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+            <array>
+                  <string>tel</string>
+                  <string>telprompt</string>
+                  <string>mailto</string>
+                  <string>https</string>
+                  <string>http</string>
+            </array>
 </dict>
 </plist>

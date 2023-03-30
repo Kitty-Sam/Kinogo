@@ -58,6 +58,11 @@ export const userSlice = createSlice({
             currentUser.userSurname = payload.newSurname;
             state.users = [...state.users, currentUser];
         },
+        updateUserAvatar(state, { payload }: PayloadAction<{ currentUserId: string; newPhoto: string }>) {
+            let currentUser = state.users.filter((user) => user.userId === payload.currentUserId)[0];
+            currentUser.photo = payload.newPhoto;
+            state.users = [...state.users, currentUser];
+        },
         fetchOrders(state, { payload }: PayloadAction<Array<AddNewOrderPayloadType>>) {
             state.orders = payload;
         },
@@ -75,4 +80,5 @@ export const {
     fetchOrders,
     removeOrder,
     updateUser,
+    updateUserAvatar,
 } = userSlice.actions;

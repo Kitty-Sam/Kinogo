@@ -10,9 +10,11 @@ import {
     GOOGLE_LOGOUT_USER,
     LOGIN_USER,
     LOGOUT_USER,
+    MAKE_AVATAR,
     REGISTER_USER,
     REMOVE_ORDER,
     UPDATE_USER,
+    UPLOAD_AVATAR,
 } from '~store/sagas/sagasActionTypes';
 import { IFilm } from '~store/models/IFilm';
 import { ISession } from '~screens/HomeSreens/CinemaScreen/cinemaConst';
@@ -141,3 +143,17 @@ export const removeOrder = (payload: RemoveOrderPayloadType) => ({
 });
 
 export type RemoveOrderType = ReturnType<typeof removeOrder>;
+
+//Avatar
+
+export const makeAvatar = () => ({
+    type: MAKE_AVATAR,
+});
+
+export type MakeAvatarType = ReturnType<typeof makeAvatar>;
+
+export const uploadAvatar = () => ({
+    type: UPLOAD_AVATAR,
+});
+
+export type UploadAvatarType = ReturnType<typeof uploadAvatar>;
